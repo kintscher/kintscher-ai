@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "kintscher.ai — home" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: kintscher.ai
+    - navigation "Primary navigation" [ref=e6]:
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "about" [ref=e9] [cursor=pointer]:
+            - /url: /about
+            - generic [ref=e10]: about
+            - generic [ref=e11]: ⌐ A
+        - listitem [ref=e12]:
+          - link "chat" [ref=e13] [cursor=pointer]:
+            - /url: /chat
+            - generic [ref=e14]: chat
+            - generic [ref=e15]: ⌐ C
+        - listitem [ref=e16]:
+          - link "contact" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+            - generic [ref=e18]: contact
+            - generic [ref=e19]: ⌐ X
+        - listitem [ref=e20]:
+          - button "menu" [ref=e21] [cursor=pointer]:
+            - generic [ref=e22]: menu
+            - generic [ref=e23]: ⌘ K
+  - main [ref=e24]:
+    - article [ref=e25]:
+      - paragraph [ref=e26]:
+        - generic [ref=e28]: FILE / CONTACT
+        - generic [ref=e29]: /
+        - time [ref=e30]: "2026"
+      - generic [ref=e31]:
+        - heading "Let's talk." [level=1] [ref=e32]:
+          - emphasis [ref=e35]: Let's talk.
+        - paragraph [ref=e36]:
+          - generic [ref=e37]: I read every email.
+      - complementary "Portrait of Yannik Kintscher, smiling" [ref=e38]:
+        - figure "Self-portrait / 2025" [ref=e39]:
+          - generic [ref=e46]:
+            - generic [ref=e47]: PORTRA 400
+            - generic [ref=e48]: ·
+            - generic [ref=e49]: 1/250s
+          - generic [ref=e50]:
+            - generic [ref=e51]: Self-portrait
+            - generic [ref=e52]: /
+            - generic [ref=e53]: "2025"
+      - region "Primary contact" [ref=e54]:
+        - heading "Primary contact" [level=2] [ref=e55]
+        - generic [ref=e56]:
+          - link "yannik@kintscher.ai" [ref=e57] [cursor=pointer]:
+            - /url: mailto:yannik@kintscher.ai
+          - button "Copy email address to clipboard" [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: ⌘
+              - generic [ref=e61]: C
+            - generic: copied.
+        - paragraph [ref=e62]:
+          - generic [ref=e63]: Based in Zürich
+          - generic [ref=e64]: ·
+          - generic [ref=e65]: CET
+          - generic [ref=e66]: ·
+          - generic [ref=e67]: usually replies within a few days
+      - region "Other channels" [ref=e68]:
+        - heading "Other channels" [level=2] [ref=e69]
+        - list [ref=e70]:
+          - listitem [ref=e71]:
+            - link "GitHub github.com/kintscher" [ref=e72] [cursor=pointer]:
+              - /url: https://github.com/kintscher
+              - img [ref=e74]
+              - generic [ref=e77]: GitHub
+              - generic [ref=e78]: github.com/kintscher
+              - generic [ref=e79]: G
+            - generic: best for code
+          - listitem [ref=e80]:
+            - link "LinkedIn linkedin.com/in/yannik-kintscher" [ref=e81] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/yannik-kintscher
+              - img [ref=e83]
+              - generic [ref=e87]: LinkedIn
+              - generic [ref=e88]: linkedin.com/in/yannik-kintscher
+              - generic [ref=e89]: L
+            - generic: best for async questions
+          - listitem [ref=e90]:
+            - link "Instagram instagram.com/yannik.kintscher" [ref=e91] [cursor=pointer]:
+              - /url: https://www.instagram.com/yannik.kintscher
+              - img [ref=e93]
+              - generic [ref=e96]: Instagram
+              - generic [ref=e97]: instagram.com/yannik.kintscher
+              - generic [ref=e98]: I
+            - generic: occasional life updates
+      - generic [ref=e99]:
+        - paragraph [ref=e100]:
+          - emphasis [ref=e101]: — Y.
+        - link "next / ask yannik anything" [ref=e102] [cursor=pointer]:
+          - /url: /chat
+          - generic [ref=e103]: next /
+          - generic [ref=e104]: ask yannik anything
+          - generic [ref=e105]: →
+          - generic [ref=e106]: ⌐ C
+  - contentinfo [ref=e107]:
+    - generic [ref=e108]:
+      - generic [ref=e109]:
+        - generic [ref=e110]: kintscher.ai
+        - generic [ref=e111]: /
+        - generic [ref=e112]: © 2026
+      - generic [ref=e113]: /
+      - generic [ref=e114]:
+        - generic [ref=e115]: 47.37°N 8.54°E
+        - generic [ref=e116]: /
+        - generic [ref=e117]: Zürich
+      - link "contact" [ref=e118] [cursor=pointer]:
+        - /url: /contact
+        - generic [ref=e119]: contact
+        - generic [ref=e120]: ⌐ X
+  - generic [ref=e123]:
+    - button "Menu" [ref=e124]:
+      - img [ref=e126]
+      - generic: Menu
+    - button "Inspect" [ref=e130]:
+      - img [ref=e132]
+      - generic: Inspect
+    - button "Audit" [ref=e134]:
+      - img [ref=e136]
+      - generic: Audit
+    - button "Settings" [ref=e139]:
+      - img [ref=e141]
+      - generic: Settings

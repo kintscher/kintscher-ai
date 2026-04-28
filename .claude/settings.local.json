@@ -19,7 +19,16 @@
       "mcp__playwright__browser_press_key",
       "mcp__playwright__browser_wait_for",
       "mcp__playwright__browser_hover",
-      "mcp__playwright__browser_evaluate"
+      "mcp__playwright__browser_evaluate",
+      "Bash(git -C /home/yannik/repos/kintscher-ai diff --stat)",
+      "Bash(git -C /home/yannik/repos/kintscher-ai diff)",
+      "Bash(git -C /home/yannik/repos/kintscher-ai status)",
+      "Bash(git -C /home/yannik/repos/kintscher-ai ls-files)",
+      "Bash(git *)",
+      "mcp__playwright__browser_close",
+      "Bash(kill 93283)",
+      "Bash(pnpm dev *)",
+      "mcp__playwright__browser_console_messages"
     ]
   }
 }
