@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import Layout from '../layouts/Layout.astro';
-import DuotonePortrait from '../components/DuotonePortrait.astro';
+import PortraitFrame from '../components/PortraitFrame.astro';
 import portrait from '../assets/images/yannik-neutral.jpg';
 ---
 
@@ -31,10 +31,8 @@ import portrait from '../assets/images/yannik-neutral.jpg';
     </header>
 
     <div class="bio">
-      <DuotonePortrait
+      <PortraitFrame
         src={portrait}
-        caption="Self-portrait"
-        year="2025"
         ariaLabel="Portrait of Yannik Kintscher"
         class="about-portrait"
       />

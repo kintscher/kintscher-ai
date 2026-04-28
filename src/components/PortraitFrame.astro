@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt?: string;
+  objectPosition?: string;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  src,
+  alt = '',
+  objectPosition = '50% 28%',
+  ariaLabel = 'Portrait',
+  class: className,
+} = Astro.props;
+---
+
+<aside
+  class:list={['portrait-frame', className]}
+  aria-label={ariaLabel}
+  tabindex="0"
+>
+  <figure>
+    <div class="frame">
+      <Image
+        src={src}
+        alt={alt}
+        widths={[420, 560, 720, 960]}
+        sizes="(max-width: 720px) 78vw, (max-width: 1024px) 38vw, 460px"
+        loading="eager"
+        class="img"
+        style={`object-position: ${objectPosition};`}
+      />
+      <span class="arm arm-tl-h" aria-hidden="true"></span>
+      <span class="arm arm-tl-v" aria-hidden="true"></span>
+      <span class="arm arm-br-h" aria-hidden="true"></span>
+      <span class="arm arm-br-v" aria-hidden="true"></span>
+      <span class="hl hl-top" aria-hidden="true"></span>
+      <span class="hl hl-left" aria-hidden="true"></span>
+      <span class="hl hl-bottom" aria-hidden="true"></span>
+      <span class="hl hl-right" aria-hidden="true"></span>
+    </div>
+    <figcaption class="cap">PORTRAIT · ZÜRICH · 2026</figcaption>
+  </figure>
+</aside>
+
+<style>
+  .portrait-frame { outline: none; }
+  .portrait-frame:focus,
+  .portrait-frame:focus-visible { outline: none; }
+  .portrait-frame figure { margin: 0; }
+
+  .frame {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+  }
+  .img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .arm {
+    position: absolute;
+    background: #EBAB3A;
+    z-index: 2;
+    transition:
+      top 200ms ease-in,
+      left 200ms ease-in,
+      right 200ms ease-in,
+      bottom 200ms ease-in,
+      width 200ms ease-in,
+      height 200ms ease-in;
+  }
+  .arm-tl-h { top: -1.5px;    left: -12px;  width: 48px; height: 3px;  }
+  .arm-tl-v { top: -12px;     left: -1.5px; width: 3px;  height: 48px; }
+  .arm-br-h { bottom: -1.5px; right: -12px; width: 48px; height: 3px;  }
+  .arm-br-v { bottom: -12px;  right: -1.5px; width: 3px; height: 48px; }
+
+  .hl {
+    position: absolute;
+    background: #EBAB3A;
+    z-index: 2;
+    transition: transform 200ms ease-in;
+  }
+  .hl-top    { top: 0;    left: 0;  width: 50%; height: 1px; transform-origin: left;   transform: scaleX(0); }
+  .hl-left   { top: 0;    left: 0;  width: 1px; height: 50%; transform-origin: top;    transform: scaleY(0); }
+  .hl-bottom { bottom: 0; right: 0; width: 50%; height: 1px; transform-origin: right;  transform: scaleX(0); }
+  .hl-right  { bottom: 0; right: 0; width: 1px; height: 50%; transform-origin: bottom; transform: scaleY(0); }
+
+  @media (hover: hover) {
+    .portrait-frame:hover .arm-tl-h { left: -28px;   width: 64px;  transition: left 250ms ease-out, width 250ms ease-out; }
+    .portrait-frame:hover .arm-tl-v { top: -28px;    height: 64px; transition: top 250ms ease-out, height 250ms ease-out; }
+    .portrait-frame:hover .arm-br-h { right: -28px;  width: 64px;  transition: right 250ms ease-out, width 250ms ease-out; }
+    .portrait-frame:hover .arm-br-v { bottom: -28px; height: 64px; transition: bottom 250ms ease-out, height 250ms ease-out; }
+    .portrait-frame:hover .hl-top    { transform: scaleX(1); transition: transform 300ms ease-out 50ms; }
+    .portrait-frame:hover .hl-left   { transform: scaleY(1); transition: transform 300ms ease-out 50ms; }
+    .portrait-frame:hover .hl-bottom { transform: scaleX(1); transition: transform 300ms ease-out 50ms; }
+    .portrait-frame:hover .hl-right  { transform: scaleY(1); transition: transform 300ms ease-out 50ms; }
+  }
+
+  .portrait-frame:focus-visible .arm-tl-h { left: -28px;   width: 64px;  transition: left 250ms ease-out, width 250ms ease-out; }
+  .portrait-frame:focus-visible .arm-tl-v { top: -28px;    height: 64px; transition: top 250ms ease-out, height 250ms ease-out; }
+  .portrait-frame:focus-visible .arm-br-h { right: -28px;  width: 64px;  transition: right 250ms ease-out, width 250ms ease-out; }
+  .portrait-frame:focus-visible .arm-br-v { bottom: -28px; height: 64px; transition: bottom 250ms ease-out, height 250ms ease-out; }
+  .portrait-frame:focus-visible .hl-top    { transform: scaleX(1); transition: transform 300ms ease-out 50ms; }
+  .portrait-frame:focus-visible .hl-left   { transform: scaleY(1); transition: transform 300ms ease-out 50ms; }
+  .portrait-frame:focus-visible .hl-bottom { transform: scaleX(1); transition: transform 300ms ease-out 50ms; }
+  .portrait-frame:focus-visible .hl-right  { transform: scaleY(1); transition: transform 300ms ease-out 50ms; }
+
+  .cap {
+    margin: 1rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgb(240 235 226 / 0.5);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arm,
+    .hl,
+    .portrait-frame:hover .arm,
+    .portrait-frame:hover .hl,
+    .portrait-frame:focus-visible .arm,
+    .portrait-frame:focus-visible .hl {
+      transition: none;
+    }
+  }
+</style>

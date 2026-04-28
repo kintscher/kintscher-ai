@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import Layout from '../layouts/Layout.astro';
-import DuotonePortrait from '../components/DuotonePortrait.astro';
+import PortraitFrame from '../components/PortraitFrame.astro';
 import smile from '../assets/images/yannik-smile.jpg';
 
 const email = 'yannik@kintscher.ai';
@@ -132,10 +132,8 @@ const email = 'yannik@kintscher.ai';
     </footer>
       </div>
 
-      <DuotonePortrait
+      <PortraitFrame
         src={smile}
-        caption="Self-portrait"
-        year="2025"
         objectPosition="50% 22%"
         ariaLabel="Portrait of Yannik Kintscher, smiling"
         class="contact-portrait"
