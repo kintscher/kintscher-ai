@@ -1,0 +1,68 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="row">
+    <span class="muted">kintscher.ai</span>
+    <span class="sep" aria-hidden="true">/</span>
+    <span class="muted">© {year}</span>
+    <span class="sep" aria-hidden="true">/</span>
+    <span class="muted">47.37°N&nbsp;8.54°E</span>
+    <span class="sep" aria-hidden="true">/</span>
+    <span class="muted">Zürich</span>
+    <span class="grow"></span>
+    <a href="/contact" class="contact-link">
+      <span>contact</span>
+      <span class="key-hint" aria-hidden="true">⌐ X</span>
+    </a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--color-hairline);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .muted { color: var(--color-quiet); }
+  .sep   { color: var(--color-quiet); opacity: 0.55; }
+  .grow  { flex: 1; }
+
+  .contact-link {
+    color: var(--color-muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    transition: color 150ms ease;
+  }
+  .contact-link:hover { color: var(--color-fg); }
+
+  @media (max-width: 720px) {
+    .site-footer { padding: 1.25rem 1.25rem; }
+    .grow { display: none; }
+    .key-hint { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .sep { display: none; }
+    .contact-link {
+      padding: 0.5rem 0;
+    }
+  }
+</style>

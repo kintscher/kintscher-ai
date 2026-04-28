@@ -1,0 +1,71 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "kintscher.ai — home" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: kintscher.ai
+    - navigation "Primary navigation" [ref=e6]:
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "about" [ref=e9] [cursor=pointer]:
+            - /url: /about
+            - generic [ref=e10]: about
+        - listitem [ref=e11]:
+          - link "now" [ref=e12] [cursor=pointer]:
+            - /url: /now
+            - generic [ref=e13]: now
+        - listitem [ref=e14]:
+          - link "chat" [ref=e15] [cursor=pointer]:
+            - /url: /chat
+            - generic [ref=e16]: chat
+        - listitem [ref=e17]:
+          - link "contact" [ref=e18] [cursor=pointer]:
+            - /url: /contact
+            - generic [ref=e19]: contact
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - paragraph [ref=e23]:
+          - generic [ref=e25]: 47.37°N 8.54°E
+          - generic [ref=e26]: /
+          - generic [ref=e27]: Zürich
+          - generic [ref=e28]: /
+          - generic [ref=e29]: CET
+        - heading "Fullstack engineer in Zürich." [level=1] [ref=e30]:
+          - generic [ref=e32]: Fullstack engineer
+          - emphasis [ref=e35]: in Zürich.
+        - paragraph [ref=e36]:
+          - generic [ref=e37]:
+            - text: GenAI, Conversational banking,
+            - text: internal tooling at UBS.
+        - button "Open the Ask Yannik prompt" [ref=e38] [cursor=pointer]:
+          - generic [ref=e39]: ›
+          - generic [ref=e40]: ask yannik anything
+      - complementary "Portrait of Yannik" [ref=e41]:
+        - figure "Yannik Kintscher / 2026" [ref=e42]:
+          - img "Yannik Kintscher" [ref=e44]
+          - generic [ref=e49]:
+            - generic [ref=e50]: Yannik Kintscher
+            - generic [ref=e51]: /
+            - generic [ref=e52]: "2026"
+  - contentinfo [ref=e53]:
+    - generic [ref=e54]:
+      - generic [ref=e55]: kintscher.ai
+      - generic [ref=e56]: © 2026
+      - generic [ref=e57]: 47.37°N 8.54°E
+      - generic [ref=e58]: Zürich
+      - link "contact" [ref=e59] [cursor=pointer]:
+        - /url: /contact
+        - generic [ref=e60]: contact
+  - generic [ref=e63]:
+    - button "Menu" [ref=e64]:
+      - img [ref=e66]
+      - generic: Menu
+    - button "Inspect" [ref=e70]:
+      - img [ref=e72]
+      - generic: Inspect
+    - button "Audit" [ref=e74]:
+      - img [ref=e76]
+      - generic: Audit
+    - button "Settings" [ref=e79]:
+      - img [ref=e81]
+      - generic: Settings

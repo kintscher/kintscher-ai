@@ -1,4 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#0d0d14"/>
-  <text x="16" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="18" font-weight="600" fill="#60a5fa">K</text>
+  <rect width="32" height="32" rx="4" fill="#0B0B0E"/>
+  <text x="11" y="22" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="500" fill="#F0EBE2">k</text>
+  <rect x="22" y="9" width="2" height="14" fill="#E8A83A">
+    <animate attributeName="opacity" values="1;1;0;0" dur="1.06s" repeatCount="indefinite"/>
+  </rect>
 </svg>

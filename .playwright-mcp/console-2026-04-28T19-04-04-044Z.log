@@ -1,0 +1,10 @@
+[    1039ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/node_modules/.vite/deps/astro-NFX5AGNS.js?v=295ebc16:0
+[    1079ms] Failed to fetch dynamically imported module: http://localhost:4321/node_modules/.vite/deps/astro-NFX5AGNS.js?v=295ebc16
+[    1058ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/node_modules/.vite/deps/audit-IGEVY6PG.js?v=295ebc16:0
+[    1060ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/node_modules/.vite/deps/xray-V32FFI7T.js?v=295ebc16:0
+[    1062ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/node_modules/.vite/deps/toolbar-2DYPQEQW.js?v=295ebc16:0
+[    9279ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/about:0
+[   82636ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/now:0
+[   82867ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/about:0
+[   87257ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/contact:0
+[   87635ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/chat:0
