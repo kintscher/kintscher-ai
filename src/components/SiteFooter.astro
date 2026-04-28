@@ -1,5 +1,7 @@
 ---
 const year = new Date().getFullYear();
+const path = Astro.url.pathname;
+const isContact = path === '/contact' || path.startsWith('/contact/');
 ---
 
 <footer class="site-footer">
@@ -16,7 +18,11 @@ const year = new Date().getFullYear();
       <span class="muted">Zürich</span>
     </span>
     <span class="grow"></span>
-    <a href="/contact" class="contact-link">
+    <a
+      href="/contact"
+      class:list={['contact-link', { current: isContact }]}
+      aria-current={isContact ? 'page' : undefined}
+    >
       <span>contact</span>
       <span class="key-hint" aria-hidden="true">⌐ X</span>
     </a>
@@ -56,8 +62,20 @@ const year = new Date().getFullYear();
     align-items: baseline;
     gap: 0.5em;
     transition: color 150ms ease;
+    position: relative;
   }
   .contact-link:hover { color: var(--color-fg); }
+  .contact-link.current { color: var(--color-fg); }
+  .contact-link.current::before {
+    content: '';
+    position: absolute;
+    left: -0.85rem;
+    top: 0.5em;
+    width: 4px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 999px;
+  }
 
   @media (max-width: 720px) {
     .site-footer { padding: 1.25rem 1.25rem; }

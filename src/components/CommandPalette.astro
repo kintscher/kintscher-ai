@@ -375,12 +375,27 @@ const items: Item[] = [
   }
   .cmd-item { position: relative; }
 
-  .cmd-item-here {
-    margin-left: 0.55em;
-    font-size: 0.6em;
-    color: var(--color-signal);
-    vertical-align: 0.15em;
-    opacity: 0.85;
+  /* Current-page indicator: 4px amber dot at the row's left edge,
+     matching the header nav and footer "current" pattern.
+     Positioned absolutely against .cmd-item (which is position:relative),
+     so it lives outside the row's padding and never collides with
+     content. :global() is required because the dot is JS-injected
+     after Astro's scope-hash pass and won't carry the data-astro-cid. */
+  :global(.cmd-item-here) {
+    position: absolute;
+    left: 0.42rem;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    margin: 0;
+    padding: 0;
+    background: var(--color-accent);
+    border-radius: 999px;
+    transform: translateY(-50%);
+    font-size: 0;
+    color: transparent;
+    line-height: 0;
+    box-shadow: 0 0 6px rgb(232 168 58 / 0.45);
   }
   .cmd-item.is-current .cmd-item-key {
     opacity: 0.4;

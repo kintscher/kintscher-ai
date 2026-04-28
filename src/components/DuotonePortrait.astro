@@ -56,8 +56,7 @@ const filmDisplay = film.replace(/ /g, ' ');
     </div>
     <figcaption class="cap">
       <span>{caption}</span>
-      <span class="cap-sep">/</span>
-      <span>{year}</span>
+      <span class="cap-token">{year}</span>
     </figcaption>
   </figure>
 </aside>
@@ -143,7 +142,14 @@ const filmDisplay = film.replace(/ /g, ' ');
     gap: 0.45rem;
     align-items: center;
   }
-  .cap-sep { opacity: 0.5; }
+  /* CSS-rendered separator keeps the slash out of the AT tree
+     (the figcaption is announced as the figure's label) */
+  .cap-token::before {
+    content: '/';
+    display: inline-block;
+    opacity: 0.5;
+    margin-right: 0.45rem;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .img { transition: none; transform: none; }
