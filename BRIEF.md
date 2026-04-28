@@ -2,7 +2,7 @@
 - **Purpose**: signal senior fullstack capability to founders/CTOs hiring greenfield work, and to recruiters in Zürich tech
 - **Audience**: founders, hiring engineers, design-literate people in tech
 - **Tone**: confident, calm, precise — not playful, not corporate
-- **Differentiator**: a working "Ask Yannik" chatbot that demonstrates the exact work I do at UBS, plus a live /now page
+- **Differentiator**: a working "Ask Yannik" chatbot that demonstrates the exact work I do at UBS
 
 Step 8 — Generate the design
 In Claude Code:
@@ -15,7 +15,7 @@ Do NOT write any code yet. After you propose, I'll pick one direction.
 
 Pick the direction that fits you. Then:
 Build kintscher.ai end-to-end in the [chosen] direction.
-Pages: /, /about, /now, /chat, /contact, 404.
+Pages: /, /about, /chat, /contact, 404.
 Use Astro View Transitions globally.
 Interactive bits as Astro islands with client:visible.
 Use Astro's <Image> for all images.
@@ -29,7 +29,6 @@ Step 9 — Run the autonomous review loop
 - Hero with one-line positioning + portrait
 - About page with the three-paragraph story
 - Stack section showing taste, not a skill wall
-- /now page (one paragraph, dated)
 - /chat page with the Ask Yannik bot
 - Contact with email + social links
 

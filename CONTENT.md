@@ -9,14 +9,13 @@ Since 2022 the Conversational Banking team, working on the Virtual Assistant —
 In 2024, my team won the Microsoft × UBS THINK AHEAD GenAI Hackathon.
 Right now I'm most interested in agents and applied AI — tooling that makes developer workflows faster and day-to-day work less tedious. The internal platform is one example; I want to do more of that.
 
+Currently shipping evaluation tooling for the Virtual Assistant, rebuilding this site with Claude Code and Astro on Cloudflare, and reading about agent architectures.
+[Add one personal line — sport, place in Zürich, hobby — to humanize.]
+
 ## Stack
 - Daily: Python, TypeScript, React, FastAPI
 - Backend & infra: Azure, OpenAI, Postgres, Redis, GitLab CI, 
 - Exploring: LangGraph, Agent Tooling, Cloudflare Workers, 
-
-## Now (April 2026)
-Shipping evaluation tooling for the Virtual Assistant. Rebuilding this site with Claude Code and Astro on Cloudflare. Reading about agent architectures.
-[Add one personal line — sport, place in Zürich, hobby — to humanize.]
 
 ## Contact
 - Email: yannik@kintscher.ai
