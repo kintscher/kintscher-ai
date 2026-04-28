@@ -1,0 +1,682 @@
+---
+export const prerender = true;
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import portrait from '../assets/images/yannik-neutral.jpg';
+---
+
+<Layout
+  title="About — Yannik Kintscher"
+  description="Senior fullstack engineer in Zürich. UBS Conversational Banking, internal platforms, applied AI."
+  path="/about"
+>
+  <article class="about">
+    <p class="meta">
+      <span class="dot" aria-hidden="true"></span>
+      <span>FILE&nbsp;/&nbsp;about</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="2026">2026</time>
+      <span class="sep" aria-hidden="true">/</span>
+      <span aria-label="Reading time: about 3 minutes">~3 min read</span>
+    </p>
+
+    <header class="about-head">
+      <h1 class="about-title">
+        <span class="line"><span class="line-inner">The long</span></span>
+        <span class="line"><span class="line-inner"><em>version.</em></span></span>
+      </h1>
+      <p class="about-dek">
+        <span class="line-inner">A short tour of the work, the route here, and what I'm chasing now.</span>
+      </p>
+    </header>
+
+    <div class="bio">
+      <aside class="portrait" aria-label="Portrait of Yannik Kintscher">
+        <figure>
+          <div class="portrait-frame">
+            <span class="portrait-glow" aria-hidden="true"></span>
+            <Image
+              src={portrait}
+              alt=""
+              width={960}
+              height={960}
+              widths={[420, 560, 720, 960]}
+              sizes="(max-width: 720px) 78vw, (max-width: 1024px) 38vw, 460px"
+              loading="eager"
+              class="portrait-img"
+            />
+            <span class="portrait-corner tl" aria-hidden="true"></span>
+            <span class="portrait-corner tr" aria-hidden="true"></span>
+            <span class="portrait-corner bl" aria-hidden="true"></span>
+            <span class="portrait-corner br" aria-hidden="true"></span>
+            <span class="portrait-stamp" aria-hidden="true">
+              <span>PORTRA&nbsp;400</span>
+              <span class="stamp-sep">·</span>
+              <span>1/250s</span>
+            </span>
+          </div>
+          <figcaption class="portrait-cap">
+            <span>Self-portrait</span>
+            <span class="cap-sep">/</span>
+            <span>2025</span>
+          </figcaption>
+        </figure>
+      </aside>
+
+      <div class="bio-text">
+        <p class="bio-para">
+          <span class="margin-notes" aria-hidden="true">
+            <span class="margin-note" data-for="ubs">
+              <span class="m-body">Switzerland's largest bank. Here since 2018.</span>
+              <span class="m-rule"></span>
+            </span>
+          </span>
+          Came up the Swiss way — a 4-year Informatiker EFZ apprenticeship at
+          <span class="annot" data-gloss="ubs">UBS</span>, starting in Wealth
+          Management on trading applications. Three years there taught me how
+          high-stakes systems actually get built and shipped.
+        </p>
+
+        <p class="bio-para">
+          <span class="margin-notes" aria-hidden="true">
+            <span class="margin-note" data-for="auth">
+              <span class="m-body">Prokurist. Signing authority within UBS.</span>
+              <span class="m-rule"></span>
+            </span>
+            <span class="margin-note" data-for="hack">
+              <span class="m-body">Microsoft × UBS hackathon. We won.</span>
+              <span class="m-rule"></span>
+            </span>
+          </span>
+          Since 2022 I've been in the Conversational Banking team, working on
+          the Virtual Assistant — UBS's E-Banking and Mobile Banking chatbot
+          for clients. I moved into fullstack by building an internal platform
+          to monitor, analyze, test, and evaluate the chatbot end-to-end. Last
+          year I was promoted to
+          <span class="annot" data-gloss="auth">Authorized Officer</span>. In
+          2024, my team won the
+          <span class="annot" data-gloss="hack">Microsoft × UBS THINK AHEAD GenAI Hackathon</span>.
+        </p>
+
+        <p class="bio-para">
+          Right now I'm most interested in agents and applied AI — tooling
+          that makes developer workflows faster and day-to-day work less
+          tedious. The internal platform is one example; I want to do more of
+          that. Currently shipping evaluation tooling for the Virtual
+          Assistant, rebuilding this site with Claude Code and Astro on
+          Cloudflare, and reading about agent architectures.
+        </p>
+
+        <p class="signoff"><em>— Y.</em></p>
+      </div>
+    </div>
+
+    <section class="stack" aria-labelledby="stack-h">
+      <header class="stack-head">
+        <span class="dot" aria-hidden="true"></span>
+        <h2 id="stack-h" class="stack-kicker">§&nbsp;Stack</h2>
+        <span class="sep" aria-hidden="true">/</span>
+        <span class="stack-meta">tools I trust, tools I'm watching</span>
+      </header>
+
+      <dl class="stack-list">
+        <div class="stack-row">
+          <dt><em>Daily</em></dt>
+          <dd>
+            <span>Python</span><span class="dot-sep">·</span>
+            <span>TypeScript</span><span class="dot-sep">·</span>
+            <span>React</span><span class="dot-sep">·</span>
+            <span>FastAPI</span>
+          </dd>
+        </div>
+        <div class="stack-row">
+          <dt><em>Backend &amp; infra</em></dt>
+          <dd>
+            <span>Azure</span><span class="dot-sep">·</span>
+            <span>OpenAI</span><span class="dot-sep">·</span>
+            <span>Postgres</span><span class="dot-sep">·</span>
+            <span>Redis</span><span class="dot-sep">·</span>
+            <span>GitLab&nbsp;CI</span>
+          </dd>
+        </div>
+        <div class="stack-row">
+          <dt><em>Exploring</em></dt>
+          <dd>
+            <span>LangGraph</span><span class="dot-sep">·</span>
+            <span>Agent tooling</span><span class="dot-sep">·</span>
+            <span>Cloudflare&nbsp;Workers</span>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <footer class="about-foot">
+      <a class="next-link" href="/chat">
+        <span class="next-kicker">next&nbsp;/</span>
+        <span class="next-label">ask yannik anything</span>
+        <span class="next-arrow" aria-hidden="true">→</span>
+        <span class="key-hint" aria-hidden="true">⌐ C</span>
+      </a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  /* ───────────────────────────── shell ───────────────────────────── */
+
+  .about {
+    position: relative;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: clamp(2.5rem, 6vh, 5rem) clamp(1.25rem, 3vw, 2.5rem) clamp(3rem, 7vh, 6rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: clamp(2rem, 4.5vh, 3.5rem);
+  }
+
+  /* very soft warm wash to lift the page out of pure black */
+  .about::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 50% at 18% 22%, rgb(232 168 58 / 0.05) 0%, transparent 70%),
+      radial-gradient(40% 30% at 82% 88%, rgb(91 168 155 / 0.035) 0%, transparent 70%);
+    z-index: -1;
+  }
+
+  /* ───────────────────────────── meta ───────────────────────────── */
+
+  .meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+    opacity: 0;
+    animation: fade-up 380ms cubic-bezier(0.5, 0, 0.2, 1) 80ms both;
+  }
+  .meta .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-signal);
+    box-shadow: 0 0 8px rgb(91 168 155 / 0.6);
+    animation: pulse-signal 2.4s ease-in-out infinite;
+  }
+  .meta .sep { color: var(--color-quiet); opacity: 0.5; }
+
+  /* ───────────────────────────── headline ───────────────────────────── */
+
+  .about-head {
+    display: grid;
+    gap: 1rem;
+    max-width: 24ch;
+  }
+
+  .about-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 7vw, 5.75rem);
+    line-height: 0.96;
+    letter-spacing: -0.015em;
+    color: var(--color-fg);
+    display: flex;
+    flex-direction: column;
+  }
+  .about-title .line { display: block; overflow: hidden; }
+  .about-title .line-inner {
+    display: inline-block;
+    transform: translateY(105%);
+    animation: rise 720ms cubic-bezier(0.2, 0.7, 0, 1) both;
+  }
+  .about-title em { font-style: italic; color: var(--color-fg); }
+  .about-title .line:nth-child(1) .line-inner { animation-delay: 180ms; }
+  .about-title .line:nth-child(2) .line-inner { animation-delay: 280ms; }
+
+  .about-dek {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 1.05vw, 1.0625rem);
+    line-height: 1.5;
+    color: var(--color-muted);
+    max-width: 38ch;
+    overflow: hidden;
+  }
+  .about-dek .line-inner {
+    display: inline-block;
+    transform: translateY(105%);
+    animation: rise 720ms cubic-bezier(0.2, 0.7, 0, 1) 420ms both;
+  }
+
+  /* ───────────────────────────── bio (portrait + text) ───────────────────────────── */
+
+  .bio {
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+  }
+
+  .portrait {
+    position: sticky;
+    top: clamp(1.5rem, 8vh, 5rem);
+    align-self: start;
+    opacity: 0;
+    animation: fade-up 800ms cubic-bezier(0.5, 0, 0.2, 1) 600ms both;
+  }
+  .portrait figure { margin: 0; }
+
+  .portrait-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: linear-gradient(168deg, #C68F45 0%, #2A1B07 60%, #0F0A03 100%);
+    isolation: isolate;
+    box-shadow:
+      0 30px 70px -28px rgb(0 0 0 / 0.7),
+      0 0 0 1px var(--color-hairline),
+      inset 0 0 0 1px rgb(255 255 255 / 0.03);
+  }
+
+  /* warm halo behind the portrait, only on this page */
+  .portrait-glow {
+    position: absolute;
+    inset: -22%;
+    background: radial-gradient(50% 50% at 30% 35%, rgb(232 168 58 / 0.32) 0%, transparent 70%);
+    filter: blur(28px);
+    z-index: -1;
+    opacity: 0.85;
+  }
+
+  .portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    /* warmer, less crushed than home — lets warmth come through */
+    filter: grayscale(0.85) contrast(1.02) brightness(1.04) saturate(1.05);
+    mix-blend-mode: lighten;
+    transition: filter 700ms ease, transform 1.6s cubic-bezier(0.2, 0.7, 0, 1);
+    transform: scale(1.02);
+  }
+  .portrait:hover .portrait-img {
+    filter: grayscale(0.7) contrast(1.02) brightness(1.08) saturate(1.1);
+    transform: scale(1.0);
+  }
+
+  .portrait-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--color-fg);
+    opacity: 0.55;
+    z-index: 2;
+  }
+  .portrait-corner.tl { top: 8px; left: 8px;  border-top: 1px solid; border-left: 1px solid; }
+  .portrait-corner.tr { top: 8px; right: 8px; border-top: 1px solid; border-right: 1px solid; }
+  .portrait-corner.bl { bottom: 8px; left: 8px;  border-bottom: 1px solid; border-left: 1px solid; }
+  .portrait-corner.br { bottom: 8px; right: 8px; border-bottom: 1px solid; border-right: 1px solid; }
+
+  .portrait-stamp {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(240 235 226 / 0.62);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.7);
+  }
+  .stamp-sep { opacity: 0.55; }
+
+  .portrait-cap {
+    margin: 0.85rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+  }
+  .cap-sep { opacity: 0.5; }
+
+  /* ───────────────────────────── bio text ───────────────────────────── */
+
+  .bio-text {
+    display: grid;
+    gap: 1.4em;
+    /* fill the grid column; constrain measure on each paragraph */
+    min-width: 0;
+  }
+
+  .bio-para {
+    position: relative;
+    margin: 0;
+    max-width: 54ch;
+    font-family: var(--font-sans);
+    font-size: clamp(1.0625rem, 1.05vw, 1.125rem);
+    line-height: 1.55;
+    color: rgb(240 235 226 / 0.82);
+    letter-spacing: 0.002em;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  /* On wide viewports, shift the bio column right to reserve a left margin
+     where the gloss can render without colliding with the portrait. */
+  @media (min-width: 1100px) {
+    .bio-para,
+    .signoff { margin-left: 5.5rem; }
+  }
+  .bio-para:nth-of-type(1) { animation-delay: 520ms; }
+  .bio-para:nth-of-type(2) { animation-delay: 640ms; }
+  .bio-para:nth-of-type(3) { animation-delay: 760ms; }
+
+  /* drop-cap on the first paragraph for editorial warmth */
+  .bio-para:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.85;
+    float: left;
+    padding: 0.18em 0.18em 0 0;
+    color: var(--color-fg);
+  }
+
+  .signoff {
+    margin-top: 0.4rem;
+    margin-bottom: 0;
+    margin-right: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.8vw, 1.9rem);
+    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 980ms both;
+  }
+  .signoff em { font-style: italic; }
+
+  /* ───────────────────────────── annotations ───────────────────────────── */
+
+  .annot {
+    position: relative;
+    color: var(--color-fg);
+    background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-hairline-strong) calc(100% - 1px));
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    cursor: help;
+    transition: color 160ms ease, background-image 160ms ease;
+  }
+  .annot::after {
+    content: '°';
+    position: relative;
+    top: -0.25em;
+    margin-left: 0.1em;
+    font-size: 0.7em;
+    color: var(--color-accent);
+    opacity: 0.3;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .annot:hover,
+  .annot:focus-visible {
+    color: var(--color-fg);
+    background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-accent) calc(100% - 1px));
+    outline: none;
+  }
+  .annot:hover::after,
+  .annot:focus-visible::after { opacity: 1; transform: translateY(-1px); }
+
+  /* the marginal gloss container — sits in the left margin of the paragraph */
+  .margin-notes {
+    position: absolute;
+    top: 0.1em;
+    right: calc(100% + 1.25rem);
+    width: 8rem;
+    pointer-events: none;
+    user-select: none;
+    z-index: 5;
+  }
+  .margin-note {
+    display: grid;
+    grid-template-columns: 1fr 1.25rem;
+    align-items: start;
+    column-gap: 0.55rem;
+    position: absolute;
+    inset: 0 0 auto 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(4px);
+    transition: opacity 220ms ease, transform 220ms ease;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--color-muted);
+    text-align: right;
+  }
+  .m-rule {
+    height: 1px;
+    background: var(--color-accent);
+    margin-top: 0.55em;
+    align-self: start;
+    opacity: 0.85;
+    box-shadow: 0 0 6px rgb(232 168 58 / 0.35);
+  }
+  .m-body { color: rgb(240 235 226 / 0.7); }
+
+  /* show the matching gloss when its term is hovered/focused */
+  .bio-para:has(.annot[data-gloss="ubs"]:hover)        .margin-note[data-for="ubs"],
+  .bio-para:has(.annot[data-gloss="ubs"]:focus-visible) .margin-note[data-for="ubs"],
+  .bio-para:has(.annot[data-gloss="auth"]:hover)        .margin-note[data-for="auth"],
+  .bio-para:has(.annot[data-gloss="auth"]:focus-visible) .margin-note[data-for="auth"],
+  .bio-para:has(.annot[data-gloss="hack"]:hover)        .margin-note[data-for="hack"],
+  .bio-para:has(.annot[data-gloss="hack"]:focus-visible) .margin-note[data-for="hack"] {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* make annot focusable for keyboard users */
+  .annot { outline: none; }
+
+  /* ───────────────────────────── stack ───────────────────────────── */
+
+  .stack {
+    margin-top: clamp(0.5rem, 2vh, 1.5rem);
+    display: grid;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 1100ms both;
+  }
+
+  .stack-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+  }
+  .stack-head .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-signal);
+    box-shadow: 0 0 8px rgb(91 168 155 / 0.6);
+    animation: pulse-signal 2.4s ease-in-out infinite;
+  }
+  .stack-head .sep { color: var(--color-quiet); opacity: 0.5; }
+  .stack-kicker {
+    margin: 0;
+    font: inherit;
+    color: var(--color-fg);
+    letter-spacing: 0.04em;
+  }
+  .stack-meta { color: var(--color-quiet); }
+
+  .stack-list { margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+  .stack-row {
+    display: grid;
+    grid-template-columns: minmax(11rem, 14rem) 1fr;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .stack-row:last-child { border-bottom: none; }
+
+  .stack-row dt {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.3rem, 1.6vw, 1.6rem);
+    line-height: 1.1;
+    color: var(--color-fg);
+    letter-spacing: -0.005em;
+  }
+  .stack-row dt em { font-style: italic; }
+
+  .stack-row dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.55rem;
+    row-gap: 0.25rem;
+    align-items: baseline;
+  }
+  .stack-row dd .dot-sep {
+    color: var(--color-quiet);
+    opacity: 0.7;
+  }
+  .stack-row dd > span:not(.dot-sep) {
+    color: var(--color-fg);
+    transition: color 160ms ease;
+  }
+  .stack-row:hover dd > span:not(.dot-sep) { color: var(--color-fg); }
+
+  /* ───────────────────────────── next-link ───────────────────────────── */
+
+  .about-foot {
+    margin-top: clamp(2rem, 4vh, 3rem);
+    border-top: 1px solid var(--color-hairline);
+    padding-top: 1.25rem;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 1240ms both;
+  }
+  .next-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 160ms ease, gap 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .next-kicker { color: var(--color-quiet); letter-spacing: 0.04em; }
+  .next-label  { color: var(--color-fg); }
+  .next-arrow  { color: var(--color-accent); transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .next-link:hover { gap: 1rem; }
+  .next-link:hover .next-arrow { transform: translateX(3px); }
+  .next-link:hover .next-label { color: var(--color-fg); }
+
+  /* ───────────────────────────── animations ───────────────────────────── */
+
+  @keyframes rise { to { transform: translateY(0); } }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse-signal {
+    0%, 100% { box-shadow: 0 0 6px rgb(91 168 155 / 0.45); opacity: 1; }
+    50%      { box-shadow: 0 0 12px rgb(91 168 155 / 0.85); opacity: 0.75; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meta, .about-title .line-inner, .about-dek .line-inner,
+    .bio-para, .signoff, .portrait, .stack, .about-foot {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .meta .dot { animation: none; }
+    .portrait-img { transition: none; transform: none; }
+    .margin-note { transition: opacity 1ms; }
+  }
+
+  /* ───────────────────────────── responsive ───────────────────────────── */
+
+  /* tablet: still 2-col but tighter, sticky off, smaller portrait,
+     and hide the marginalia (no room for it without crowding) */
+  @media (max-width: 1099px) {
+    .bio {
+      grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+      gap: 2rem;
+    }
+    .portrait { position: static; }
+    .margin-notes { display: none; }
+    .annot::after { display: none; }
+  }
+
+  /* tablet portrait + small laptop: stack, photo above text — avoids
+     a tall dead column under the photo when text outruns it */
+  @media (max-width: 900px) {
+    .bio {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .portrait { max-width: 460px; }
+  }
+
+  /* mobile: stack everything, glosses fold below the paragraph */
+  @media (max-width: 720px) {
+    .about { padding-top: 2rem; }
+    .bio {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .portrait { max-width: 78vw; }
+
+    .bio-text { max-width: 100%; }
+    .bio-para { font-size: 1.0625rem; line-height: 1.7; }
+    .bio-para:first-of-type::first-letter { font-size: 2.8em; }
+
+    .stack-row {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      padding: 0.85rem 0;
+    }
+    .stack-row dt { font-size: 1.25rem; }
+
+    .about-head { max-width: 100%; }
+  }
+
+  @media (hover: none) {
+    .annot::after { opacity: 1; }
+  }
+</style>

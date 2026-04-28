@@ -30,9 +30,37 @@ const isCurrent = (href: string) =>
           </a>
         </li>
       ))}
+      <li>
+        <button
+          type="button"
+          class="nav-link cmd-trigger"
+          aria-keyshortcuts="Meta+K Control+K"
+          aria-haspopup="dialog"
+          aria-controls="cmd-palette"
+          data-cmd-open
+        >
+          <span>menu</span>
+          <span class="key-hint" aria-hidden="true">⌘ K</span>
+        </button>
+      </li>
     </ul>
   </nav>
 </header>
+
+<script>
+  function bindCmdTrigger() {
+    document.querySelectorAll<HTMLButtonElement>('[data-cmd-open]').forEach((btn) => {
+      if (btn.dataset.cmdBound) return;
+      btn.dataset.cmdBound = '1';
+      btn.addEventListener('click', () => {
+        const g = window as unknown as { __openCmd?: () => void };
+        g.__openCmd?.();
+      });
+    });
+  }
+  bindCmdTrigger();
+  document.addEventListener('astro:page-load', bindCmdTrigger);
+</script>
 
 <style>
   .site-header {
@@ -72,13 +100,19 @@ const isCurrent = (href: string) =>
     position: relative;
     padding: 0.25rem 0;
   }
+  button.nav-link {
+    background: transparent;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+  }
 
   .nav-link::after {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -2px;
+    bottom: -3px;
     height: 1px;
     background: var(--color-accent);
     box-shadow: 0 0 0 transparent;
@@ -88,11 +122,13 @@ const isCurrent = (href: string) =>
       transform 140ms cubic-bezier(0.5, 0, 0.2, 1),
       box-shadow 50ms ease 140ms;
   }
-  .nav-link:hover::after,
-  .nav-link:focus-visible::after {
+  .nav-link:hover::after {
     transform: scaleX(1);
-    box-shadow: 0 3px 0 var(--color-accent);
+    box-shadow: 0 4px 0 var(--color-accent);
   }
+  /* keyboard focus already gets the global :focus-visible ring;
+     skip the underline so the two indicators don't collide */
+  .nav-link:focus-visible { outline-offset: 2px; }
 
   .nav-link > span:first-child {
     display: inline-block;

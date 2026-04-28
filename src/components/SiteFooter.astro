@@ -4,13 +4,17 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="row">
-    <span class="muted">kintscher.ai</span>
-    <span class="sep" aria-hidden="true">/</span>
-    <span class="muted">© {year}</span>
-    <span class="sep" aria-hidden="true">/</span>
-    <span class="muted">47.37°N&nbsp;8.54°E</span>
-    <span class="sep" aria-hidden="true">/</span>
-    <span class="muted">Zürich</span>
+    <span class="pair">
+      <span class="muted">kintscher.ai</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <span class="muted">© {year}</span>
+    </span>
+    <span class="sep wide-only" aria-hidden="true">/</span>
+    <span class="pair">
+      <span class="muted">47.37°N&nbsp;8.54°E</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <span class="muted">Zürich</span>
+    </span>
     <span class="grow"></span>
     <a href="/contact" class="contact-link">
       <span>contact</span>
@@ -32,6 +36,13 @@ const year = new Date().getFullYear();
     align-items: center;
     gap: 0.6rem;
     flex-wrap: wrap;
+  }
+
+  .pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    white-space: nowrap;
   }
 
   .muted { color: var(--color-quiet); }
@@ -56,13 +67,12 @@ const year = new Date().getFullYear();
 
   @media (max-width: 480px) {
     .row {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
+      gap: 0.5rem 0.6rem;
     }
-    .sep { display: none; }
+    .wide-only { display: none; }
     .contact-link {
       padding: 0.5rem 0;
+      margin-left: auto;
     }
   }
 </style>

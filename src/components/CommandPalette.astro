@@ -18,7 +18,8 @@ const items: Item[] = [
 ];
 ---
 
-<dialog id="cmd-palette" aria-label="Command palette" class="cmd">
+<dialog id="cmd-palette" aria-labelledby="cmd-palette-title" class="cmd">
+  <h2 id="cmd-palette-title" class="cmd-sr-title">Command palette</h2>
   <div class="cmd-frame">
     <div class="cmd-input-row">
       <span class="cmd-prompt" aria-hidden="true">›</span>
@@ -104,6 +105,32 @@ const items: Item[] = [
       if (target) target.scrollIntoView({ block: 'nearest' });
     }
 
+    function markCurrentRoute() {
+      const here = location.pathname.replace(/\/$/, '') || '/';
+      list.querySelectorAll<HTMLAnchorElement>('.cmd-item').forEach((a) => {
+        const href = a.getAttribute('href') ?? '';
+        const path = href.startsWith('/') ? (href.replace(/\/$/, '') || '/') : null;
+        const current = path !== null && path === here;
+        a.classList.toggle('is-current', current);
+        if (current) {
+          a.setAttribute('aria-current', 'page');
+        } else {
+          a.removeAttribute('aria-current');
+        }
+        const label = a.querySelector<HTMLSpanElement>('.cmd-item-label');
+        const existing = label?.querySelector<HTMLSpanElement>('.cmd-item-here');
+        if (current && label && !existing) {
+          const dot = document.createElement('span');
+          dot.className = 'cmd-item-here';
+          dot.setAttribute('aria-hidden', 'true');
+          dot.textContent = '●';
+          label.appendChild(dot);
+        } else if (!current && existing) {
+          existing.remove();
+        }
+      });
+    }
+
     function activeIndex(): number {
       const live = items();
       const i = live.findIndex(a => a.classList.contains('active'));
@@ -138,6 +165,7 @@ const items: Item[] = [
 
     function open() {
       if (dialog.open) return;
+      markCurrentRoute();
       dialog.showModal();
       input.value = '';
       filter('');
@@ -249,6 +277,18 @@ const items: Item[] = [
     to   { opacity: 1; }
   }
 
+  .cmd-sr-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .cmd-frame {
     background: var(--color-surface);
     border: 1px solid var(--color-hairline-strong);
@@ -334,6 +374,17 @@ const items: Item[] = [
     transform: translateY(0.1em);
   }
   .cmd-item { position: relative; }
+
+  .cmd-item-here {
+    margin-left: 0.55em;
+    font-size: 0.6em;
+    color: var(--color-signal);
+    vertical-align: 0.15em;
+    opacity: 0.85;
+  }
+  .cmd-item.is-current .cmd-item-key {
+    opacity: 0.4;
+  }
 
   .cmd-item-label { color: var(--color-fg); }
   .cmd-item-desc  { color: var(--color-quiet); font-size: 12px; }
