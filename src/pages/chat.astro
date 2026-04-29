@@ -1,0 +1,13 @@
+---
+export const prerender = true;
+import Layout from '../layouts/Layout.astro';
+import ChatInterface from '../components/ChatInterface.astro';
+---
+
+<Layout
+  title="Chat — kintscher.ai"
+  description="Ask anything about Yannik. A small conversational surface backed by Claude."
+  path="/chat"
+>
+  <ChatInterface />
+</Layout>
