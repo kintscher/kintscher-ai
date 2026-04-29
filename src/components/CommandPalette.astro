@@ -18,7 +18,7 @@ const items: Item[] = [
 ];
 ---
 
-<dialog id="cmd-palette" aria-labelledby="cmd-palette-title" class="cmd">
+<dialog id="cmd-palette" aria-labelledby="cmd-palette-title" aria-modal="true" class="cmd">
   <h2 id="cmd-palette-title" class="cmd-sr-title">Command palette</h2>
   <div class="cmd-frame">
     <div class="cmd-input-row">
@@ -225,6 +225,21 @@ const items: Item[] = [
         // Single-letter shortcut when input is empty
         const hit = live.find(a => a.dataset.hint === e.key.toLowerCase());
         if (hit) { e.preventDefault(); hit.click(); }
+      }
+    });
+
+    // Forward focus trap: Tab from the last focusable element wraps to #cmd-input.
+    // Native <dialog> wraps on Shift+Tab from the first element but, in Chromium,
+    // does not always wrap forward from the last — handle it explicitly.
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || e.shiftKey) return;
+      const focusables = dialog.querySelectorAll<HTMLElement>(
+        'a[href], input, button, [tabindex]:not([tabindex="-1"])'
+      );
+      const last = focusables[focusables.length - 1];
+      if (last && document.activeElement === last) {
+        e.preventDefault();
+        input.focus();
       }
     });
 
