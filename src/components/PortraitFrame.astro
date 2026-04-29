@@ -95,12 +95,16 @@ const {
      internal hairline rule. The amber `›` is the single in-card
      anchor: same character + colour as the prompt-button cursor,
      scaled up so it carries weight in the strip. */
+  /* The 1px amber rule between photo and caption is the single amber
+     element on the frame at rest — same shape as the page-sweep and
+     the about-page margin-note rule. Always visible, anchors the
+     photo from beneath. */
   .cap {
     display: flex;
     align-items: baseline;
     gap: 0.65rem;
     padding: 0.6rem 0.85rem 0.7rem;
-    border-top: 1px solid var(--color-hairline-strong);
+    border-top: 1px solid var(--color-accent);
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.04em;
@@ -108,7 +112,6 @@ const {
     color: var(--color-quiet);
     line-height: 1;
     min-width: 0;
-    transition: border-top-color 240ms cubic-bezier(0.4, 0, 0.2, 1);
   }
   .cap-cursor {
     flex: 0 0 auto;
@@ -146,20 +149,17 @@ const {
      outer border so the card reads as one cohesive shape. */
   @media (hover: hover) {
     .portrait-frame:hover .card { border-color: var(--color-accent); }
-    .portrait-frame:hover .cap { border-top-color: var(--color-accent); }
     .portrait-frame:hover .img { filter: saturate(1); }
     .portrait-frame:hover .cap-cursor { transform: translate(3px, 1px); }
     .portrait-frame:hover .cap-text { color: var(--color-muted); }
   }
   .portrait-frame:focus-visible .card { border-color: var(--color-accent); }
-  .portrait-frame:focus-visible .cap { border-top-color: var(--color-accent); }
   .portrait-frame:focus-visible .img { filter: saturate(1); }
   .portrait-frame:focus-visible .cap-cursor { transform: translate(3px, 1px); }
   .portrait-frame:focus-visible .cap-text { color: var(--color-muted); }
 
   @media (prefers-reduced-motion: reduce) {
     .card,
-    .cap,
     .img,
     .cap-cursor,
     .cap-text { transition: none; }
