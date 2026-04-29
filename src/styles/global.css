@@ -49,12 +49,12 @@ main {
 
 /* ---------- Focus identity ---------- */
 
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-[role="option"]:focus-visible,
-[tabindex]:not([tabindex="-1"]):focus-visible {
+/* Single global focus ring: 2px amber against near-black page bg
+   reads strongly; against the palette backdrop (blurred over
+   #15161B surface) the amber still pops because the surrounding
+   row hovers also use amber accents. No elevated-surface variant
+   needed. */
+:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 2px;
@@ -125,12 +125,26 @@ button:focus-visible .key-hint {
   transform: translateX(0);
 }
 
-/* ---------- Focus ring ---------- */
+/* ---------- Skip link ---------- */
 
-:focus-visible {
-  outline: 1px solid var(--color-accent);
-  outline-offset: 3px;
-  border-radius: 1px;
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--color-surface);
+  color: var(--color-fg);
+  border: 1px solid var(--color-accent);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-decoration: none;
+  z-index: 300;
+  transform: translateY(-150%);
+  transition: transform 140ms ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 /* ---------- View Transitions: amber sweep + hold-position cross-fade ---------- */

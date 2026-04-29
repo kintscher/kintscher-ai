@@ -1,0 +1,78 @@
+---
+export const prerender = true;
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="404 — page not found"
+  description="That route doesn’t exist on kintscher.ai."
+  path="/404"
+>
+  <section class="notfound">
+    <p class="line" aria-label="404, page not found">
+      <span class="cursor" aria-hidden="true">›</span>
+      <span class="code">404</span>
+      <span class="dash" aria-hidden="true">—</span>
+      <span class="msg">page not found.</span>
+    </p>
+
+    <a class="home" href="/">
+      <span class="cursor" aria-hidden="true">›</span>
+      <span class="cmd">home</span><span class="caret" aria-hidden="true"></span>
+    </a>
+  </section>
+</Layout>
+
+<style>
+  .notfound {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: clamp(4rem, 14vh, 8rem) clamp(1.25rem, 3vw, 2.5rem);
+    min-height: calc(100vh - 220px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .line {
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--color-muted);
+  }
+
+  .cursor {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+  .code { color: var(--color-fg); }
+  .dash { color: var(--color-quiet); }
+  .msg  { color: var(--color-muted); }
+
+  .home {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-fg);
+    text-decoration: none;
+    width: max-content;
+    transition: gap 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .home .cmd {
+    border-bottom: 1px solid transparent;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+  .home:hover { gap: 0.85rem; }
+  .home:hover .cmd,
+  .home:focus-visible .cmd {
+    border-color: var(--color-accent);
+    color: var(--color-fg);
+  }
+</style>

@@ -39,41 +39,41 @@ import portrait from '../assets/images/yannik-chair.jpg';
 
       <div class="bio-text">
         <p class="bio-para">
-          <span class="margin-notes" aria-hidden="true">
+          <span class="margin-notes">
             <span class="margin-note" data-for="ubs">
-              <span class="m-body">Switzerland's largest bank. Here since 2018.</span>
-              <span class="m-rule"></span>
+              <span class="m-body" id="gloss-ubs">Switzerland’s largest bank. Here since 2018.</span>
+              <span class="m-rule" aria-hidden="true"></span>
             </span>
           </span>
           Came up the Swiss way — a 4-year Informatiker EFZ apprenticeship at
-          <span class="annot" data-gloss="ubs">UBS</span>, starting in Wealth
+          <button type="button" class="annot" data-gloss="ubs" aria-describedby="gloss-ubs">UBS</button>, starting in Wealth
           Management on trading applications. Three years there taught me how
           high-stakes systems actually get built and shipped.
         </p>
 
         <p class="bio-para">
-          <span class="margin-notes" aria-hidden="true">
+          <span class="margin-notes">
             <span class="margin-note" data-for="auth">
-              <span class="m-body">Prokurist. Signing authority within UBS.</span>
-              <span class="m-rule"></span>
+              <span class="m-body" id="gloss-auth">Prokurist. Signing authority within UBS.</span>
+              <span class="m-rule" aria-hidden="true"></span>
             </span>
             <span class="margin-note" data-for="hack">
-              <span class="m-body">Microsoft × UBS hackathon. We won.</span>
-              <span class="m-rule"></span>
+              <span class="m-body" id="gloss-hack">Microsoft × UBS hackathon. We won.</span>
+              <span class="m-rule" aria-hidden="true"></span>
             </span>
           </span>
-          Since 2022 I've been in the Conversational Banking team, working on
-          the Virtual Assistant — UBS's E-Banking and Mobile Banking chatbot
+          Since 2022 I’ve been in the Conversational Banking team, working on
+          the Virtual Assistant — UBS’s E-Banking and Mobile Banking chatbot
           for clients. I moved into fullstack by building an internal platform
           to monitor, analyze, test, and evaluate the chatbot end-to-end. Last
           year I was promoted to
-          <span class="annot" data-gloss="auth">Authorized Officer</span>. In
+          <button type="button" class="annot" data-gloss="auth" aria-describedby="gloss-auth">Authorized Officer</button>. In
           2024, my team won the
-          <span class="annot" data-gloss="hack">Microsoft × UBS THINK AHEAD GenAI Hackathon</span>.
+          <button type="button" class="annot" data-gloss="hack" aria-describedby="gloss-hack">Microsoft × UBS THINK AHEAD GenAI Hackathon</button>.
         </p>
 
         <p class="bio-para">
-          Right now I'm most interested in agents and applied AI — tooling
+          Right now I’m most interested in agents and applied AI — tooling
           that makes developer workflows faster and day-to-day work less
           tedious. The internal platform is one example; I want to do more of
           that. Currently shipping evaluation tooling for the Virtual
@@ -129,7 +129,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
         <span class="next-kicker">next&nbsp;/</span>
         <span class="next-label">ask yannik anything</span>
         <span class="next-arrow" aria-hidden="true">→</span>
-        <span class="key-hint" aria-hidden="true">⌐ C</span>
+        <span class="key-hint" aria-hidden="true">⌘ C</span>
       </a>
     </footer>
   </article>
@@ -307,8 +307,20 @@ import portrait from '../assets/images/yannik-chair.jpg';
   /* ───────────────────────────── annotations ───────────────────────────── */
 
   .annot {
-    position: relative;
+    /* button reset — keeps the term flowing as inline prose */
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
     color: var(--color-fg);
+    line-height: inherit;
+    text-align: inherit;
+    display: inline;
+
+    position: relative;
     background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-hairline-strong) calc(100% - 1px));
     background-size: 100% 100%;
     background-repeat: no-repeat;
