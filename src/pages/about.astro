@@ -44,37 +44,21 @@ import portrait from '../assets/images/yannik-chair.jpg';
 
       <div class="bio-text">
         <p class="bio-para">
-          <span class="margin-notes">
-            <span class="margin-note" data-for="ubs">
-              <span class="m-body" id="gloss-ubs">Switzerland’s largest bank. Here since 2018.</span>
-              <span class="m-rule" aria-hidden="true"></span>
-            </span>
-          </span>
           Came up the Swiss way — a 4-year Informatiker EFZ apprenticeship at
-          <button type="button" class="annot" data-gloss="ubs" aria-describedby="gloss-ubs">UBS</button>, starting in Wealth
+          <button type="button" class="annot" aria-describedby="gloss-ubs">UBS<span class="tip" role="tooltip" id="gloss-ubs">Switzerland’s largest bank. Here since 2018.</span></button>, starting in Wealth
           Management on trading applications. Three years there taught me how
           high-stakes systems actually get built and shipped.
         </p>
 
         <p class="bio-para">
-          <span class="margin-notes">
-            <span class="margin-note" data-for="auth">
-              <span class="m-body" id="gloss-auth">Prokurist. Signing authority within UBS.</span>
-              <span class="m-rule" aria-hidden="true"></span>
-            </span>
-            <span class="margin-note" data-for="hack">
-              <span class="m-body" id="gloss-hack">Microsoft × UBS hackathon. We won.</span>
-              <span class="m-rule" aria-hidden="true"></span>
-            </span>
-          </span>
           Since 2022 I’ve been in the Conversational Banking team, working on
           the Virtual Assistant — UBS’s E-Banking and Mobile Banking chatbot
           for clients. I moved into fullstack by building an internal platform
           to monitor, analyze, test, and evaluate the chatbot end-to-end. Last
           year I was promoted to
-          <button type="button" class="annot" data-gloss="auth" aria-describedby="gloss-auth">Authorized Officer</button>. In
+          <button type="button" class="annot" aria-describedby="gloss-auth">Authorized Officer<span class="tip" role="tooltip" id="gloss-auth">Prokurist — signing authority within UBS.</span></button>. In
           2024, my team won the
-          <button type="button" class="annot" data-gloss="hack" aria-describedby="gloss-hack">Microsoft × UBS THINK AHEAD GenAI Hackathon</button>.
+          <button type="button" class="annot" aria-describedby="gloss-hack">Microsoft × UBS THINK AHEAD GenAI Hackathon<span class="tip" role="tooltip" id="gloss-hack">Microsoft × UBS hackathon. We won.</span></button>.
         </p>
 
         <p class="bio-para">
@@ -339,7 +323,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
     margin-left: 0.1em;
     font-size: 0.7em;
     color: var(--color-accent);
-    opacity: 0.3;
+    opacity: 0.45;
     transition: opacity 160ms ease, transform 160ms ease;
   }
   .annot:hover,
@@ -351,58 +335,64 @@ import portrait from '../assets/images/yannik-chair.jpg';
   .annot:hover::after,
   .annot:focus-visible::after { opacity: 1; transform: translateY(-1px); }
 
-  /* the marginal gloss container — sits in the left margin of the paragraph */
-  .margin-notes {
+  /* tooltip — readable card that floats below the term */
+  .tip {
     position: absolute;
-    top: 0.1em;
-    right: calc(100% + 1.25rem);
-    width: 8rem;
-    pointer-events: none;
-    user-select: none;
-    z-index: 5;
-  }
-  .margin-note {
-    display: grid;
-    grid-template-columns: 1fr 1.25rem;
-    align-items: start;
-    column-gap: 0.55rem;
-    position: absolute;
-    inset: 0 0 auto 0;
-    width: 100%;
-    opacity: 0;
-    transform: translateX(4px);
-    transition: opacity 220ms ease, transform 220ms ease;
-    font-family: var(--font-display);
-    font-style: italic;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    z-index: 10;
+    width: max-content;
+    max-width: min(22rem, calc(100vw - 2rem));
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-hairline-strong);
+    border-left: 1px solid var(--color-accent);
+    border-radius: 4px;
+    background: rgb(20 20 24 / 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.04) inset,
+      0 12px 28px -12px rgb(0 0 0 / 0.7),
+      0 4px 12px -6px rgb(0 0 0 / 0.5);
+
+    font-family: var(--font-sans);
+    font-style: normal;
     font-size: 13.5px;
-    line-height: 1.4;
-    letter-spacing: -0.005em;
-    color: var(--color-muted);
-    text-align: right;
-  }
-  .m-rule {
-    height: 1px;
-    background: var(--color-accent);
-    margin-top: 0.55em;
-    align-self: start;
-    opacity: 0.85;
-    box-shadow: 0 0 6px rgb(232 168 58 / 0.35);
-  }
-  .m-body { color: rgb(240 235 226 / 0.7); }
+    line-height: 1.5;
+    letter-spacing: 0.002em;
+    color: var(--color-fg);
+    text-align: left;
+    white-space: normal;
 
-  /* show the matching gloss when its term is hovered/focused */
-  .bio-para:has(.annot[data-gloss="ubs"]:hover)        .margin-note[data-for="ubs"],
-  .bio-para:has(.annot[data-gloss="ubs"]:focus-visible) .margin-note[data-for="ubs"],
-  .bio-para:has(.annot[data-gloss="auth"]:hover)        .margin-note[data-for="auth"],
-  .bio-para:has(.annot[data-gloss="auth"]:focus-visible) .margin-note[data-for="auth"],
-  .bio-para:has(.annot[data-gloss="hack"]:hover)        .margin-note[data-for="hack"],
-  .bio-para:has(.annot[data-gloss="hack"]:focus-visible) .margin-note[data-for="hack"] {
+    opacity: 0;
+    transform: translateY(-2px);
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 200ms cubic-bezier(0.2, 0.7, 0, 1);
+  }
+  /* small caret pointing up to the term */
+  .tip::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0.85rem;
+    width: 8px;
+    height: 8px;
+    background: rgb(20 20 24 / 0.96);
+    border-top: 1px solid var(--color-hairline-strong);
+    border-left: 1px solid var(--color-hairline-strong);
+    transform: rotate(45deg);
+  }
+
+  .annot:hover .tip,
+  .annot:focus-visible .tip {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 
-  /* make annot focusable for keyboard users */
-  .annot { outline: none; }
+  /* keep tooltip from clipping past the right edge of long terms near viewport edge */
+  @media (max-width: 720px) {
+    .tip { left: 0; right: auto; max-width: calc(100vw - 2rem); }
+  }
 
   /* ───────────────────────────── stack ───────────────────────────── */
 
@@ -532,7 +522,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
       transform: none;
     }
     .meta .dot { animation: none; }
-    .margin-note { transition: opacity 1ms; }
+    .tip { transition: opacity 1ms; }
   }
 
   /* ───────────────────────────── responsive ───────────────────────────── */
@@ -545,8 +535,6 @@ import portrait from '../assets/images/yannik-chair.jpg';
       gap: 2rem;
     }
     .about-portrait { position: static; }
-    .margin-notes { display: none; }
-    .annot::after { display: none; }
   }
 
   /* tablet portrait + small laptop: stack, photo above text — avoids
