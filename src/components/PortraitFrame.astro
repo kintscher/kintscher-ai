@@ -1,0 +1,205 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt?: string;
+  objectPosition?: string;
+  ariaLabel?: string;
+  caption?: string;
+  index?: string;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt = '',
+  objectPosition = '50% 28%',
+  ariaLabel = 'Portrait',
+  caption = 'PORTRAIT · ZÜRICH · 2026',
+  index,
+  sizes = '(max-width: 720px) 78vw, (max-width: 1024px) 38vw, 460px',
+  eager = true,
+  class: className,
+} = Astro.props;
+---
+
+<aside
+  class:list={['portrait-frame', className]}
+  aria-label={ariaLabel}
+  tabindex="0"
+>
+  <figure class="card">
+    <div class="frame" style={`aspect-ratio: ${src.width} / ${src.height};`}>
+      <Image
+        src={src}
+        alt={alt}
+        widths={[420, 640, 840, 1080, 1440]}
+        sizes={sizes}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        class="img"
+        style={`object-position: ${objectPosition};`}
+        onload="this.parentElement.classList.add('is-loaded')"
+      />
+    </div>
+
+    <figcaption class="cap">
+      <span class="cap-cursor" aria-hidden="true">›</span>
+      <span class="cap-meta">
+        {index && <span class="cap-index">{index}</span>}
+        <span class="cap-text">{caption}</span>
+      </span>
+    </figcaption>
+  </figure>
+</aside>
+
+<style>
+  .portrait-frame { outline: none; }
+  .portrait-frame:focus,
+  .portrait-frame:focus-visible { outline: none; }
+
+  /* ---------- The card ----------
+     Surface lift + 1px hairline border, sharp corners. Same recipe
+     the home-page prompt button uses, applied to the portrait so it
+     reads as part of the same family of UI affordances. The photo
+     and caption sit inside the same card, separated by an internal
+     hairline rule. */
+  .card {
+    margin: 0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-hairline-strong);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 240ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .frame {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+    overflow: hidden;
+    background: var(--color-surface-2, #1a1a1a);
+  }
+
+  /* Soft sweeping shimmer while the photo decodes. The frame already
+     reserves the correct aspect-ratio, so layout never shifts. */
+  .frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        100deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.04) 50%,
+        transparent 80%
+      );
+    background-size: 200% 100%;
+    animation: portrait-shimmer 1.6s linear infinite;
+    opacity: 1;
+    transition: opacity 320ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .frame.is-loaded::before {
+    opacity: 0;
+    animation: none;
+  }
+
+  @keyframes portrait-shimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -100% 0; }
+  }
+
+  .img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: saturate(0.96);
+    opacity: 0;
+    transition: filter 360ms cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 420ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .frame.is-loaded .img { opacity: 1; }
+
+  /* ---------- Caption strip ----------
+     Mono slug on the card's foot, separated from the photo by an
+     internal hairline rule. The amber `›` is the single in-card
+     anchor: same character + colour as the prompt-button cursor,
+     scaled up so it carries weight in the strip. */
+  /* The 1px amber rule between photo and caption is the single amber
+     element on the frame at rest — same shape as the page-sweep and
+     the about-page margin-note rule. Always visible, anchors the
+     photo from beneath. */
+  .cap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    padding: 0.6rem 0.85rem 0.7rem;
+    border-top: 1px solid var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+    line-height: 1;
+    min-width: 0;
+  }
+  .cap-cursor {
+    flex: 0 0 auto;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(15px, 1.3vw, 18px);
+    line-height: 0.85;
+    /* optical centring against the slug's mono cap-height */
+    transform: translateY(1px);
+    transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .cap-meta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cap-index {
+    color: var(--color-fg);
+    font-variant-numeric: tabular-nums;
+  }
+  .cap-text {
+    color: var(--color-quiet);
+    transition: color 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ---------- Hover / focus ----------
+     Mirrors the prompt button verbatim: hairline border lifts to
+     amber, the `›` nudges right, the slug brightens. Photo restores
+     to full saturation. The internal rule rides along with the
+     outer border so the card reads as one cohesive shape. */
+  @media (hover: hover) {
+    .portrait-frame:hover .card { border-color: var(--color-accent); }
+    .portrait-frame:hover .img { filter: saturate(1); }
+    .portrait-frame:hover .cap-cursor { transform: translate(3px, 1px); }
+    .portrait-frame:hover .cap-text { color: var(--color-muted); }
+  }
+  .portrait-frame:focus-visible .card { border-color: var(--color-accent); }
+  .portrait-frame:focus-visible .img { filter: saturate(1); }
+  .portrait-frame:focus-visible .cap-cursor { transform: translate(3px, 1px); }
+  .portrait-frame:focus-visible .cap-text { color: var(--color-muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .img,
+    .cap-cursor,
+    .cap-text { transition: none; }
+    .frame::before { animation: none; }
+    .img { opacity: 1; }
+  }
+</style>

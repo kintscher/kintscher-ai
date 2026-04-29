@@ -1,0 +1,83 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+}
+
+const {
+  title = 'Yannik Kintscher — Fullstack engineer in Zürich',
+  description = 'Fullstack engineer in Zürich. GenAI, conversational banking, internal tooling at UBS.',
+  path = Astro.url.pathname,
+} = Astro.props;
+
+const canonical = `https://kintscher.ai${path}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0B0B0E" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="kintscher.ai" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <SiteHeader />
+    <main id="main"><slot /></main>
+    <SiteFooter />
+    <CommandPalette />
+
+    <script>
+      // Amber rule sweep across the viewport on every view transition.
+      // Idempotent: registers listeners once per document load.
+      type SweepWindow = Window & { __kSweepBound?: boolean };
+      const w = window as SweepWindow;
+      if (!w.__kSweepBound) {
+        w.__kSweepBound = true;
+        document.addEventListener('astro:after-swap', () => {
+          const sweep = document.createElement('div');
+          sweep.className = 'page-sweep';
+          document.body.appendChild(sweep);
+          sweep.addEventListener('animationend', () => sweep.remove(), { once: true });
+        });
+      }
+    </script>
+  </body>
+</html>

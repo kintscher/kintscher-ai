@@ -1,0 +1,475 @@
+---
+type Item = {
+  href: string;
+  label: string;
+  hint: string;
+  desc: string;
+  group: 'go' | 'do';
+};
+
+const items: Item[] = [
+  { href: '/',         label: 'home',         hint: 'H', desc: 'go to the start',                  group: 'go' },
+  { href: '/about',    label: 'about',        hint: 'A', desc: 'the long version',                 group: 'go' },
+  { href: '/chat',     label: 'chat',         hint: 'C', desc: 'ask yannik anything',              group: 'go' },
+  { href: '/contact',  label: 'contact',      hint: 'X', desc: 'email and social',                 group: 'go' },
+  { href: 'mailto:hi@kintscher.ai',           label: 'email yannik',     hint: 'E', desc: 'open mail composer', group: 'do' },
+  { href: 'https://github.com/kintscher',     label: 'github',           hint: 'G', desc: 'github.com/kintscher', group: 'do' },
+  { href: 'https://www.linkedin.com/in/yannikkintscher', label: 'linkedin', hint: 'L', desc: 'linkedin.com/in/yannikkintscher', group: 'do' },
+];
+---
+
+<dialog id="cmd-palette" aria-labelledby="cmd-palette-title" aria-modal="true" class="cmd">
+  <h2 id="cmd-palette-title" class="cmd-sr-title">Command palette</h2>
+  <div class="cmd-frame">
+    <div class="cmd-input-row">
+      <span class="cmd-prompt" aria-hidden="true">›</span>
+      <input
+        id="cmd-input"
+        type="text"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        maxlength="4000"
+        placeholder="ask yannik, or type a route..."
+        aria-label="Type a command"
+      />
+      <kbd class="cmd-esc" aria-hidden="true">esc</kbd>
+    </div>
+
+    <ul id="cmd-list" role="listbox" aria-label="Commands">
+      <li class="cmd-group" role="presentation">go</li>
+      {items.filter(i => i.group === 'go').map((it, idx) => (
+        <li>
+          <a
+            href={it.href}
+            role="option"
+            class:list={['cmd-item', { active: idx === 0 }]}
+            data-label={it.label}
+            data-hint={it.hint.toLowerCase()}
+          >
+            <span class="cmd-item-label">{it.label}</span>
+            <span class="cmd-item-desc">{it.desc}</span>
+            <kbd class="cmd-item-key" aria-hidden="true">{it.hint}</kbd>
+          </a>
+        </li>
+      ))}
+      <li class="cmd-group" role="presentation">do</li>
+      {items.filter(i => i.group === 'do').map((it) => {
+        const isExternal = it.href.startsWith('http');
+        return (
+          <li>
+            <a
+              href={it.href}
+              role="option"
+              class="cmd-item"
+              data-label={it.label}
+              data-hint={it.hint.toLowerCase()}
+              {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              <span class="cmd-item-label">
+                {it.label}{isExternal && <span class="ext" aria-hidden="true"> ↗</span>}
+              </span>
+              <span class="cmd-item-desc">{it.desc}</span>
+              <kbd class="cmd-item-key" aria-hidden="true">{it.hint}</kbd>
+            </a>
+          </li>
+        );
+      })}
+      <li class="cmd-empty" hidden>no matches</li>
+    </ul>
+
+    <div class="cmd-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> select</span>
+      <span><kbd>⌘</kbd><kbd>K</kbd> · <kbd>/</kbd> open</span>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  type CmdWindow = Window & { __kCmdBound?: boolean };
+  const w = window as CmdWindow;
+
+  function setup() {
+    const dialog = document.getElementById('cmd-palette') as HTMLDialogElement;
+    const input  = document.getElementById('cmd-input')   as HTMLInputElement;
+    const list   = document.getElementById('cmd-list')    as HTMLUListElement;
+    if (!dialog || !input || !list) return;
+
+    const items = () => Array
+      .from(list.querySelectorAll<HTMLAnchorElement>('.cmd-item'))
+      .filter((a) => !a.parentElement?.hasAttribute('hidden'));
+    const empty = list.querySelector<HTMLLIElement>('.cmd-empty');
+
+    function setActive(idx: number) {
+      const live = items();
+      live.forEach((a, i) => a.classList.toggle('active', i === idx));
+      const target = live[idx];
+      if (target) target.scrollIntoView({ block: 'nearest' });
+    }
+
+    function markCurrentRoute() {
+      const here = location.pathname.replace(/\/$/, '') || '/';
+      list.querySelectorAll<HTMLAnchorElement>('.cmd-item').forEach((a) => {
+        const href = a.getAttribute('href') ?? '';
+        const path = href.startsWith('/') ? (href.replace(/\/$/, '') || '/') : null;
+        const current = path !== null && path === here;
+        a.classList.toggle('is-current', current);
+        if (current) {
+          a.setAttribute('aria-current', 'page');
+        } else {
+          a.removeAttribute('aria-current');
+        }
+        const label = a.querySelector<HTMLSpanElement>('.cmd-item-label');
+        const existing = label?.querySelector<HTMLSpanElement>('.cmd-item-here');
+        if (current && label && !existing) {
+          const dot = document.createElement('span');
+          dot.className = 'cmd-item-here';
+          dot.setAttribute('aria-hidden', 'true');
+          dot.textContent = '●';
+          label.appendChild(dot);
+        } else if (!current && existing) {
+          existing.remove();
+        }
+      });
+    }
+
+    function activeIndex(): number {
+      const live = items();
+      const i = live.findIndex(a => a.classList.contains('active'));
+      return i === -1 ? 0 : i;
+    }
+
+    function filter(query: string) {
+      const q = query.trim().toLowerCase();
+      let visible = 0;
+      list.querySelectorAll<HTMLAnchorElement>('.cmd-item').forEach((a) => {
+        const label = a.dataset.label ?? '';
+        const hit = !q || label.includes(q);
+        a.parentElement!.toggleAttribute('hidden', !hit);
+        if (hit) visible++;
+      });
+      list.querySelectorAll<HTMLLIElement>('.cmd-group').forEach((g) => {
+        const next = g.nextElementSibling as HTMLLIElement | null;
+        const anyVisible = !!next && Array.from(list.children).some((c) => {
+          if (c === g) return false;
+          if ((c as HTMLElement).classList.contains('cmd-group')) return false;
+          if (c.hasAttribute('hidden')) return false;
+          // walk back to nearest preceding group
+          let prev = c.previousElementSibling;
+          while (prev && !prev.classList.contains('cmd-group')) prev = prev.previousElementSibling;
+          return prev === g;
+        });
+        g.toggleAttribute('hidden', !anyVisible);
+      });
+      empty?.toggleAttribute('hidden', visible !== 0);
+      setActive(0);
+    }
+
+    function open() {
+      if (dialog.open) return;
+      markCurrentRoute();
+      dialog.showModal();
+      input.value = '';
+      filter('');
+      requestAnimationFrame(() => input.focus());
+    }
+    function close() { if (dialog.open) dialog.close(); }
+
+    // ----- keyboard listeners -----
+
+    type CmdGlobals = { __openCmd?: () => void; __closeCmd?: () => void };
+    const g = window as unknown as CmdGlobals;
+    g.__openCmd  = open;
+    g.__closeCmd = close;
+
+    if (!w.__kCmdBound) {
+      w.__kCmdBound = true;
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        const tgt = e.target as HTMLElement | null;
+        const inField = !!tgt && (tgt.matches('input, textarea') || tgt.isContentEditable);
+        const dlg = document.getElementById('cmd-palette') as HTMLDialogElement | null;
+        if (!dlg) return;
+
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (dlg.open) g.__closeCmd?.(); else g.__openCmd?.();
+          return;
+        }
+        if (e.key === '/' && !inField && !dlg.open) {
+          e.preventDefault();
+          g.__openCmd?.();
+          return;
+        }
+        if (e.key === 'Escape' && dlg.open) {
+          e.preventDefault();
+          g.__closeCmd?.();
+        }
+      });
+    }
+
+    // ----- per-instance listeners (re-attached after each view transition) -----
+
+    input.addEventListener('input', () => filter(input.value));
+
+    input.addEventListener('keydown', (e) => {
+      const live = items();
+      if (e.key === 'ArrowDown') {
+        if (!live.length) return;
+        e.preventDefault();
+        setActive(Math.min(activeIndex() + 1, live.length - 1));
+      } else if (e.key === 'ArrowUp') {
+        if (!live.length) return;
+        e.preventDefault();
+        setActive(Math.max(activeIndex() - 1, 0));
+      } else if (e.key === 'Enter') {
+        const q = input.value.trim();
+        // Treat as a question for /chat when the input clearly isn't a route lookup:
+        // contains whitespace or a question mark, or no nav items match.
+        const looksLikeQuestion = /\s|\?/.test(q);
+        if (q && (looksLikeQuestion || live.length === 0)) {
+          e.preventDefault();
+          close();
+          location.href = `/chat?q=${encodeURIComponent(q)}`;
+          return;
+        }
+        if (!live.length) return;
+        e.preventDefault();
+        live[activeIndex()]?.click();
+      }
+    });
+
+    // Forward focus trap: Tab from the last focusable element wraps to #cmd-input.
+    // Native <dialog> wraps on Shift+Tab from the first element but, in Chromium,
+    // does not always wrap forward from the last — handle it explicitly.
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || e.shiftKey) return;
+      const focusables = dialog.querySelectorAll<HTMLElement>(
+        'a[href], input, button, [tabindex]:not([tabindex="-1"])'
+      );
+      const last = focusables[focusables.length - 1];
+      if (last && document.activeElement === last) {
+        e.preventDefault();
+        input.focus();
+      }
+    });
+
+    // Click outside the frame closes
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) close();
+    });
+
+    // After click on internal item, close dialog (View Transition handles nav)
+    list.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest('a.cmd-item');
+      if (a) close();
+    });
+  }
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>
+
+<style>
+  .cmd {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(560px, calc(100vw - 2rem));
+    max-height: 70vh;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--color-fg);
+    overflow: visible;
+  }
+  .cmd::backdrop {
+    background: rgb(0 0 0 / 0.78);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+  }
+  .cmd[open] {
+    animation: cmd-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .cmd[open]::backdrop {
+    animation: backdrop-in 180ms ease;
+  }
+  @keyframes cmd-in {
+    from { opacity: 0; transform: translateY(-6px) scale(0.985); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes backdrop-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .cmd-sr-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .cmd-frame {
+    background: var(--color-surface);
+    border: 1px solid var(--color-hairline-strong);
+    border-radius: 8px;
+    box-shadow:
+      0 0 0 1px rgb(232 168 58 / 0.04),
+      0 24px 60px -12px rgb(0 0 0 / 0.7),
+      inset 0 1px 0 rgb(255 255 255 / 0.04);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .cmd-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .cmd-prompt {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+  #cmd-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--color-fg);
+    font: inherit;
+    padding: 0;
+  }
+  #cmd-input::placeholder { color: var(--color-quiet); }
+  #cmd-input:focus { outline: none; }
+
+  .cmd-esc {
+    color: var(--color-quiet);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 2px 6px;
+    border: 1px solid var(--color-hairline);
+    border-radius: 3px;
+  }
+
+  #cmd-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem 0;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  .cmd-group {
+    padding: 0.65rem 1rem 0.3rem;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-quiet);
+  }
+
+  .cmd-item {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
+    align-items: baseline;
+    gap: 0.85rem;
+    padding: 0.55rem 1rem;
+    color: var(--color-fg);
+    text-decoration: none;
+    transition: background 80ms ease;
+  }
+  .cmd-item:hover,
+  .cmd-item.active {
+    background: var(--color-surface-2);
+  }
+  .cmd-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 1.4em;
+    background: var(--color-accent);
+    transform: translateY(0.1em);
+  }
+  .cmd-item { position: relative; }
+
+  /* Current-page indicator: 4px amber dot at the row's left edge,
+     matching the header nav and footer "current" pattern.
+     Positioned absolutely against .cmd-item (which is position:relative),
+     so it lives outside the row's padding and never collides with
+     content. :global() is required because the dot is JS-injected
+     after Astro's scope-hash pass and won't carry the data-astro-cid. */
+  :global(.cmd-item-here) {
+    position: absolute;
+    left: 0.42rem;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    margin: 0;
+    padding: 0;
+    background: var(--color-accent);
+    border-radius: 999px;
+    transform: translateY(-50%);
+    font-size: 0;
+    color: transparent;
+    line-height: 0;
+    box-shadow: 0 0 6px rgb(232 168 58 / 0.45);
+  }
+  .cmd-item.is-current .cmd-item-key {
+    opacity: 0.4;
+  }
+
+  .cmd-item-label { color: var(--color-fg); }
+  .cmd-item-desc  { color: var(--color-quiet); font-size: 12px; }
+  .cmd-item-key {
+    font-family: inherit;
+    font-size: 11px;
+    color: var(--color-accent);
+    border: 1px solid var(--color-hairline);
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: rgb(232 168 58 / 0.05);
+  }
+  .ext { color: var(--color-quiet); }
+
+  .cmd-empty {
+    padding: 1rem;
+    color: var(--color-quiet);
+    font-style: italic;
+    text-align: center;
+  }
+
+  .cmd-foot {
+    display: flex;
+    gap: 1.25rem;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--color-hairline);
+    background: rgb(0 0 0 / 0.2);
+    font-size: 11px;
+    color: var(--color-quiet);
+    flex-wrap: wrap;
+  }
+  .cmd-foot kbd {
+    font-family: inherit;
+    border: 1px solid var(--color-hairline);
+    padding: 0 5px;
+    border-radius: 3px;
+    background: var(--color-surface-2);
+    color: var(--color-muted);
+    margin-right: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .cmd { width: calc(100vw - 1.5rem); }
+    .cmd-item-desc { display: none; }
+    .cmd-foot { font-size: 10px; gap: 0.85rem; }
+  }
+</style>

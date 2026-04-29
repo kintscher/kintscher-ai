@@ -1,0 +1,710 @@
+---
+type Suggestion = { text: string };
+
+const suggestions: Suggestion[] = [
+  { text: "what's yannik's background?" },
+  { text: "what's he working on right now?" },
+  { text: "what's his stack?" },
+];
+---
+
+<div class="chat-shell" data-state="idle">
+  <div class="chat-prelude">
+    <h1 class="chat-invitation">Ask anything about Yannik.</h1>
+
+    <ul class="chat-chips" aria-label="Suggested questions">
+      {suggestions.map((s) => (
+        <li>
+          <button type="button" class="chat-chip" data-suggestion={s.text}>
+            <span class="chip-prompt" aria-hidden="true">›</span>
+            <span class="chip-text">{s.text}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="chat-thread" id="chat-thread" role="log" aria-live="polite" aria-label="Conversation"></div>
+
+  <div class="chat-form-area">
+    <form class="chat-form" id="chat-form" autocomplete="off" novalidate>
+      <span class="chat-prompt" aria-hidden="true">›</span>
+      <div class="chat-input-wrap">
+        <input
+          id="chat-input"
+          name="message"
+          type="text"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder=" "
+          aria-label="Ask anything about Yannik"
+        />
+        <span class="chat-caret" aria-hidden="true"></span>
+      </div>
+      <button type="submit" class="chat-submit" aria-label="Send">
+        <span class="submit-label" aria-hidden="true">send</span>
+        <kbd class="submit-key" aria-hidden="true">↵</kbd>
+      </button>
+      <button type="button" class="chat-stop" id="chat-stop" aria-label="Stop">
+        <span class="stop-label" aria-hidden="true">stop</span>
+      </button>
+    </form>
+
+    <p class="chat-privacy">
+      Conversations are not stored. Powered by Claude.
+    </p>
+  </div>
+</div>
+
+<script>
+  type ChatRole = 'user' | 'assistant';
+  type ChatMessage = { role: ChatRole; content: string };
+  type ChatWindow = Window & { __kChatBound?: boolean };
+
+  const ERROR_TEXT =
+    'Something broke on my end. Try again, or email Yannik directly.';
+
+  function escapeHtml(s: string): string {
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Conservative inline-markdown render. Escapes first, then applies a
+  // small whitelist: **bold**, `code`, [text](url) where url is http/https
+  // or mailto. Partial tokens (closing delimiter not yet streamed) stay
+  // as raw text — no flicker.
+  function renderMd(text: string): string {
+    let out = escapeHtml(text);
+    out = out.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
+    out = out.replace(/`([^`\n]+?)`/g, '<code>$1</code>');
+    out = out.replace(
+      /\[([^\]\n]+?)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g,
+      (_m, label: string, url: string) => {
+        const ext = url.startsWith('http')
+          ? ' target="_blank" rel="noopener noreferrer"'
+          : '';
+        return `<a href="${url}"${ext}>${label}</a>`;
+      },
+    );
+    return out;
+  }
+
+  function setup() {
+    const shell = document.querySelector<HTMLDivElement>('.chat-shell');
+    const form = document.getElementById('chat-form') as HTMLFormElement | null;
+    const input = document.getElementById('chat-input') as HTMLInputElement | null;
+    const thread = document.getElementById('chat-thread');
+    const stopBtn = document.getElementById('chat-stop');
+    if (!shell || !form || !input || !thread || !stopBtn) return;
+
+    const history: ChatMessage[] = [];
+    let controller: AbortController | null = null;
+    let autoScroll = true;
+
+    function setState(s: 'idle' | 'active' | 'streaming') {
+      shell!.dataset.state = s;
+      input!.disabled = s === 'streaming';
+      if (s !== 'streaming') {
+        // Refocus input once interaction returns to the user.
+        requestAnimationFrame(() => input!.focus());
+      }
+    }
+
+    function appendUser(text: string) {
+      const el = document.createElement('article');
+      el.className = 'msg msg-user';
+      el.innerHTML = '<p class="msg-text"></p>';
+      const t = el.querySelector<HTMLParagraphElement>('.msg-text')!;
+      t.textContent = text;
+      thread!.appendChild(el);
+      maybeScroll();
+    }
+
+    function appendAssistant(): {
+      bubble: HTMLElement;
+      textEl: HTMLParagraphElement;
+    } {
+      const el = document.createElement('article');
+      el.className = 'msg msg-assistant is-streaming';
+      el.innerHTML = '<p class="msg-text"></p>';
+      const t = el.querySelector<HTMLParagraphElement>('.msg-text')!;
+      thread!.appendChild(el);
+      maybeScroll();
+      return { bubble: el, textEl: t };
+    }
+
+    function maybeScroll() {
+      if (!autoScroll) return;
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.body.scrollHeight - 60;
+      autoScroll = atBottom;
+    }, { passive: true });
+
+    async function send(text: string) {
+      if (controller) return; // already streaming
+      const trimmed = text.trim();
+      if (!trimmed) return;
+
+      input!.value = '';
+      setState('streaming');
+
+      if (shell!.dataset.state !== 'streaming') {
+        // Defensive — setState should have set this already.
+        shell!.dataset.state = 'streaming';
+      }
+
+      history.push({ role: 'user', content: trimmed });
+      appendUser(trimmed);
+      const { bubble, textEl } = appendAssistant();
+
+      controller = new AbortController();
+      let renderedSoFar = '';   // chars currently visible
+      let chunkBuffer = '';     // received but not yet revealed
+      let rafHandle = 0;
+      let aborted = false;
+
+      // Paced reveal: drain 3–20 chars per animation frame, scaling with backlog
+      // so fast streams catch up gracefully without dumping all at once. Roughly
+      // 180–1200 chars/sec depending on how much is queued.
+      const drainTick = () => {
+        rafHandle = 0;
+        if (!chunkBuffer) return;
+        const n = Math.min(20, Math.max(3, Math.ceil(chunkBuffer.length / 30)));
+        renderedSoFar += chunkBuffer.slice(0, n);
+        chunkBuffer = chunkBuffer.slice(n);
+        textEl.innerHTML = renderMd(renderedSoFar);
+        maybeScroll();
+        if (chunkBuffer) rafHandle = requestAnimationFrame(drainTick);
+      };
+
+      try {
+        const resp = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: history }),
+          signal: controller.signal,
+        });
+
+        if (!resp.ok) {
+          if (resp.status === 429) {
+            const retryRaw = resp.headers.get('Retry-After');
+            const retrySec = retryRaw ? parseInt(retryRaw, 10) : NaN;
+            if (Number.isFinite(retrySec) && retrySec > 0) {
+              const mins = Math.ceil(retrySec / 60);
+              textEl.textContent =
+                mins <= 1
+                  ? 'Too many messages. Try again in a minute.'
+                  : `Too many messages. Try again in about ${mins} minutes.`;
+            } else {
+              textEl.textContent = 'Too many messages. Try again later.';
+            }
+          } else {
+            textEl.textContent = ERROR_TEXT;
+          }
+          bubble.classList.add('is-error');
+          bubble.classList.remove('is-streaming');
+          return;
+        }
+
+        const reader = resp.body?.getReader();
+        if (!reader) {
+          textEl.textContent = ERROR_TEXT;
+          bubble.classList.add('is-error');
+          bubble.classList.remove('is-streaming');
+          return;
+        }
+
+        const decoder = new TextDecoder();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          if (!chunk) continue;
+          chunkBuffer += chunk;
+          if (!rafHandle) rafHandle = requestAnimationFrame(drainTick);
+        }
+      } catch (err) {
+        const e = err as { name?: string };
+        if (e?.name === 'AbortError') {
+          aborted = true;
+        }
+        // Other errors fall through to the empty-text branch in finally,
+        // which renders the in-voice error message.
+      } finally {
+        if (rafHandle) cancelAnimationFrame(rafHandle);
+        bubble.classList.remove('is-streaming');
+
+        // Normal completion: drain pending buffer onto the visible text.
+        // Abort: drop the buffer — the user only commits to what they saw.
+        if (!aborted && chunkBuffer) {
+          renderedSoFar += chunkBuffer;
+        }
+        chunkBuffer = '';
+
+        if (renderedSoFar) {
+          textEl.innerHTML = renderMd(renderedSoFar);
+          history.push({ role: 'assistant', content: renderedSoFar });
+        } else if (aborted) {
+          // Aborted before any visible text — drop the empty bubble.
+          bubble.remove();
+        } else {
+          // Net error, or 200-with-empty (server failed mid-stream before any token).
+          textEl.textContent = ERROR_TEXT;
+          bubble.classList.add('is-error');
+        }
+
+        controller = null;
+        setState('active');
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (controller) return;
+      const value = input.value.trim();
+      if (!value) return;
+      send(value);
+    });
+
+    stopBtn.addEventListener('click', () => {
+      controller?.abort();
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('.chat-chip').forEach((chip) => {
+      if (chip.dataset.chipBound) return;
+      chip.dataset.chipBound = '1';
+      chip.addEventListener('click', () => {
+        if (controller) return;
+        const text = chip.dataset.suggestion ?? '';
+        send(text);
+      });
+    });
+
+    // Abort in-flight stream on navigation away — Astro view transitions
+    // and full unloads alike.
+    const abortIfRunning = () => controller?.abort();
+    window.addEventListener('beforeunload', abortIfRunning);
+    document.addEventListener('astro:before-preparation', abortIfRunning);
+
+    const w = window as ChatWindow;
+    if (!w.__kChatBound) {
+      w.__kChatBound = true;
+    }
+
+    // Auto-send a question passed via ?q= (from the home/command-palette prompt).
+    // Strip the param from the URL so reloads don't re-fire the same question.
+    const params = new URLSearchParams(location.search);
+    const incoming = params.get('q');
+    if (incoming && incoming.trim() && !controller) {
+      params.delete('q');
+      const qs = params.toString();
+      history.length = 0;
+      window.history.replaceState(
+        {},
+        '',
+        location.pathname + (qs ? `?${qs}` : '') + location.hash,
+      );
+      send(incoming);
+    }
+  }
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>
+
+<style is:global>
+  .chat-shell {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+    min-height: calc(100vh - 180px);
+    padding: clamp(1.5rem, 4vh, 3rem) 2rem clamp(1rem, 3vh, 2rem);
+    gap: clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .chat-prelude {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(1.25rem, 3vh, 2rem);
+  }
+
+  /* ----- Invitation (h1) ----- */
+
+  .chat-invitation {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.875rem, 4.2vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+    opacity: 0;
+    animation: chat-rise 600ms cubic-bezier(0.2, 0.7, 0, 1) 80ms both;
+  }
+
+  /* ----- Suggested-question chips ----- */
+
+  .chat-chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: flex-start;
+  }
+  .chat-chips li {
+    opacity: 0;
+    animation: chat-rise 520ms cubic-bezier(0.2, 0.7, 0, 1) both;
+  }
+  .chat-chips li:nth-child(1) { animation-delay: 220ms; }
+  .chat-chips li:nth-child(2) { animation-delay: 300ms; }
+  .chat-chips li:nth-child(3) { animation-delay: 380ms; }
+
+  .chat-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    background: transparent;
+    border: 1px solid var(--color-hairline);
+    border-radius: 6px;
+    padding: 0.5rem 0.85rem 0.5rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--color-muted);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+  }
+  .chat-chip:hover {
+    border-color: var(--color-hairline-strong);
+    color: var(--color-fg);
+  }
+  .chat-chip .chip-prompt {
+    color: var(--color-accent);
+    font-weight: 500;
+    transform: translateY(-0.5px);
+  }
+  .chat-chip .chip-text { flex: 1; }
+
+  /* ----- Conversation thread ----- */
+
+  .chat-thread {
+    display: none;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-block: 0.25rem 0.25rem;
+  }
+
+  /* Once any message has been sent, prelude stays hidden and thread is
+     visible. Both `active` and `streaming` count as "started". */
+  .chat-shell[data-state="active"] .chat-prelude,
+  .chat-shell[data-state="streaming"] .chat-prelude {
+    display: none;
+  }
+  .chat-shell[data-state="active"] .chat-thread,
+  .chat-shell[data-state="streaming"] .chat-thread {
+    display: flex;
+    flex: 1;
+  }
+
+  .msg {
+    margin: 0;
+  }
+
+  .msg-text {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  /* User: flush-left, mono, accent. The ›-prefix echoes the composer cursor. */
+  .msg-user {
+    align-self: flex-start;
+    max-width: 100%;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-accent);
+  }
+  .msg-user::before {
+    content: '›';
+    display: inline-block;
+    width: 2ch;
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+  /* Turn boundary: every user message after the first opens a new turn. */
+  .msg-user:not(:first-child) {
+    margin-top: 0.7rem;
+  }
+
+  /* Assistant: indented to user-text column, body font, unchanged color. */
+  .msg-assistant {
+    align-self: flex-start;
+    max-width: 100%;
+    padding-left: 2ch;
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: rgb(240 235 226 / 0.88);
+    padding-block: 0.15rem 0.25rem;
+  }
+
+  .msg-assistant strong {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+  .msg-assistant code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid var(--color-hairline);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+    color: var(--color-fg);
+  }
+  .msg-assistant a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .msg-assistant a:hover { text-decoration-thickness: 2px; }
+
+  .msg-assistant.is-error .msg-text {
+    color: var(--color-quiet);
+    font-style: italic;
+  }
+
+  /* In-flight cursor — soft amber block at the end of the streaming bubble. */
+  .msg-assistant.is-streaming .msg-text::after {
+    content: '';
+    display: inline-block;
+    width: 0.45em;
+    height: 1em;
+    margin-left: 0.15em;
+    vertical-align: text-bottom;
+    background: var(--color-accent);
+    box-shadow: 0 0 6px rgb(232 168 58 / 0.45);
+    animation: chat-cursor-pulse 1.1s ease-in-out infinite;
+  }
+
+  /* ----- Form area ----- */
+
+  .chat-form-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    opacity: 0;
+    animation: chat-rise 520ms cubic-bezier(0.2, 0.7, 0, 1) 460ms both;
+  }
+
+  .chat-form {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-hairline);
+    border-radius: 8px;
+    padding: 0.7rem 0.85rem 0.7rem 0.95rem;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    transition: border-color 180ms ease, background 180ms ease;
+  }
+  .chat-form:focus-within {
+    border-color: var(--color-hairline-strong);
+    background: var(--color-surface-2);
+  }
+
+  .chat-prompt {
+    color: var(--color-accent);
+    font-weight: 500;
+    transform: translateY(-1px);
+    flex-shrink: 0;
+  }
+
+  .chat-input-wrap {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  #chat-input {
+    flex: 1;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--color-fg);
+    font: inherit;
+    padding: 0;
+    caret-color: var(--color-accent);
+    min-width: 0;
+  }
+  #chat-input:disabled { color: var(--color-quiet); cursor: not-allowed; }
+  #chat-input::placeholder { color: var(--color-quiet); }
+  /* Suppress the global amber focus ring on the input — the form wrapper's
+     :focus-within border + background shift is the focused cue here. */
+  #chat-input:focus-visible { outline: none; }
+
+  /* Custom soft-pulsing caret in the empty state.
+     Native caret is hidden when empty so the two don't collide;
+     once the user types, native amber caret takes over. */
+  #chat-input:placeholder-shown { caret-color: transparent; }
+  .chat-caret {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 2px;
+    height: 1.05em;
+    background: var(--color-accent);
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0;
+    box-shadow: 0 0 6px rgb(232 168 58 / 0.45);
+  }
+  .chat-form:has(#chat-input:placeholder-shown) .chat-caret {
+    opacity: 1;
+    animation: chat-caret-pulse 1.4s ease-in-out infinite;
+  }
+  /* Hide the empty-state caret while streaming — input is disabled and the
+     placeholder shows again, but the caret would suggest the user can type. */
+  .chat-shell[data-state="streaming"] .chat-caret { display: none; }
+
+  .chat-submit,
+  .chat-stop {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: 1px solid var(--color-hairline);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem 0.25rem 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-quiet);
+    cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+    flex-shrink: 0;
+  }
+  .chat-submit:hover,
+  .chat-form:has(#chat-input:not(:placeholder-shown)) .chat-submit {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: rgb(232 168 58 / 0.05);
+  }
+  .chat-stop {
+    /* Subtle alarm — readable, not aggressive. */
+    color: var(--color-fg);
+    border-color: var(--color-hairline-strong);
+  }
+  .chat-stop:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: rgb(232 168 58 / 0.05);
+  }
+  .submit-key {
+    font-family: inherit;
+    color: inherit;
+    opacity: 0.85;
+  }
+
+  /* Submit ↔ stop swap is driven by the shell's data-state. */
+  .chat-stop { display: none; }
+  .chat-shell[data-state="streaming"] .chat-submit { display: none; }
+  .chat-shell[data-state="streaming"] .chat-stop { display: inline-flex; }
+
+  /* ----- Privacy footnote ----- */
+
+  .chat-privacy {
+    margin: 0;
+    padding: 0 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--color-quiet);
+  }
+
+  /* ----- sr-only ----- */
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ----- Animations ----- */
+
+  @keyframes chat-rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes chat-caret-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.25; }
+  }
+
+  @keyframes chat-cursor-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.3; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chat-invitation,
+    .chat-chips li,
+    .chat-form-area {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .chat-caret { animation: none; }
+    .msg-assistant.is-streaming .msg-text::after { animation: none; }
+    .chat-chip { transition: none; }
+    .chat-form { transition: none; }
+    .chat-submit,
+    .chat-stop { transition: none; }
+  }
+
+  /* ----- Responsive ----- */
+
+  @media (max-width: 720px) {
+    .chat-shell {
+      padding: 1.25rem 1.25rem 1rem;
+      min-height: calc(100vh - 160px);
+      gap: 1.25rem;
+    }
+    .chat-chips { width: 100%; }
+    .chat-chip {
+      width: 100%;
+      font-size: 12.5px;
+    }
+    .chat-form { padding: 0.65rem 0.7rem 0.65rem 0.85rem; }
+    .submit-label { display: none; }
+    .msg-assistant { font-size: 15px; }
+  }
+</style>

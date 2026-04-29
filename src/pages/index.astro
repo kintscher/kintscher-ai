@@ -1,159 +1,306 @@
 ---
 export const prerender = true;
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
+import PortraitFrame from '../components/PortraitFrame.astro';
+import portrait from '../assets/images/yannik-tower.jpg';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Kintscher.ai — Yannik Kintscher</title>
-    <meta name="description" content="Yannik Kintscher — Fullstack Developer in Zürich." />
+<Layout
+  title="Yannik Kintscher — Fullstack engineer in Zürich"
+  description="Fullstack engineer in Zürich. GenAI, Conversational banking, internal tooling at UBS."
+  path="/"
+>
+  <section class="home">
+    <div class="hero">
+      <p class="meta">
+        <span class="dot" aria-hidden="true"></span>
+        <span>47.37°N&nbsp;8.54°E</span>
+        <span class="sep">/</span>
+        <span>Zürich</span>
+        <span class="sep">/</span>
+        <span>CET</span>
+      </p>
 
-    <link rel="canonical" href="https://kintscher.ai" />
+      <h1 class="hero-title">
+        <span class="line"><span class="line-inner">Fullstack engineer</span></span>
+        <span class="line"><span class="line-inner"><em>in Zürich.</em></span></span>
+      </h1>
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Kintscher.ai — Yannik Kintscher" />
-    <meta property="og:description" content="Yannik Kintscher — Fullstack Developer in Zürich." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://kintscher.ai" />
-    <meta property="og:site_name" content="Kintscher.ai" />
-    <meta property="og:locale" content="en_US" />
+      <p class="hero-sub">
+        <span class="line-inner">GenAI, Conversational banking,<br />internal tooling at UBS.</span>
+      </p>
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Kintscher.ai — Yannik Kintscher" />
-    <meta name="twitter:description" content="Yannik Kintscher — Fullstack Developer in Zürich." />
+      <form class="prompt" id="hero-prompt-form" action="/chat" method="get" novalidate>
+        <span class="prompt-cursor" aria-hidden="true">›</span>
+        <input
+          id="hero-prompt-input"
+          name="q"
+          type="text"
+          class="prompt-input"
+          placeholder="ask yannik anything"
+          aria-label="Ask yannik anything"
+          maxlength="4000"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+        <span class="prompt-key" aria-hidden="true">⌘ <kbd>/</kbd></span>
+      </form>
+    </div>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500;600&display=swap"
-      rel="stylesheet"
+    <PortraitFrame
+      src={portrait}
+      alt="Yannik Kintscher, fullstack engineer based in Zürich"
+      ariaLabel="Portrait of Yannik Kintscher"
+      caption="PORTRAIT"
+      index="01"
+      sizes="(max-width: 720px) 38vw, (max-width: 1024px) 16vw, 210px"
+      class="home-portrait"
     />
-  </head>
-  <body class="bg-bg text-fg min-h-screen flex items-center justify-center pb-[8vh] px-6 py-16">
+  </section>
+</Layout>
 
-    <!-- Background grid texture -->
-    <div
-      aria-hidden="true"
-      class="fixed inset-0 -z-10 pointer-events-none"
-      style="
-        background-image:
-          linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-          linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
-        background-size: 48px 48px;
-        opacity: 0.03;
-      "
-    ></div>
-
-    <main class="w-full max-w-3xl items-center text-center">
-      <div class="flex flex-col">
-
-        <h1
-          class="font-mono text-5xl sm:text-7xl lg:text-8xl font-semibold text-fg leading-[0.95]"
-          style="letter-spacing: -0.03em;"
-        >
-          Kintscher<span class="text-accent/70">.ai</span>
-        </h1>
-
-        <p
-          class="font-sans text-xl sm:text-2xl text-muted leading-relaxed mt-8 mx-auto"
-          style="max-width: 36rem; text-wrap: balance;"
-        >
-          Yannik Kintscher — Fullstack Developer in Zürich.
-        </p>
-
-        <nav aria-label="Social links" class="mt-14">
-          <ul class="flex flex-wrap justify-center gap-x-10 gap-y-4" role="list">
-            <li>
-              <a
-                href="https://github.com/kintscher"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-item"
-              >
-                <span>GitHub</span>
-                <span class="arrow" aria-hidden="true">↗</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://linkedin.com/in/yannik-kintscher"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-item"
-              >
-                <span>LinkedIn</span>
-                <span class="arrow" aria-hidden="true">↗</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://instagram.com/yannik.zh"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-item"
-              >
-                <span>Instagram</span>
-                <span class="arrow" aria-hidden="true">↗</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="mailto:yannik@kintscher.ai"
-                class="link-item"
-              >
-                <span>Email</span>
-                <span class="arrow" aria-hidden="true">↗</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-      </div>
-    </main>
-
-  </body>
-</html>
+<script>
+  function wireHomePrompt() {
+    const form = document.getElementById('hero-prompt-form') as HTMLFormElement | null;
+    const input = document.getElementById('hero-prompt-input') as HTMLInputElement | null;
+    if (!form || !input) return;
+    // Drop empty submissions silently. Native GET handles encoding + nav,
+    // so /chat lands with ?q=... and ChatInterface auto-fires the question.
+    form.addEventListener('submit', (e) => {
+      const q = input.value.trim();
+      if (!q) e.preventDefault();
+    });
+  }
+  wireHomePrompt();
+  document.addEventListener('astro:page-load', wireHomePrompt);
+</script>
 
 <style>
-  .link-item {
+  .home {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 1fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding: clamp(2rem, 5vh, 4rem) 2rem clamp(2rem, 5vh, 4rem);
+    min-height: calc(100vh - 220px);
+    max-width: 1280px;
+    margin-inline: auto;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    align-self: center;
+  }
+
+  /* ----- Meta line ----- */
+
+  .meta {
     display: inline-flex;
     align-items: center;
-    gap: 0.3em;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1rem;
-    color: #6b7280;
-    text-decoration: none;
-    transition: color 150ms ease;
+    gap: 0.6rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+    opacity: 0;
+    animation: fade-up 380ms cubic-bezier(0.5, 0, 0.2, 1) 80ms both;
+  }
+  .meta .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-signal);
+    box-shadow: 0 0 8px rgb(91 168 155 / 0.6);
+    animation: pulse-signal 2.4s ease-in-out infinite;
+  }
+  .meta .sep { color: var(--color-quiet); opacity: 0.5; }
+
+  /* ----- Hero display type ----- */
+
+  .hero-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 7.4vw, 6.25rem);
+    line-height: 0.96;
+    letter-spacing: -0.015em;
+    color: var(--color-fg);
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-title .line {
+    display: block;
+    overflow: hidden;
+  }
+  .hero-title .line-inner {
+    display: inline-block;
+    transform: translateY(105%);
+    animation: rise 720ms cubic-bezier(0.2, 0.7, 0, 1) both;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--color-fg);
+  }
+  .hero-title .line:nth-child(1) .line-inner { animation-delay: 180ms; }
+  .hero-title .line:nth-child(2) .line-inner { animation-delay: 280ms; }
+
+  /* ----- Standfirst ----- */
+
+  .hero-sub {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(1rem, 1.1vw, 1.0625rem);
+    line-height: 1.5;
+    color: var(--color-muted);
+    max-width: 34ch;
+    overflow: hidden;
+  }
+  .hero-sub .line-inner {
+    display: inline-block;
+    transform: translateY(105%);
+    animation: rise 720ms cubic-bezier(0.2, 0.7, 0, 1) 420ms both;
   }
 
-  .link-item:hover {
-    color: #e5e7eb;
+  /* ----- Prompt button (the thesis) ----- */
+
+  .prompt {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-hairline);
+    border-radius: 6px;
+    padding: 0.7rem 1rem 0.7rem 0.85rem;
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-muted);
+    transition: border-color 180ms ease, color 180ms ease, background 180ms ease, transform 180ms ease;
+    opacity: 0;
+    animation: fade-up 480ms cubic-bezier(0.5, 0, 0.2, 1) 580ms both;
+    min-width: min(420px, 100%);
+    text-align: left;
+  }
+  .prompt:hover,
+  .prompt:focus-within {
+    border-color: var(--color-accent);
+    color: var(--color-fg);
+    background: var(--color-surface-2);
+  }
+  .prompt:hover .prompt-cursor,
+  .prompt:focus-within .prompt-cursor { color: var(--color-accent); }
+
+  .prompt-cursor {
+    display: inline-block;
+    color: var(--color-accent);
+    font-weight: 500;
+    transform: translateY(-0.5px);
+  }
+  .prompt-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    caret-color: var(--color-accent);
+  }
+  .prompt-input::placeholder { color: var(--color-muted); }
+  .prompt-input:focus { color: var(--color-fg); }
+  .prompt-input:focus-visible { outline: none; }
+  .prompt-key {
+    color: var(--color-quiet);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .prompt-key kbd {
+    font-family: inherit;
+    border: 1px solid var(--color-hairline);
+    border-radius: 3px;
+    padding: 0 5px;
+    background: rgb(0 0 0 / 0.3);
+    color: var(--color-muted);
   }
 
-  .link-item:hover .arrow {
-    color: #60a5fa;
+  /* ----- Portrait ----- */
+
+  :global(.home-portrait) {
+    align-self: center;
+    width: clamp(140px, 16vw, 210px);
+    opacity: 0;
+    animation: fade-up 700ms cubic-bezier(0.5, 0, 0.2, 1) 700ms both;
   }
 
-  @media (min-width: 640px) {
-    .link-item {
-      font-size: 1.125rem;
+  /* ----- Animations ----- */
+
+  @keyframes rise {
+    to { transform: translateY(0); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse-signal {
+    0%, 100% { box-shadow: 0 0 6px rgb(91 168 155 / 0.45); opacity: 1; }
+    50%      { box-shadow: 0 0 12px rgb(91 168 155 / 0.85); opacity: 0.75; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meta, .hero-title .line-inner, .hero-sub .line-inner, .prompt, :global(.home-portrait) {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .meta .dot { animation: none; }
+  }
+
+  /* ----- Responsive ----- */
+
+  @media (min-width: 721px) and (max-width: 1024px) {
+    .home {
+      align-items: center;
+      min-height: calc(100vh - 220px);
+      padding-block: clamp(2rem, 6vh, 4rem);
     }
   }
 
-  @media (min-width: 768px) {
-    .link-item {
-      font-size: 1.25rem;
+  @media (max-width: 720px) {
+    .home {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      align-items: start;
+      align-content: center;
+      gap: 1.75rem;
+      min-height: calc(100vh - 180px);
+      padding: 1.5rem 1.25rem 2rem;
+    }
+    .hero { gap: 1.25rem; align-self: auto; }
+    .hero-sub { max-width: 26ch; }
+    .prompt { min-width: 0; width: 100%; }
+    .prompt-key { display: none; }
+    :global(.home-portrait) {
+      align-self: center;
+      justify-self: end;
+      width: clamp(120px, 38vw, 180px);
     }
   }
 
-  .arrow {
-    font-size: 0.75em;
-    transition: color 150ms ease;
+  @media (hover: none) {
+    .prompt-key { display: none; }
   }
 </style>

@@ -1,0 +1,724 @@
+---
+export const prerender = true;
+import Layout from '../layouts/Layout.astro';
+import PortraitFrame from '../components/PortraitFrame.astro';
+import portrait from '../assets/images/yannik-chair.jpg';
+---
+
+<Layout
+  title="About — Yannik Kintscher"
+  description="Senior fullstack engineer in Zürich. UBS Conversational Banking, internal platforms, applied AI."
+  path="/about"
+>
+  <article class="about">
+    <p class="meta">
+      <span class="dot" aria-hidden="true"></span>
+      <span>FILE&nbsp;/&nbsp;about</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <time datetime="2026">2026</time>
+      <span class="sep" aria-hidden="true">/</span>
+      <span aria-label="Reading time: about 3 minutes">~3 min read</span>
+    </p>
+
+    <header class="about-head">
+      <h1 class="about-title">
+        <span class="line"><span class="line-inner">The long</span></span>
+        <span class="line"><span class="line-inner"><em>version.</em></span></span>
+      </h1>
+      <p class="about-dek">
+        <span class="line-inner">A short tour of the work, the route here, and what I'm chasing now.</span>
+      </p>
+    </header>
+
+    <div class="bio">
+      <aside class="bio-rail" aria-label="Portrait marginalia">
+        <PortraitFrame
+          src={portrait}
+          alt="Yannik Kintscher, seated"
+          ariaLabel="Portrait of Yannik Kintscher"
+          objectPosition="50% 32%"
+          caption="PORTRAIT · ZÜRICH · 2026"
+          index="02"
+          sizes="(max-width: 720px) 78vw, (max-width: 900px) 460px, (max-width: 1099px) 340px, 420px"
+          class="about-portrait"
+        />
+
+        <div class="rail-mid">
+          <dl class="rail-status" aria-label="Status">
+            <div class="rail-status-row">
+              <dt>loc</dt>
+              <span class="rail-status-sep" aria-hidden="true">:</span>
+              <dd>zürich, ch</dd>
+            </div>
+            <div class="rail-status-row">
+              <dt>role</dt>
+              <span class="rail-status-sep" aria-hidden="true">:</span>
+              <dd>sw eng @ ubs / conversational banking</dd>
+            </div>
+            <div class="rail-status-row">
+              <dt>status</dt>
+              <span class="rail-status-sep" aria-hidden="true">:</span>
+              <dd>shipping, building, lifting</dd>
+            </div>
+          </dl>
+
+          <p class="rail-manifesto">
+            <span class="rail-manifesto-mark" aria-hidden="true">&gt;</span>
+            <span class="rail-manifesto-text">building tools that make the day less tedious.</span>
+          </p>
+        </div>
+
+        <div class="rail-foot">
+          <hr class="rail-rule" />
+          <p class="rail-sig">
+            <span class="rail-sig-name">Yannik Kintscher</span>
+            <span class="rail-sig-sep" aria-hidden="true">/</span>
+            <span class="rail-sig-loc">Regensdorf · CH</span>
+          </p>
+        </div>
+      </aside>
+
+      <div class="bio-text">
+        <p class="bio-para">
+          Came up the Swiss way: a 4-year
+          <button type="button" class="annot" aria-describedby="gloss-efz">Informatiker EFZ<span class="tip" role="tooltip" id="gloss-efz">Swiss federal IT diploma. 4 years, dual-track.</span></button>
+          apprenticeship at UBS. Year one was
+          <button type="button" class="annot" aria-describedby="gloss-basic">Basic Training in Altstetten<span class="tip" role="tooltip" id="gloss-basic">UBS apprentice training centre. Pre-team year.</span></button>,
+          covering IT fundamentals, Scrum, and group projects. The next three
+          years I spent in Wealth Management on trading applications, building
+          Java REST services and internal trading interfaces. That stretch
+          taught me how high-stakes systems actually get built and shipped.
+        </p>
+
+        <p class="bio-para">
+          Since 2022 I’ve been on the Conversational Banking team, working on
+          the
+          <button type="button" class="annot" aria-describedby="gloss-va">Virtual Assistant<span class="tip" role="tooltip" id="gloss-va">UBS E-Banking and Mobile Banking chatbot. Live for clients.</span></button>,
+          UBS’s E-Banking and Mobile Banking chatbot. I started on the Java
+          backend, owning services that powered the bot in production, and
+          drove the Java side end-to-end into its first production release in
+          2023. I was on the team before generative AI hit; when it did, I
+          helped drive LLM integrations and
+          <button type="button" class="annot" aria-describedby="gloss-aoi">Azure OpenAI<span class="tip" role="tooltip" id="gloss-aoi">Enterprise OpenAI on Azure. Compliant, governed.</span></button>
+          adoption, shipping one of UBS’s first external GenAI use cases. In
+          2024 I moved into fullstack by building the
+          <button type="button" class="annot" aria-describedby="gloss-portal">Chatbot Portal<span class="tip" role="tooltip" id="gloss-portal">Internal platform. React and Python. Built it.</span></button>,
+          a React and Python platform the team uses to monitor, analyze, and
+          test the bot end-to-end, and shipped the first test automation suite
+          in the Conversational Banking crew along the way. An internal
+          rotation into
+          <button type="button" class="annot" aria-describedby="gloss-speech">Speech Analytics<span class="tip" role="tooltip" id="gloss-speech">Sister team. NLP on call data. Short rotation.</span></button>
+          that year gave me a first taste of NLP and shipped a new REST
+          service into production. That same year I also won the
+          <button type="button" class="annot" aria-describedby="gloss-hack">Microsoft × UBS THINK AHEAD GenAI Hackathon<span class="tip" role="tooltip" id="gloss-hack">Microsoft × UBS hackathon. We won.</span></button>
+          with a cross-team squad, and was promoted to
+          <button type="button" class="annot" aria-describedby="gloss-auth">Authorized Officer<span class="tip" role="tooltip" id="gloss-auth">UBS title rank. Bumped up in spring 2025.</span></button>
+          the following spring.
+        </p>
+
+        <p class="bio-para">
+          Right now I’m most interested in agents and applied AI, tooling
+          that makes developer workflows faster and day-to-day work less
+          tedious. The Chatbot Portal is one example, and I want to do more
+          of that. Currently shipping evaluation and data-labelling tooling
+          for the Virtual Assistant, tinkering on side projects in the
+          evenings, and going deep on agent architectures.
+        </p>
+
+        <p class="signoff"><em>— Y.</em></p>
+      </div>
+    </div>
+
+    <section class="stack" aria-labelledby="stack-h">
+      <header class="stack-head">
+        <span class="dot" aria-hidden="true"></span>
+        <h2 id="stack-h" class="stack-kicker">§&nbsp;Stack</h2>
+        <span class="sep" aria-hidden="true">/</span>
+        <span class="stack-meta">tools I trust, tools I'm watching</span>
+      </header>
+
+      <dl class="stack-list">
+        <div class="stack-row">
+          <dt><em>Daily</em></dt>
+          <dd>
+            <span>Python</span><span class="dot-sep">·</span>
+            <span>TypeScript</span><span class="dot-sep">·</span>
+            <span>React</span><span class="dot-sep">·</span>
+            <span>FastAPI</span>
+          </dd>
+        </div>
+        <div class="stack-row">
+          <dt><em>Backend &amp; infra</em></dt>
+          <dd>
+            <span>Azure</span><span class="dot-sep">·</span>
+            <span>OpenAI</span><span class="dot-sep">·</span>
+            <span>Postgres</span><span class="dot-sep">·</span>
+            <span>Redis</span><span class="dot-sep">·</span>
+            <span>GitLab&nbsp;CI</span>
+          </dd>
+        </div>
+        <div class="stack-row">
+          <dt><em>Exploring</em></dt>
+          <dd>
+            <span>LangGraph</span><span class="dot-sep">·</span>
+            <span>Agent tooling</span><span class="dot-sep">·</span>
+            <span>Cloudflare&nbsp;Workers</span>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <footer class="about-foot">
+      <a class="next-link" href="/chat">
+        <span class="next-kicker">next&nbsp;/</span>
+        <span class="next-label">ask yannik anything</span>
+        <span class="next-arrow" aria-hidden="true">→</span>
+        <span class="key-hint" aria-hidden="true">⌘ C</span>
+      </a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  /* ───────────────────────────── shell ───────────────────────────── */
+
+  .about {
+    position: relative;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: clamp(2.5rem, 6vh, 5rem) clamp(1.25rem, 3vw, 2.5rem) clamp(3rem, 7vh, 6rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: clamp(2rem, 4.5vh, 3.5rem);
+  }
+
+  /* very soft warm wash to lift the page out of pure black */
+  .about::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 50% at 18% 22%, rgb(232 168 58 / 0.05) 0%, transparent 70%),
+      radial-gradient(40% 30% at 82% 88%, rgb(91 168 155 / 0.035) 0%, transparent 70%);
+    z-index: -1;
+  }
+
+  /* ───────────────────────────── meta ───────────────────────────── */
+
+  .meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+    opacity: 0;
+    animation: fade-up 380ms cubic-bezier(0.5, 0, 0.2, 1) 80ms both;
+  }
+  .meta .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-signal);
+    box-shadow: 0 0 8px rgb(91 168 155 / 0.6);
+    animation: pulse-signal 2.4s ease-in-out infinite;
+  }
+  .meta .sep { color: var(--color-quiet); opacity: 0.5; }
+
+  /* ───────────────────────────── headline ───────────────────────────── */
+
+  .about-head {
+    display: grid;
+    gap: 1rem;
+    max-width: 24ch;
+  }
+
+  .about-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 7vw, 5.75rem);
+    line-height: 0.96;
+    letter-spacing: -0.015em;
+    color: var(--color-fg);
+    display: flex;
+    flex-direction: column;
+  }
+  .about-title .line { display: block; overflow: hidden; }
+  .about-title .line-inner {
+    display: inline-block;
+    transform: translateY(105%);
+    animation: rise 720ms cubic-bezier(0.2, 0.7, 0, 1) both;
+  }
+  .about-title em { font-style: italic; color: var(--color-fg); }
+  .about-title .line:nth-child(1) .line-inner { animation-delay: 180ms; }
+  .about-title .line:nth-child(2) .line-inner { animation-delay: 280ms; }
+
+  .about-dek {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 1.05vw, 1.0625rem);
+    line-height: 1.5;
+    color: var(--color-muted);
+    max-width: 38ch;
+    overflow: hidden;
+  }
+  .about-dek .line-inner {
+    display: inline-block;
+    transform: translateY(105%);
+    animation: rise 720ms cubic-bezier(0.2, 0.7, 0, 1) 420ms both;
+  }
+
+  /* ───────────────────────────── bio (portrait + text) ───────────────────────────── */
+
+  .bio {
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: stretch;
+  }
+
+  /* Left rail — image at top, signature at bottom, metadata + pull-quote
+     distribute through the middle. The rail stretches to match the bio
+     text height so the column never goes dead. */
+  .bio-rail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: clamp(1.75rem, 3vh, 2.5rem);
+    min-width: 0;
+  }
+
+  .about-portrait {
+    opacity: 0;
+    animation: fade-up 800ms cubic-bezier(0.5, 0, 0.2, 1) 600ms both;
+  }
+
+  .rail-mid {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 3vh, 2.25rem);
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 820ms both;
+  }
+
+  /* Terminal-style status block — reads as a whoami / status line. */
+  .rail-status {
+    margin: 0;
+    display: grid;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--color-quiet);
+  }
+  .rail-status-row {
+    display: grid;
+    grid-template-columns: 3.25rem auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .rail-status-row dt,
+  .rail-status-row dd { margin: 0; }
+  .rail-status-row dt { color: var(--color-quiet); opacity: 0.7; }
+  .rail-status-sep { color: var(--color-quiet); opacity: 0.55; }
+  .rail-status-row dd {
+    color: var(--color-muted);
+    overflow-wrap: break-word;
+  }
+
+  /* Single-line manifesto — shell-prompt cue, mono, dim. */
+  .rail-manifesto {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: clamp(13px, 1vw, 14px);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+    max-width: 32ch;
+  }
+  .rail-manifesto-mark {
+    flex: 0 0 auto;
+    color: var(--color-accent);
+    opacity: 0.85;
+  }
+  .rail-manifesto-text { color: var(--color-muted); }
+
+  .rail-foot {
+    display: grid;
+    gap: 0.85rem;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 980ms both;
+  }
+  .rail-rule {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-top: 1px solid var(--color-hairline);
+  }
+  .rail-sig {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+  }
+  .rail-sig-name { color: var(--color-muted); }
+  .rail-sig-sep { color: var(--color-quiet); opacity: 0.5; }
+  .rail-sig-loc { color: var(--color-quiet); }
+
+  /* ───────────────────────────── bio text ───────────────────────────── */
+
+  .bio-text {
+    display: grid;
+    gap: 1.4em;
+    /* fill the grid column; constrain measure on each paragraph */
+    min-width: 0;
+  }
+
+  .bio-para {
+    position: relative;
+    margin: 0;
+    max-width: 54ch;
+    font-family: var(--font-sans);
+    font-size: clamp(1.0625rem, 1.05vw, 1.125rem);
+    line-height: 1.55;
+    color: rgb(240 235 226 / 0.82);
+    letter-spacing: 0.002em;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  /* On wide viewports, shift the bio column right to reserve a left margin
+     where the gloss can render without colliding with the portrait. */
+  @media (min-width: 1100px) {
+    .bio-para,
+    .signoff { margin-left: 5.5rem; }
+  }
+  .bio-para:nth-of-type(1) { animation-delay: 520ms; }
+  .bio-para:nth-of-type(2) { animation-delay: 640ms; }
+  .bio-para:nth-of-type(3) { animation-delay: 760ms; }
+
+  /* drop-cap on the first paragraph for editorial warmth */
+  .bio-para:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.85;
+    float: left;
+    padding: 0.18em 0.18em 0 0;
+    color: var(--color-fg);
+  }
+
+  .signoff {
+    margin-top: 0.4rem;
+    margin-bottom: 0;
+    margin-right: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.8vw, 1.9rem);
+    color: var(--color-accent);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 980ms both;
+  }
+  .signoff em { font-style: italic; }
+
+  /* ───────────────────────────── annotations ───────────────────────────── */
+
+  .annot {
+    /* button reset — keeps the term flowing as inline prose */
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: var(--color-fg);
+    line-height: inherit;
+    text-align: inherit;
+    display: inline;
+
+    position: relative;
+    background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-hairline-strong) calc(100% - 1px));
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    cursor: help;
+    transition: color 160ms ease, background-image 160ms ease;
+  }
+  .annot::after {
+    content: '°';
+    position: relative;
+    top: -0.25em;
+    margin-left: 0.1em;
+    font-size: 0.7em;
+    color: var(--color-accent);
+    opacity: 0.45;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .annot:hover,
+  .annot:focus-visible {
+    color: var(--color-fg);
+    background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-accent) calc(100% - 1px));
+    outline: none;
+  }
+  .annot:hover::after,
+  .annot:focus-visible::after { opacity: 1; transform: translateY(-1px); }
+
+  /* tooltip — readable card that floats below the term */
+  .tip {
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    z-index: 10;
+    width: max-content;
+    max-width: min(22rem, calc(100vw - 2rem));
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-hairline-strong);
+    border-left: 1px solid var(--color-accent);
+    border-radius: 4px;
+    background: rgb(20 20 24 / 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.04) inset,
+      0 12px 28px -12px rgb(0 0 0 / 0.7),
+      0 4px 12px -6px rgb(0 0 0 / 0.5);
+
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 13.5px;
+    line-height: 1.5;
+    letter-spacing: 0.002em;
+    color: var(--color-fg);
+    text-align: left;
+    white-space: normal;
+
+    opacity: 0;
+    transform: translateY(-2px);
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 200ms cubic-bezier(0.2, 0.7, 0, 1);
+  }
+  /* small caret pointing up to the term */
+  .tip::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0.85rem;
+    width: 8px;
+    height: 8px;
+    background: rgb(20 20 24 / 0.96);
+    border-top: 1px solid var(--color-hairline-strong);
+    border-left: 1px solid var(--color-hairline-strong);
+    transform: rotate(45deg);
+  }
+
+  .annot:hover .tip,
+  .annot:focus-visible .tip {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* keep tooltip from clipping past the right edge of long terms near viewport edge */
+  @media (max-width: 720px) {
+    .tip { left: 0; right: auto; max-width: calc(100vw - 2rem); }
+  }
+
+  /* ───────────────────────────── stack ───────────────────────────── */
+
+  .stack {
+    margin-top: clamp(0.5rem, 2vh, 1.5rem);
+    display: grid;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 1100ms both;
+  }
+
+  .stack-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-quiet);
+  }
+  .stack-head .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-signal);
+    box-shadow: 0 0 8px rgb(91 168 155 / 0.6);
+    animation: pulse-signal 2.4s ease-in-out infinite;
+  }
+  .stack-head .sep { color: var(--color-quiet); opacity: 0.5; }
+  .stack-kicker {
+    margin: 0;
+    font: inherit;
+    color: var(--color-fg);
+    letter-spacing: 0.04em;
+  }
+  .stack-meta { color: var(--color-quiet); }
+
+  .stack-list { margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+  .stack-row {
+    display: grid;
+    grid-template-columns: minmax(11rem, 14rem) 1fr;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .stack-row:last-child { border-bottom: none; }
+
+  .stack-row dt {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.3rem, 1.6vw, 1.6rem);
+    line-height: 1.1;
+    color: var(--color-fg);
+    letter-spacing: -0.005em;
+  }
+  .stack-row dt em { font-style: italic; }
+
+  .stack-row dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.55rem;
+    row-gap: 0.25rem;
+    align-items: baseline;
+  }
+  .stack-row dd .dot-sep {
+    color: var(--color-quiet);
+    opacity: 0.7;
+  }
+  .stack-row dd > span:not(.dot-sep) {
+    color: var(--color-fg);
+    transition: color 160ms ease;
+  }
+  .stack-row:hover dd > span:not(.dot-sep) { color: var(--color-fg); }
+
+  /* ───────────────────────────── next-link ───────────────────────────── */
+
+  .about-foot {
+    margin-top: clamp(2rem, 4vh, 3rem);
+    border-top: 1px solid var(--color-hairline);
+    padding-top: 1.25rem;
+    opacity: 0;
+    animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 1240ms both;
+  }
+  .next-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 160ms ease, gap 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .next-kicker { color: var(--color-quiet); letter-spacing: 0.04em; }
+  .next-label  { color: var(--color-fg); }
+  .next-arrow  { color: var(--color-accent); transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .next-link:hover { gap: 1rem; }
+  .next-link:hover .next-arrow { transform: translateX(3px); }
+  .next-link:hover .next-label { color: var(--color-fg); }
+
+  /* ───────────────────────────── animations ───────────────────────────── */
+
+  @keyframes rise { to { transform: translateY(0); } }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse-signal {
+    0%, 100% { box-shadow: 0 0 6px rgb(91 168 155 / 0.45); opacity: 1; }
+    50%      { box-shadow: 0 0 12px rgb(91 168 155 / 0.85); opacity: 0.75; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meta, .about-title .line-inner, .about-dek .line-inner,
+    .bio-para, .signoff, .about-portrait, .rail-mid, .rail-foot, .stack, .about-foot {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .meta .dot { animation: none; }
+    .tip { transition: opacity 1ms; }
+  }
+
+  /* ───────────────────────────── responsive ───────────────────────────── */
+
+  /* tablet: still 2-col but tighter, smaller portrait */
+  @media (max-width: 1099px) {
+    .bio {
+      grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  /* tablet portrait + small laptop: stack, rail drops beneath the body
+     copy as a single dim footer block */
+  @media (max-width: 900px) {
+    .bio {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .bio-rail {
+      order: 2;
+      gap: 1.25rem;
+      opacity: 0.75;
+    }
+    .about-portrait { max-width: 460px; }
+  }
+
+  /* mobile: stack everything, glosses fold below the paragraph */
+  @media (max-width: 720px) {
+    .about { padding-top: 2rem; }
+    .bio {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .about-portrait { max-width: 78vw; }
+
+    .bio-text { max-width: 100%; }
+    .bio-para { font-size: 1.0625rem; line-height: 1.7; }
+    .bio-para:first-of-type::first-letter { font-size: 2.8em; }
+
+    .stack-row {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      padding: 0.85rem 0;
+    }
+    .stack-row dt { font-size: 1.25rem; }
+
+    .about-head { max-width: 100%; }
+  }
+
+  @media (hover: none) {
+    .annot::after { opacity: 1; }
+  }
+</style>

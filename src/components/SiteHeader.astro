@@ -1,0 +1,176 @@
+---
+const path = Astro.url.pathname;
+
+const items = [
+  { href: '/about',   label: 'about',   key: 'A' },
+  { href: '/chat',    label: 'chat',    key: 'C' },
+  { href: '/contact', label: 'contact', key: 'X' },
+];
+
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <a href="/" class="brand" aria-label="kintscher.ai — home">
+    <span class="brand-text">kintscher<span class="brand-dot">.</span>ai</span><span class="caret" aria-hidden="true"></span>
+  </a>
+
+  <nav aria-label="Primary navigation">
+    <ul role="list">
+      {items.map((it) => (
+        <li>
+          <a
+            href={it.href}
+            class:list={['nav-link', { current: isCurrent(it.href) }]}
+            aria-current={isCurrent(it.href) ? 'page' : undefined}
+          >
+            <span>{it.label}</span>
+            <span class="key-hint" aria-hidden="true">⌐ {it.key}</span>
+          </a>
+        </li>
+      ))}
+      <li>
+        <button
+          type="button"
+          class="nav-link cmd-trigger"
+          aria-keyshortcuts="Meta+K Control+K"
+          aria-haspopup="dialog"
+          aria-controls="cmd-palette"
+          data-cmd-open
+        >
+          <span>menu</span>
+          <span class="key-hint" aria-hidden="true">⌘ K</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  function bindCmdTrigger() {
+    document.querySelectorAll<HTMLButtonElement>('[data-cmd-open]').forEach((btn) => {
+      if (btn.dataset.cmdBound) return;
+      btn.dataset.cmdBound = '1';
+      btn.addEventListener('click', () => {
+        const g = window as unknown as { __openCmd?: () => void };
+        g.__openCmd?.();
+      });
+    });
+  }
+  bindCmdTrigger();
+  document.addEventListener('astro:page-load', bindCmdTrigger);
+</script>
+
+<style>
+  .site-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1.25rem 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    border-bottom: 1px solid var(--color-hairline);
+    z-index: 50;
+  }
+
+  .brand {
+    color: var(--color-fg);
+    text-decoration: none;
+    letter-spacing: -0.005em;
+  }
+  .brand-dot { color: var(--color-accent); }
+
+  nav ul {
+    display: flex;
+    gap: 1.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-link {
+    color: var(--color-muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    transition: color 150ms ease;
+    position: relative;
+    padding: 0.25rem 0;
+  }
+  button.nav-link {
+    background: transparent;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 transparent;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition:
+      transform 140ms cubic-bezier(0.5, 0, 0.2, 1),
+      box-shadow 50ms ease 140ms;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    box-shadow: 0 4px 0 var(--color-accent);
+  }
+  /* keyboard focus already gets the global :focus-visible ring;
+     skip the underline so the two indicators don't collide */
+  .nav-link:focus-visible { outline-offset: 2px; }
+
+  .nav-link > span:first-child {
+    display: inline-block;
+    transition: transform 50ms ease 140ms;
+  }
+  .nav-link:hover > span:first-child,
+  .nav-link:focus-visible > span:first-child {
+    transform: translateX(0.5px);
+  }
+
+  .nav-link:hover,
+  .nav-link.current {
+    color: var(--color-fg);
+  }
+
+  .nav-link.current::before {
+    content: '';
+    position: absolute;
+    left: -0.85rem;
+    top: 0.5em;
+    width: 4px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 999px;
+  }
+
+  @media (max-width: 720px) {
+    .site-header {
+      padding: 0.5rem 1.25rem;
+      font-size: 0.75rem;
+    }
+    nav ul { gap: 0.5rem; }
+    .nav-link {
+      padding: 0.7rem 0.5rem;
+    }
+    .nav-link::after { display: none; }
+    .key-hint { display: none; }
+    .nav-link.current::before { display: none; }
+  }
+
+  @media (hover: none) {
+    .key-hint { display: none; }
+    .nav-link::after { display: none; }
+  }
+</style>
