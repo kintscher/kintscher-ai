@@ -14,8 +14,8 @@ Currently shipping evaluation tooling for the Virtual Assistant, rebuilding this
 
 ## Stack
 - Daily: Python, TypeScript, React, FastAPI
-- Backend & infra: Azure, OpenAI, Postgres, Redis, GitLab CI, 
-- Exploring: LangGraph, Agent Tooling, Cloudflare Workers, 
+- Backend & infra: Azure, OpenAI, Postgres, Redis, GitLab CI
+- Exploring: LangGraph, Agent tooling, Cloudflare Workers
 
 ## Contact
 - Email: yannik@kintscher.ai
@@ -23,5 +23,6 @@ Currently shipping evaluation tooling for the Virtual Assistant, rebuilding this
 - LinkedIn: yannik-kintscher
 
 ## Photos
-- /public/images/yannik-neutral.jpg — for hero / about (use the calm portrait)
-- /public/images/yannik-smile.jpg — for contact / footer (use the smiling portrait)
+- /src/assets/images/yannik-tower.jpg — home hero portrait
+- /src/assets/images/yannik-chair.jpg — about page portrait
+- /src/assets/images/yannik-smile.jpg — contact page portrait

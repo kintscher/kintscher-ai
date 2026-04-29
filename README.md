@@ -2,27 +2,17 @@
 
 Personal landing page. Built with [Astro](https://astro.build) and deployed on Cloudflare Workers.
 
+## Pages
+
+Five routes, all reachable from the home page in one click:
+`/`, `/about`, `/chat`, `/contact`, and a 404.
+
 ## Stack
 
-- **Framework:** Astro (static, zero client-side JS)
+- **Framework:** Astro (prerendered, minimal client JS)
 - **Styles:** Tailwind CSS v4
 - **Adapter:** `@astrojs/cloudflare`
 - **Fonts:** JetBrains Mono, Inter (via Google Fonts)
-
-## Project Structure
-
-```
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── pages/
-│   │   └── index.astro
-│   └── styles/
-│       └── global.css
-├── astro.config.mjs
-└── wrangler.jsonc
-```
 
 ## Commands
 
