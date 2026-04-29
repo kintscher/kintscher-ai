@@ -607,7 +607,8 @@ const suggestions: Suggestion[] = [
     transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
     flex-shrink: 0;
   }
-  .chat-submit:hover {
+  .chat-submit:hover,
+  .chat-form:has(#chat-input:not(:placeholder-shown)) .chat-submit {
     color: var(--color-accent);
     border-color: var(--color-accent);
     background: rgb(232 168 58 / 0.05);
