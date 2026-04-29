@@ -11,5 +11,12 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "CHAT_RATE_LIMIT",
+			"id": "e51f0b08292645c691b7d86a596be66e",
+			"remote": true
+		}
+	]
 }
