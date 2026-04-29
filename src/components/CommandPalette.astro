@@ -29,6 +29,7 @@ const items: Item[] = [
         autocomplete="off"
         autocapitalize="off"
         spellcheck="false"
+        maxlength="4000"
         placeholder="ask yannik, or type a route..."
         aria-label="Type a command"
       />
@@ -95,7 +96,9 @@ const items: Item[] = [
     const list   = document.getElementById('cmd-list')    as HTMLUListElement;
     if (!dialog || !input || !list) return;
 
-    const items = () => Array.from(list.querySelectorAll<HTMLAnchorElement>('.cmd-item:not([hidden])'));
+    const items = () => Array
+      .from(list.querySelectorAll<HTMLAnchorElement>('.cmd-item'))
+      .filter((a) => !a.parentElement?.hasAttribute('hidden'));
     const empty = list.querySelector<HTMLLIElement>('.cmd-empty');
 
     function setActive(idx: number) {
@@ -211,20 +214,28 @@ const items: Item[] = [
 
     input.addEventListener('keydown', (e) => {
       const live = items();
-      if (!live.length) return;
       if (e.key === 'ArrowDown') {
+        if (!live.length) return;
         e.preventDefault();
         setActive(Math.min(activeIndex() + 1, live.length - 1));
       } else if (e.key === 'ArrowUp') {
+        if (!live.length) return;
         e.preventDefault();
         setActive(Math.max(activeIndex() - 1, 0));
       } else if (e.key === 'Enter') {
+        const q = input.value.trim();
+        // Treat as a question for /chat when the input clearly isn't a route lookup:
+        // contains whitespace or a question mark, or no nav items match.
+        const looksLikeQuestion = /\s|\?/.test(q);
+        if (q && (looksLikeQuestion || live.length === 0)) {
+          e.preventDefault();
+          close();
+          location.href = `/chat?q=${encodeURIComponent(q)}`;
+          return;
+        }
+        if (!live.length) return;
         e.preventDefault();
         live[activeIndex()]?.click();
-      } else if (e.key.length === 1 && /[a-z]/i.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey && input.value === '') {
-        // Single-letter shortcut when input is empty
-        const hit = live.find(a => a.dataset.hint === e.key.toLowerCase());
-        if (hit) { e.preventDefault(); hit.click(); }
       }
     });
 

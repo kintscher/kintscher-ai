@@ -301,6 +301,22 @@ const suggestions: Suggestion[] = [
     if (!w.__kChatBound) {
       w.__kChatBound = true;
     }
+
+    // Auto-send a question passed via ?q= (from the home/command-palette prompt).
+    // Strip the param from the URL so reloads don't re-fire the same question.
+    const params = new URLSearchParams(location.search);
+    const incoming = params.get('q');
+    if (incoming && incoming.trim() && !controller) {
+      params.delete('q');
+      const qs = params.toString();
+      history.length = 0;
+      window.history.replaceState(
+        {},
+        '',
+        location.pathname + (qs ? `?${qs}` : '') + location.hash,
+      );
+      send(incoming);
+    }
   }
 
   setup();
