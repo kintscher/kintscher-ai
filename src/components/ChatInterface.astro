@@ -40,11 +40,10 @@ const suggestions: Suggestion[] = [
     >
       <span class="chat-prompt" aria-hidden="true">›</span>
       <div class="chat-input-wrap">
-        <input
+        <textarea
           id="chat-input"
           name="kc-prompt"
-          type="text"
-          inputmode="text"
+          rows="1"
           enterkeyhint="send"
           autocomplete="off"
           autocorrect="off"
@@ -52,12 +51,7 @@ const suggestions: Suggestion[] = [
           spellcheck="false"
           placeholder=" "
           aria-label="Ask anything about Yannik"
-          data-form-type="other"
-          data-1p-ignore="true"
-          data-lpignore="true"
-          data-bwignore="true"
-          data-dashlane-ignore="true"
-        />
+        ></textarea>
         <span class="chat-caret" aria-hidden="true"></span>
       </div>
       <button type="submit" class="chat-submit" aria-label="Send">
@@ -114,7 +108,7 @@ const suggestions: Suggestion[] = [
   function setup() {
     const shell = document.querySelector<HTMLDivElement>('.chat-shell');
     const form = document.getElementById('chat-form') as HTMLFormElement | null;
-    const input = document.getElementById('chat-input') as HTMLInputElement | null;
+    const input = document.getElementById('chat-input') as HTMLTextAreaElement | null;
     const thread = document.getElementById('chat-thread');
     const stopBtn = document.getElementById('chat-stop');
     if (!shell || !form || !input || !thread || !stopBtn) return;
@@ -175,6 +169,7 @@ const suggestions: Suggestion[] = [
       if (!trimmed) return;
 
       input!.value = '';
+      autosize();
       setState('streaming');
 
       if (shell!.dataset.state !== 'streaming') {
@@ -294,6 +289,27 @@ const suggestions: Suggestion[] = [
       if (!value) return;
       send(value);
     });
+
+    // Textarea inserts a newline on Enter by default — submit instead so
+    // the composer behaves like a single-line input. Shift+Enter keeps newline.
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    // Auto-grow as the user adds lines, capped by the CSS max-height.
+    // Reset to auto first so the textarea can also shrink. Once content
+    // exceeds a single line, mark the form so the send button reflows
+    // beneath the textarea (see .chat-form.is-multiline in CSS).
+    const minH = parseFloat(getComputedStyle(input!).minHeight) || 21;
+    const autosize = () => {
+      input!.style.height = 'auto';
+      input!.style.height = `${input!.scrollHeight}px`;
+      form!.classList.toggle('is-multiline', input!.scrollHeight > minH + 1);
+    };
+    input.addEventListener('input', autosize);
 
     stopBtn.addEventListener('click', () => {
       controller?.abort();
@@ -594,7 +610,7 @@ const suggestions: Suggestion[] = [
 
   .chat-form {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 0.65rem;
     width: 100%;
     background: var(--color-surface);
@@ -604,6 +620,24 @@ const suggestions: Suggestion[] = [
     font-family: var(--font-mono);
     font-size: 14px;
     transition: border-color 180ms ease, background 180ms ease;
+  }
+  /* Once the textarea spans more than one line, drop the send/stop button
+     onto its own row so the textarea (and its scrollbar) takes the full
+     width up to the form's right edge. */
+  .chat-form.is-multiline {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.65rem;
+    row-gap: 0.5rem;
+    align-items: start;
+  }
+  .chat-form.is-multiline .chat-prompt { grid-column: 1; grid-row: 1; }
+  .chat-form.is-multiline .chat-input-wrap { grid-column: 2; grid-row: 1; }
+  .chat-form.is-multiline .chat-submit,
+  .chat-form.is-multiline .chat-stop {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
   }
   .chat-form:focus-within {
     border-color: var(--color-hairline-strong);
@@ -633,9 +667,25 @@ const suggestions: Suggestion[] = [
     color: var(--color-fg);
     font: inherit;
     padding: 0;
+    margin: 0;
     caret-color: var(--color-accent);
     min-width: 0;
+    resize: none;
+    line-height: 1.5;
+    min-height: calc(1em * 1.5);
+    max-height: calc(1em * 1.5 * 7);
+    overflow-y: auto;
+    display: block;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-hairline-strong) transparent;
   }
+  #chat-input::-webkit-scrollbar { width: 6px; }
+  #chat-input::-webkit-scrollbar-track { background: transparent; }
+  #chat-input::-webkit-scrollbar-thumb {
+    background: var(--color-hairline-strong);
+    border-radius: 999px;
+  }
+  #chat-input::-webkit-scrollbar-thumb:hover { background: var(--color-quiet); }
   #chat-input:disabled { color: var(--color-quiet); cursor: not-allowed; }
   #chat-input::placeholder { color: var(--color-quiet); }
   /* Suppress the global amber focus ring on the input — the form wrapper's
