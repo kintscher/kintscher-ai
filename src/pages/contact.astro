@@ -696,14 +696,21 @@ const email = 'yannik@kintscher.ai';
     .contact-head    { order: 1; max-width: 100%; }
     .email-block     { order: 2; }
     .social          { order: 3; }
-    .contact-portrait{ order: 4; max-width: 460px; }
+    /* Portrait root is rendered by PortraitFrame.astro, so its scope id
+       differs from this file — :global() lets the order/sizing rules
+       actually attach. Without it the portrait stays at order:0 and the
+       headline gets pushed below the fold. */
+    :global(.contact-portrait) { order: 4; max-width: 460px; }
     .contact-foot    { order: 5; margin-top: clamp(0.75rem, 2vh, 1.5rem); }
   }
 
   /* mobile: tighten, keep email clearly the largest text element */
   @media (max-width: 720px) {
     .contact { padding-top: 2rem; }
-    .contact-portrait { max-width: 78vw; }
+    /* Cap the portrait to roughly two-thirds of the column so the
+       headline + email block clear the first viewport. 78vw was
+       desktop-photo-shrunk-down, not designed for this column. */
+    :global(.contact-portrait) { max-width: 64vw; align-self: center; }
     .email-row { gap: 0.75rem; }
     .availability {
       gap: 0.4rem;
