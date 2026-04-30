@@ -36,11 +36,14 @@ import portrait from '../assets/images/yannik-tower.jpg';
           id="hero-prompt-input"
           name="q"
           type="text"
+          inputmode="text"
+          enterkeyhint="go"
           class="prompt-input"
           placeholder="ask yannik anything"
           aria-label="Ask yannik anything"
           maxlength="4000"
           autocomplete="off"
+          autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
         />
@@ -62,15 +65,26 @@ import portrait from '../assets/images/yannik-tower.jpg';
 
 <script>
   function wireHomePrompt() {
+    const home = document.querySelector<HTMLElement>('.home');
     const form = document.getElementById('hero-prompt-form') as HTMLFormElement | null;
     const input = document.getElementById('hero-prompt-input') as HTMLInputElement | null;
-    if (!form || !input) return;
+    if (!form || !input || !home) return;
+
     // Drop empty submissions silently. Native GET handles encoding + nav,
     // so /chat lands with ?q=... and ChatInterface auto-fires the question.
     form.addEventListener('submit', (e) => {
       const q = input.value.trim();
       if (!q) e.preventDefault();
     });
+
+    // Mobile-only: when the prompt is focused, mark the section so the
+    // portrait can fade out and the input becomes the user's focus.
+    // The on-screen keyboard then rises smoothly under the input thanks
+    // to `interactive-widget=resizes-content` on the viewport meta.
+    const onFocus = () => home.setAttribute('data-prompt-focused', 'true');
+    const onBlur = () => home.removeAttribute('data-prompt-focused');
+    input.addEventListener('focus', onFocus);
+    input.addEventListener('blur', onBlur);
   }
   wireHomePrompt();
   document.addEventListener('astro:page-load', wireHomePrompt);
@@ -286,18 +300,66 @@ import portrait from '../assets/images/yannik-tower.jpg';
       align-items: start;
       align-content: center;
       gap: 1.75rem;
-      min-height: calc(100vh - 180px);
+      /* dvh shrinks with the on-screen keyboard (paired with
+         `interactive-widget=resizes-content`), so the layout naturally
+         reflows above the keyboard instead of being cropped. */
+      min-height: calc(100dvh - 180px);
       padding: 1.5rem 1.25rem 2rem;
+      transition: gap 320ms cubic-bezier(0.5, 0, 0.2, 1);
     }
     .hero { gap: 1.25rem; align-self: auto; }
     .hero-sub { max-width: 26ch; }
-    .prompt { min-width: 0; width: 100%; }
+    .prompt {
+      min-width: 0;
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 0.95rem;
+      transition:
+        transform 320ms cubic-bezier(0.5, 0, 0.2, 1),
+        border-color 200ms ease,
+        background 200ms ease,
+        box-shadow 360ms cubic-bezier(0.5, 0, 0.2, 1);
+    }
+    /* 16px prevents iOS Safari from auto-zooming on focus, which is
+       what made the input appear to scroll off the right edge. */
+    .prompt-input { font-size: 16px; }
     .prompt-key { display: none; }
     :global(.home-portrait) {
       align-self: center;
       justify-self: center;
       width: clamp(170px, 52vw, 220px);
+      transition:
+        opacity 360ms cubic-bezier(0.5, 0, 0.2, 1),
+        transform 360ms cubic-bezier(0.5, 0, 0.2, 1),
+        filter 360ms cubic-bezier(0.5, 0, 0.2, 1);
+      will-change: opacity, transform, filter;
     }
+
+    /* Focus state: collapse the portrait out of the way so the prompt
+       is the user's center of attention while the keyboard rises. */
+    .home[data-prompt-focused='true'] {
+      gap: 1.25rem;
+    }
+    .home[data-prompt-focused='true'] :global(.home-portrait) {
+      opacity: 0;
+      transform: translateY(-12px) scale(0.96);
+      filter: blur(2px);
+      pointer-events: none;
+    }
+    .home[data-prompt-focused='true'] .prompt {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 38px -22px rgb(0 0 0 / 0.55);
+    }
+  }
+
+  @media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+    .home,
+    .prompt,
+    :global(.home-portrait) { transition: none; }
+    .home[data-prompt-focused='true'] :global(.home-portrait) {
+      transform: none;
+      filter: none;
+    }
+    .home[data-prompt-focused='true'] .prompt { transform: none; }
   }
 
   @media (hover: none) {
