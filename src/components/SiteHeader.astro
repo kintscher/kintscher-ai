@@ -157,12 +157,20 @@ const isCurrent = (href: string) =>
 
   @media (max-width: 720px) {
     .site-header {
-      padding: 0.5rem 1.25rem;
+      padding: 0.25rem 1.25rem;
       font-size: 0.75rem;
+      align-items: stretch;
     }
-    nav ul { gap: 0.5rem; }
+    .brand { align-self: center; }
+    nav ul { gap: 0.25rem; align-items: stretch; }
+    nav ul li { display: flex; }
+    /* 44px minimum tap height — flex centring lifts the label off the
+       baseline so the link still reads as a header item, not a chunky
+       button. Padding handles width; min-height handles height. */
     .nav-link {
-      padding: 0.7rem 0.5rem;
+      padding: 0 0.6rem;
+      min-height: 44px;
+      align-items: center;
     }
     .nav-link::after { display: none; }
     .key-hint { display: none; }

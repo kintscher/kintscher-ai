@@ -73,7 +73,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
           <p class="rail-sig">
             <span class="rail-sig-name">Yannik Kintscher</span>
             <span class="rail-sig-sep" aria-hidden="true">/</span>
-            <span class="rail-sig-loc">Regensdorf · CH</span>
+            <span class="rail-sig-loc">Zürich · CH</span>
           </p>
         </div>
       </aside>
@@ -700,12 +700,27 @@ import portrait from '../assets/images/yannik-chair.jpg';
     .about { padding-top: 2rem; }
     .bio {
       grid-template-columns: 1fr;
-      gap: 1.75rem;
+      gap: 1.5rem;
     }
-    .about-portrait { max-width: 78vw; }
+    :global(.about-portrait) { max-width: 100%; }
+
+    /* Tighter rail when stacked: the rail is now editorial footer matter
+       below the body copy, not a parallel column — collapse the generous
+       desktop rhythm and let the blocks sit close. */
+    .bio-rail { gap: 1.1rem; }
+    .rail-mid { gap: 1rem; }
+    .rail-foot { gap: 0.55rem; }
+
+    /* Align all status values to one column. "status" is 6ch; pad to
+       give the colon a hair of breathing room so the dd's start line up. */
+    .rail-status-row { grid-template-columns: 6ch auto minmax(0, 1fr); }
 
     .bio-text { max-width: 100%; }
-    .bio-para { font-size: 1.0625rem; line-height: 1.7; }
+    /* Lighter body on mobile: the desktop measure relies on a 17px serif-
+       adjacent feel; on a 393px column that lands too dense. Drop a notch
+       in size and tighten leading to keep paragraphs from feeling like a
+       wall. */
+    .bio-para { font-size: 1rem; line-height: 1.6; color: rgb(240 235 226 / 0.78); }
     .bio-para:first-of-type::first-letter { font-size: 2.8em; }
 
     .stack-row {

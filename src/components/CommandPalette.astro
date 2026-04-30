@@ -472,4 +472,20 @@ const items: Item[] = [
     .cmd-item-desc { display: none; }
     .cmd-foot { font-size: 10px; gap: 0.85rem; }
   }
+
+  /* Mobile: anchor the palette near the top instead of centering against
+     the layout viewport. iOS Safari does not shrink the layout viewport
+     when the keyboard rises, so a vertically centred dialog ends up
+     half-hidden behind the keyboard + autofill bar. Pinning to the top
+     and using dvh for max-height keeps the input row and the active row
+     in view regardless of keyboard state. */
+  @media (max-width: 720px) {
+    .cmd {
+      top: 1rem;
+      bottom: auto;
+      margin: 0 auto;
+      max-height: min(70vh, 70dvh);
+    }
+    #cmd-list { max-height: min(50vh, 50dvh); }
+  }
 </style>
