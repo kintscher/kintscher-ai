@@ -789,5 +789,21 @@ const suggestions: Suggestion[] = [
     .submit-label { display: none; }
     .chat-privacy { font-size: 10.5px; }
     .msg-assistant { font-size: 15px; }
+
+    /* Focused composer on the idle screen: pull the prelude (title + chips)
+       down so suggestions sit directly above the composer and the title
+       shrinks to a hint above them — like enterprise chat UIs. Keeps both
+       visible when the on-screen keyboard collapses the viewport. */
+    .chat-shell[data-state="idle"]:has(#chat-input:focus) .chat-prelude {
+      justify-content: flex-end;
+      gap: 0.85rem;
+    }
+    .chat-shell[data-state="idle"]:has(#chat-input:focus) .chat-invitation {
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+    .chat-invitation {
+      transition: font-size 180ms ease;
+    }
   }
 </style>
