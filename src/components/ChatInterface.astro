@@ -823,6 +823,12 @@ const suggestions: Suggestion[] = [
       min-height: calc(100dvh - 160px);
       gap: 1.25rem;
     }
+    /* Idle state has no thread to keep above the fixed form, so drop the
+       form-h bottom reservation and let the prelude push chips flush
+       against the composer. */
+    .chat-shell[data-state="idle"] {
+      padding-bottom: 0.75rem;
+    }
     .chat-chips { width: 100%; }
     .chat-chip {
       width: 100%;
