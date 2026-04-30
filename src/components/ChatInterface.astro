@@ -34,7 +34,10 @@ const suggestions: Suggestion[] = [
           id="chat-input"
           name="message"
           type="text"
+          inputmode="text"
+          enterkeyhint="send"
           autocomplete="off"
+          autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
           placeholder=" "
@@ -321,6 +324,63 @@ const suggestions: Suggestion[] = [
 
   setup();
   document.addEventListener('astro:page-load', setup);
+
+  // Mobile-only: keep the composer pinned directly above the on-screen
+  // keyboard, and reserve space at the bottom of .chat-shell so the
+  // fixed composer never overlaps the thread or chips.
+  function setupComposerLayout() {
+    const shell = document.querySelector<HTMLDivElement>('.chat-shell');
+    const formArea = document.querySelector<HTMLDivElement>('.chat-form-area');
+    if (!shell || !formArea) return;
+
+    const isMobile = () => window.matchMedia('(max-width: 720px)').matches;
+
+    const syncFormHeight = () => {
+      if (!isMobile()) {
+        shell.style.removeProperty('--chat-form-h');
+        return;
+      }
+      const h = formArea.getBoundingClientRect().height;
+      shell.style.setProperty('--chat-form-h', `${Math.ceil(h)}px`);
+    };
+
+    const syncKeyboardInset = () => {
+      const vv = window.visualViewport;
+      if (!vv || !isMobile()) {
+        document.documentElement.style.setProperty('--keyboard-inset', '0px');
+        return;
+      }
+      // Distance between the bottom of the layout viewport and the
+      // bottom of the visual viewport — i.e. keyboard height when open.
+      const inset = Math.max(
+        0,
+        window.innerHeight - vv.height - vv.offsetTop,
+      );
+      document.documentElement.style.setProperty(
+        '--keyboard-inset',
+        `${Math.round(inset)}px`,
+      );
+    };
+
+    syncFormHeight();
+    syncKeyboardInset();
+
+    const ro = new ResizeObserver(syncFormHeight);
+    ro.observe(formArea);
+
+    window.addEventListener('resize', () => {
+      syncFormHeight();
+      syncKeyboardInset();
+    });
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncKeyboardInset);
+      window.visualViewport.addEventListener('scroll', syncKeyboardInset);
+    }
+  }
+
+  setupComposerLayout();
+  document.addEventListener('astro:page-load', setupComposerLayout);
 </script>
 
 <style is:global>
@@ -694,8 +754,8 @@ const suggestions: Suggestion[] = [
 
   @media (max-width: 720px) {
     .chat-shell {
-      padding: 1.25rem 1.25rem 1rem;
-      min-height: calc(100vh - 160px);
+      padding: 1.25rem 1.25rem calc(1rem + var(--chat-form-h, 0px));
+      min-height: calc(100dvh - 160px);
       gap: 1.25rem;
     }
     .chat-chips { width: 100%; }
@@ -703,8 +763,31 @@ const suggestions: Suggestion[] = [
       width: 100%;
       font-size: 12.5px;
     }
+
+    /* Pin the composer to the bottom of the visual viewport. With the
+       viewport meta `interactive-widget=resizes-content` this naturally
+       sits directly above the on-screen keyboard. A JS fallback updates
+       --keyboard-inset for browsers that don't honor it. */
+    .chat-form-area {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: var(--keyboard-inset, 0px);
+      padding: 0.7rem 1.25rem calc(0.85rem + env(safe-area-inset-bottom));
+      background: var(--color-bg);
+      border-top: 1px solid var(--color-hairline);
+      z-index: 20;
+      animation: none;
+      opacity: 1;
+      gap: 0.45rem;
+    }
+
     .chat-form { padding: 0.65rem 0.7rem 0.65rem 0.85rem; }
+    /* 16px prevents iOS Safari from auto-zooming on focus, which is
+       what made the input appear to scroll off the right edge. */
+    #chat-input { font-size: 16px; }
     .submit-label { display: none; }
+    .chat-privacy { font-size: 10.5px; }
     .msg-assistant { font-size: 15px; }
   }
 </style>
