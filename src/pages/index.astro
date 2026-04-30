@@ -44,11 +44,10 @@ import portrait from '../assets/images/yannik-tower.jpg';
         data-dashlane-ignore="true"
       >
         <span class="prompt-cursor" aria-hidden="true">›</span>
-        <input
+        <textarea
           id="hero-prompt-input"
           name="q"
-          type="text"
-          inputmode="text"
+          rows="1"
           enterkeyhint="go"
           class="prompt-input"
           placeholder="ask yannik anything"
@@ -58,13 +57,8 @@ import portrait from '../assets/images/yannik-tower.jpg';
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
-          data-form-type="other"
-          data-1p-ignore="true"
-          data-lpignore="true"
-          data-bwignore="true"
-          data-dashlane-ignore="true"
-        />
-        <span class="prompt-key" aria-hidden="true">⌘ <kbd>/</kbd></span>
+        ></textarea>
+        <span class="prompt-key" aria-hidden="true">⌘&nbsp;<kbd>/</kbd></span>
       </form>
     </div>
 
@@ -76,6 +70,7 @@ import portrait from '../assets/images/yannik-tower.jpg';
       index="01"
       sizes="(max-width: 720px) 38vw, (max-width: 1024px) 16vw, 210px"
       class="home-portrait"
+      eager
     />
   </section>
 </Layout>
@@ -84,7 +79,7 @@ import portrait from '../assets/images/yannik-tower.jpg';
   function wireHomePrompt() {
     const home = document.querySelector<HTMLElement>('.home');
     const form = document.getElementById('hero-prompt-form') as HTMLFormElement | null;
-    const input = document.getElementById('hero-prompt-input') as HTMLInputElement | null;
+    const input = document.getElementById('hero-prompt-input') as HTMLTextAreaElement | null;
     if (!form || !input || !home) return;
 
     // Drop empty submissions silently. Native GET handles encoding + nav,
@@ -92,6 +87,15 @@ import portrait from '../assets/images/yannik-tower.jpg';
     form.addEventListener('submit', (e) => {
       const q = input.value.trim();
       if (!q) e.preventDefault();
+    });
+
+    // Textarea inserts a newline on Enter by default — submit instead so
+    // the field behaves like a single-line input. Shift+Enter keeps newline.
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
     });
 
     // Mobile-only: when the prompt is focused, mark the section so the
@@ -246,7 +250,12 @@ import portrait from '../assets/images/yannik-tower.jpg';
     color: inherit;
     font: inherit;
     padding: 0;
+    margin: 0;
     caret-color: var(--color-accent);
+    resize: none;
+    overflow: hidden;
+    line-height: 1.5;
+    height: calc(1em * 1.5);
   }
   .prompt-input::placeholder { color: var(--color-muted); }
   .prompt-input:focus { color: var(--color-fg); }

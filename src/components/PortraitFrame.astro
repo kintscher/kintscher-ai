@@ -22,7 +22,7 @@ const {
   caption = 'PORTRAIT · ZÜRICH · 2026',
   index,
   sizes = '(max-width: 720px) 78vw, (max-width: 1024px) 38vw, 460px',
-  eager = true,
+  eager = false,
   class: className,
 } = Astro.props;
 ---
@@ -30,7 +30,6 @@ const {
 <aside
   class:list={['portrait-frame', className]}
   aria-label={ariaLabel}
-  tabindex="0"
 >
   <figure class="card">
     <div class="frame" style={`aspect-ratio: ${src.width} / ${src.height};`}>
@@ -40,10 +39,10 @@ const {
         widths={[420, 640, 840, 1080, 1440]}
         sizes={sizes}
         loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
         decoding="async"
         class="img"
         style={`object-position: ${objectPosition};`}
-        onload="this.parentElement.classList.add('is-loaded')"
       />
     </div>
 
@@ -57,10 +56,23 @@ const {
   </figure>
 </aside>
 
+<script>
+  function wirePortraits() {
+    document.querySelectorAll<HTMLImageElement>('.portrait-frame .img').forEach((img) => {
+      const frame = img.closest('.frame');
+      if (!frame) return;
+      if (img.complete) {
+        frame.classList.add('is-loaded');
+      } else {
+        img.addEventListener('load', () => frame.classList.add('is-loaded'), { once: true });
+      }
+    });
+  }
+  wirePortraits();
+  document.addEventListener('astro:page-load', wirePortraits);
+</script>
+
 <style>
-  .portrait-frame { outline: none; }
-  .portrait-frame:focus,
-  .portrait-frame:focus-visible { outline: none; }
 
   /* ---------- The card ----------
      Surface lift + 1px hairline border, sharp corners. Same recipe
@@ -189,11 +201,6 @@ const {
     .portrait-frame:hover .cap-cursor { transform: translate(3px, 1px); }
     .portrait-frame:hover .cap-text { color: var(--color-muted); }
   }
-  .portrait-frame:focus-visible .card { border-color: var(--color-accent); }
-  .portrait-frame:focus-visible .img { filter: saturate(1); }
-  .portrait-frame:focus-visible .cap-cursor { transform: translate(3px, 1px); }
-  .portrait-frame:focus-visible .cap-text { color: var(--color-muted); }
-
   @media (prefers-reduced-motion: reduce) {
     .card,
     .img,
