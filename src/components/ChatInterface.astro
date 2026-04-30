@@ -27,12 +27,22 @@ const suggestions: Suggestion[] = [
   <div class="chat-thread" id="chat-thread" role="log" aria-live="polite" aria-label="Conversation"></div>
 
   <div class="chat-form-area">
-    <form class="chat-form" id="chat-form" autocomplete="off" novalidate>
+    <form
+      class="chat-form"
+      id="chat-form"
+      autocomplete="off"
+      novalidate
+      data-form-type="other"
+      data-1p-ignore="true"
+      data-lpignore="true"
+      data-bwignore="true"
+      data-dashlane-ignore="true"
+    >
       <span class="chat-prompt" aria-hidden="true">›</span>
       <div class="chat-input-wrap">
         <input
           id="chat-input"
-          name="message"
+          name="kc-prompt"
           type="text"
           inputmode="text"
           enterkeyhint="send"
@@ -42,6 +52,11 @@ const suggestions: Suggestion[] = [
           spellcheck="false"
           placeholder=" "
           aria-label="Ask anything about Yannik"
+          data-form-type="other"
+          data-1p-ignore="true"
+          data-lpignore="true"
+          data-bwignore="true"
+          data-dashlane-ignore="true"
         />
         <span class="chat-caret" aria-hidden="true"></span>
       </div>

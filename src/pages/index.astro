@@ -30,7 +30,19 @@ import portrait from '../assets/images/yannik-tower.jpg';
         <span class="line-inner">GenAI, Conversational banking,<br />internal tooling at UBS.</span>
       </p>
 
-      <form class="prompt" id="hero-prompt-form" action="/chat" method="get" novalidate>
+      <form
+        class="prompt"
+        id="hero-prompt-form"
+        action="/chat"
+        method="get"
+        novalidate
+        autocomplete="off"
+        data-form-type="other"
+        data-1p-ignore="true"
+        data-lpignore="true"
+        data-bwignore="true"
+        data-dashlane-ignore="true"
+      >
         <span class="prompt-cursor" aria-hidden="true">›</span>
         <input
           id="hero-prompt-input"
@@ -46,6 +58,11 @@ import portrait from '../assets/images/yannik-tower.jpg';
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
+          data-form-type="other"
+          data-1p-ignore="true"
+          data-lpignore="true"
+          data-bwignore="true"
+          data-dashlane-ignore="true"
         />
         <span class="prompt-key" aria-hidden="true">⌘ <kbd>/</kbd></span>
       </form>

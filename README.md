@@ -26,4 +26,14 @@ Five routes, all reachable from the home page in one click:
 
 ## Deploy
 
-Deployed via Cloudflare Workers. Requires a `wrangler.jsonc` with the correct account and worker name.
+Deployed via Cloudflare Workers using Wrangler. Requires an authenticated Wrangler CLI (`pnpm wrangler login`) and a configured `wrangler.jsonc`.
+
+```sh
+pnpm build                          # build to ./dist/
+pnpm preview                        # preview production build at localhost:8787
+pnpm deploy                         # deploy directly to production
+pnpm wrangler versions upload       # upload a new version without routing traffic (returns preview URL)
+pnpm wrangler versions deploy       # route traffic to an uploaded version (supports gradual rollouts)
+pnpm wrangler versions list         # list all uploaded versions
+pnpm wrangler rollback              # revert to the previous deployed version
+```
