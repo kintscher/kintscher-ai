@@ -26,7 +26,7 @@ const isCurrent = (href: string) =>
             aria-current={isCurrent(it.href) ? 'page' : undefined}
           >
             <span>{it.label}</span>
-            <span class="key-hint" aria-hidden="true">⌐ {it.key}</span>
+            <span class="key-hint" aria-hidden="true">⌐&nbsp;{it.key}</span>
           </a>
         </li>
       ))}
@@ -40,7 +40,7 @@ const isCurrent = (href: string) =>
           data-cmd-open
         >
           <span>menu</span>
-          <span class="key-hint" aria-hidden="true">⌘ K</span>
+          <span class="key-hint" aria-hidden="true">⌘&nbsp;K</span>
         </button>
       </li>
     </ul>

@@ -33,13 +33,19 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
 main {
   flex: 1;
+  scroll-margin-top: 5rem;
+}
+
+button,
+a {
+  touch-action: manipulation;
 }
 
 ::selection {

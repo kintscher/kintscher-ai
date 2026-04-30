@@ -2,9 +2,9 @@
 type Suggestion = { text: string };
 
 const suggestions: Suggestion[] = [
-  { text: "what's yannik's background?" },
-  { text: "what's he working on right now?" },
-  { text: "what's his stack?" },
+  { text: "what’s yannik’s background?" },
+  { text: "what’s he working on right now?" },
+  { text: "what’s his stack?" },
 ];
 ---
 
@@ -502,6 +502,7 @@ const suggestions: Suggestion[] = [
     flex-direction: column;
     gap: 0.6rem;
     padding-block: 0.25rem 0.25rem;
+    overscroll-behavior: contain;
   }
 
   /* Once any message has been sent, prelude stays hidden and thread is
