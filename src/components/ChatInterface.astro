@@ -27,12 +27,22 @@ const suggestions: Suggestion[] = [
   <div class="chat-thread" id="chat-thread" role="log" aria-live="polite" aria-label="Conversation"></div>
 
   <div class="chat-form-area">
-    <form class="chat-form" id="chat-form" autocomplete="off" novalidate>
+    <form
+      class="chat-form"
+      id="chat-form"
+      autocomplete="off"
+      novalidate
+      data-form-type="other"
+      data-1p-ignore="true"
+      data-lpignore="true"
+      data-bwignore="true"
+      data-dashlane-ignore="true"
+    >
       <span class="chat-prompt" aria-hidden="true">›</span>
       <div class="chat-input-wrap">
         <input
           id="chat-input"
-          name="message"
+          name="kc-prompt"
           type="text"
           inputmode="text"
           enterkeyhint="send"
@@ -42,6 +52,11 @@ const suggestions: Suggestion[] = [
           spellcheck="false"
           placeholder=" "
           aria-label="Ask anything about Yannik"
+          data-form-type="other"
+          data-1p-ignore="true"
+          data-lpignore="true"
+          data-bwignore="true"
+          data-dashlane-ignore="true"
         />
         <span class="chat-caret" aria-hidden="true"></span>
       </div>
@@ -789,5 +804,21 @@ const suggestions: Suggestion[] = [
     .submit-label { display: none; }
     .chat-privacy { font-size: 10.5px; }
     .msg-assistant { font-size: 15px; }
+
+    /* Focused composer on the idle screen: pull the prelude (title + chips)
+       down so suggestions sit directly above the composer and the title
+       shrinks to a hint above them — like enterprise chat UIs. Keeps both
+       visible when the on-screen keyboard collapses the viewport. */
+    .chat-shell[data-state="idle"]:has(#chat-input:focus) .chat-prelude {
+      justify-content: flex-end;
+      gap: 0.85rem;
+    }
+    .chat-shell[data-state="idle"]:has(#chat-input:focus) .chat-invitation {
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+    .chat-invitation {
+      transition: font-size 180ms ease;
+    }
   }
 </style>
