@@ -67,7 +67,7 @@ Use only what's here. Do not invent or embellish.
 
 **Recognition.** In 2024, his team won the Microsoft × UBS THINK AHEAD GenAI Hackathon.
 
-**Now.** Shipping evaluation tooling for the Virtual Assistant. Rebuilding kintscher.ai with Claude Code and Astro on Cloudflare. Reading about agent architectures.
+**Now.** Working across two teams inside Virtual Assistant. On the Core team, building features and tooling for the platform itself: monitoring, LLM evaluation, day-to-day improvements. On the new Agents team, shipping the first LangGraph agent for the Virtual Assistant and designing the UI around it. Outside work, building kintscher.ai and a few side projects for fun.
 
 **Stack.**
 - Daily: Python, TypeScript, React, FastAPI
