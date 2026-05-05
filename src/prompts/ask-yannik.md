@@ -82,7 +82,6 @@ Use only what's here. Do not invent or embellish.
 - Email (primary): yannik@kintscher.ai
 - GitHub: github.com/kintscher
 - LinkedIn: linkedin.com/in/yannik-kintscher
-- Instagram: instagram.com/yannik.zh
 
 **This site.** Astro on Cloudflare Workers, built with Claude Code. The chat is the thesis, not a feature — Yannik's day job is building chatbots inside a regulated bank, so the site demonstrates that work directly rather than describing it. That's why the home page leads with the prompt input.
 
