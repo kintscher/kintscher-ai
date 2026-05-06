@@ -189,6 +189,7 @@ const suggestions: Suggestion[] = [
       let chunkBuffer = '';     // received but not yet revealed
       let rafHandle = 0;
       let aborted = false;
+      let errorHandled = false;
 
       // Paced reveal: drain 3–20 chars per animation frame, scaling with backlog
       // so fast streams catch up gracefully without dumping all at once. Roughly
@@ -204,11 +205,20 @@ const suggestions: Suggestion[] = [
         if (chunkBuffer) rafHandle = requestAnimationFrame(drainTick);
       };
 
+      // Server caps at 30 messages. Trim the oldest turns so a long
+      // conversation doesn't 400 once it exceeds the cap. Keep the head
+      // user-rooted so the API never sees a leading assistant turn.
+      const MAX_API_MESSAGES = 30;
+      let messagesForApi = history.slice(-MAX_API_MESSAGES);
+      while (messagesForApi.length && messagesForApi[0].role !== 'user') {
+        messagesForApi = messagesForApi.slice(1);
+      }
+
       try {
         const resp = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: history }),
+          body: JSON.stringify({ messages: messagesForApi }),
           signal: controller.signal,
         });
 
@@ -217,10 +227,7 @@ const suggestions: Suggestion[] = [
             const retryRaw = resp.headers.get('Retry-After');
             const retrySec = retryRaw ? parseInt(retryRaw, 10) : NaN;
             if (Number.isFinite(retrySec) && retrySec > 0) {
-              const rtf = new Intl.RelativeTimeFormat(
-                navigator.language || 'en',
-                { numeric: 'auto' },
-              );
+              const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
               const phrase =
                 retrySec >= 60
                   ? rtf.format(Math.ceil(retrySec / 60), 'minute')
@@ -229,11 +236,26 @@ const suggestions: Suggestion[] = [
             } else {
               textEl.textContent = 'Too many messages. Try again later.';
             }
+          } else if (resp.status === 400) {
+            // The server's validator returns short reason strings as the body.
+            // Surface them so issues like "conversation too long" don't read
+            // as a generic break.
+            const reason = (await resp.text().catch(() => '')).trim();
+            if (reason === 'too many messages' || reason === 'conversation too long') {
+              textEl.textContent =
+                'This conversation is too long to continue. Refresh to start a new one.';
+            } else if (reason === 'message too long') {
+              textEl.textContent =
+                'That message is too long. Try a shorter version.';
+            } else {
+              textEl.textContent = ERROR_TEXT;
+            }
           } else {
             textEl.textContent = ERROR_TEXT;
           }
           bubble.classList.add('is-error');
           bubble.classList.remove('is-streaming');
+          errorHandled = true;
           return;
         }
 
@@ -242,6 +264,7 @@ const suggestions: Suggestion[] = [
           textEl.textContent = ERROR_TEXT;
           bubble.classList.add('is-error');
           bubble.classList.remove('is-streaming');
+          errorHandled = true;
           return;
         }
 
@@ -275,6 +298,9 @@ const suggestions: Suggestion[] = [
         if (renderedSoFar) {
           textEl.innerHTML = renderMd(renderedSoFar);
           history.push({ role: 'assistant', content: renderedSoFar });
+        } else if (errorHandled) {
+          // Non-OK response already wrote a specific message into textEl.
+          // Don't clobber it with the generic ERROR_TEXT below.
         } else if (aborted) {
           // Aborted before any visible text - drop the empty bubble.
           bubble.remove();
