@@ -84,9 +84,12 @@ async function checkAndIncrementLimits(
   hour.count += 1;
   day.count += 1;
 
+  // KV requires expiration >= now+60. Buckets nearing the end of their window
+  // would otherwise reject the put and 500 the request — clamp to be safe.
+  const minExp = now + 60;
   await Promise.all([
-    kv.put(hourKey, JSON.stringify(hour), { expiration: hour.exp }),
-    kv.put(dayKey, JSON.stringify(day), { expiration: day.exp }),
+    kv.put(hourKey, JSON.stringify(hour), { expiration: Math.max(hour.exp, minExp) }),
+    kv.put(dayKey, JSON.stringify(day), { expiration: Math.max(day.exp, minExp) }),
   ]);
 
   return { ok: true };
