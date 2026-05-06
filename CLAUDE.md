@@ -1,6 +1,6 @@
 # kintscher.ai
 
-Portfolio of Yannik Kintscher — Fullstack Developer, Zürich.
+Portfolio of Yannik Kintscher - Fullstack Developer, Zürich.
 
 ## Constraints
 - Deploys to Cloudflare Workers via wrangler

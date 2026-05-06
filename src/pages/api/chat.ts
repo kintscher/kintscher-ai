@@ -18,7 +18,7 @@ const MAX_TOKENS = 1024;
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
 type RateBucket = { count: number; exp: number };
 
-// ANTHROPIC_API_KEY is a wrangler secret — not declared in wrangler.jsonc, so
+// ANTHROPIC_API_KEY is a wrangler secret - not declared in wrangler.jsonc, so
 // it doesn't appear on the generated Env type. Cast at the access site.
 type ChatEnv = Env & { ANTHROPIC_API_KEY?: string };
 
@@ -78,14 +78,14 @@ async function checkAndIncrementLimits(
     return { ok: false, retryAfter };
   }
 
-  // Increment BEFORE calling Anthropic. Aborted requests still count —
+  // Increment BEFORE calling Anthropic. Aborted requests still count -
   // otherwise an attacker who cancels every fetch gets unlimited free calls
   // to our key.
   hour.count += 1;
   day.count += 1;
 
   // KV requires expiration >= now+60. Buckets nearing the end of their window
-  // would otherwise reject the put and 500 the request — clamp to be safe.
+  // would otherwise reject the put and 500 the request - clamp to be safe.
   const minExp = now + 60;
   await Promise.all([
     kv.put(hourKey, JSON.stringify(hour), { expiration: Math.max(hour.exp, minExp) }),

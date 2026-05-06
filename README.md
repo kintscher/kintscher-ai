@@ -1,15 +1,15 @@
 # kintscher.ai
 
-Personal site of Yannik Kintscher — fullstack engineer in Zürich, working on GenAI and conversational banking at UBS.
+Personal site of Yannik Kintscher - fullstack engineer in Zürich, working on GenAI and conversational banking at UBS.
 
 Live: **[kintscher.ai](https://kintscher.ai)**
 
 ## Highlights
 
-- **Ask Yannik** — a streaming chatbot at [`/chat`](https://kintscher.ai/chat) backed by Claude Haiku 4.5. Demonstrates the kind of work I do day-to-day: turning a system prompt, a stream, and a few production constraints into something that actually feels good to use.
-- **Edge-native** — runs on Cloudflare Workers. Rate limiting via Workers KV (40/hour, 150/day per IP), aborts propagated end-to-end so cancelled requests don't burn API credits.
-- **Static-first** — every page is prerendered and works without JavaScript. Lighthouse target is 100/100/100/100.
-- **Minimal client JS** — interactive bits are Astro islands hydrated `client:visible`; navigation uses View Transitions.
+- **Ask Yannik** - a streaming chatbot at [`/chat`](https://kintscher.ai/chat) backed by Claude Haiku 4.5. Demonstrates the kind of work I do day-to-day: turning a system prompt, a stream, and a few production constraints into something that actually feels good to use.
+- **Edge-native** - runs on Cloudflare Workers. Rate limiting via Workers KV (40/hour, 150/day per IP), aborts propagated end-to-end so cancelled requests don't burn API credits.
+- **Static-first** - every page is prerendered and works without JavaScript. Lighthouse target is 100/100/100/100.
+- **Minimal client JS** - interactive bits are Astro islands hydrated `client:visible`; navigation uses View Transitions.
 
 ## Stack
 
@@ -67,6 +67,6 @@ src/
 
 ## Contact
 
-- Email — yannik@kintscher.ai
-- GitHub — [@kintscher](https://github.com/kintscher)
-- LinkedIn — [yannik-kintscher](https://www.linkedin.com/in/yannik-kintscher/)
+- Email - yannik@kintscher.ai
+- GitHub - [@kintscher](https://github.com/kintscher)
+- LinkedIn - [yannik-kintscher](https://www.linkedin.com/in/yannik-kintscher/)

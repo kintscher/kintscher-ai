@@ -6,7 +6,7 @@ import portrait from '../assets/images/yannik-tower.jpg';
 ---
 
 <Layout
-  title="Yannik Kintscher — Fullstack engineer in Zürich"
+  title="Yannik Kintscher - Fullstack engineer in Zürich"
   description="Fullstack engineer in Zürich. GenAI, Conversational banking, internal tooling at UBS."
   path="/"
 >
@@ -27,7 +27,7 @@ import portrait from '../assets/images/yannik-tower.jpg';
       </h1>
 
       <p class="hero-sub">
-        <span class="line-inner">GenAI, Conversational banking,<br />internal tooling at UBS.</span>
+        <span class="line-inner">GenAI, Conversational banking, internal tooling at UBS.</span>
       </p>
 
       <form
@@ -89,7 +89,7 @@ import portrait from '../assets/images/yannik-tower.jpg';
       if (!q) e.preventDefault();
     });
 
-    // Textarea inserts a newline on Enter by default — submit instead so
+    // Textarea inserts a newline on Enter by default - submit instead so
     // the field behaves like a single-line input. Shift+Enter keeps newline.
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -198,6 +198,7 @@ import portrait from '../assets/images/yannik-tower.jpg';
     color: var(--color-muted);
     max-width: 34ch;
     overflow: hidden;
+    text-wrap: balance;
   }
   .hero-sub .line-inner {
     display: inline-block;

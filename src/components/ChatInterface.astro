@@ -49,13 +49,12 @@ const suggestions: Suggestion[] = [
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
-          placeholder=" "
           aria-label="Ask anything about Yannik"
         ></textarea>
         <span class="chat-caret" aria-hidden="true"></span>
       </div>
-      <button type="submit" class="chat-submit" aria-label="Send">
-        <span class="submit-label" aria-hidden="true">send</span>
+      <button type="submit" class="chat-submit">
+        <span class="submit-label">send</span>
         <kbd class="submit-key" aria-hidden="true">↵</kbd>
       </button>
       <button type="button" class="chat-stop" id="chat-stop" aria-label="Stop">
@@ -88,7 +87,7 @@ const suggestions: Suggestion[] = [
   // Conservative inline-markdown render. Escapes first, then applies a
   // small whitelist: **bold**, `code`, [text](url) where url is http/https
   // or mailto. Partial tokens (closing delimiter not yet streamed) stay
-  // as raw text — no flicker.
+  // as raw text - no flicker.
   function renderMd(text: string): string {
     let out = escapeHtml(text);
     out = out.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
@@ -156,11 +155,15 @@ const suggestions: Suggestion[] = [
       });
     }
 
+    let scrollRaf = 0;
     window.addEventListener('scroll', () => {
-      const atBottom =
-        window.innerHeight + window.scrollY >=
-        document.body.scrollHeight - 60;
-      autoScroll = atBottom;
+      if (scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = 0;
+        autoScroll =
+          window.innerHeight + window.scrollY >=
+          document.body.scrollHeight - 60;
+      });
     }, { passive: true });
 
     async function send(text: string) {
@@ -173,7 +176,7 @@ const suggestions: Suggestion[] = [
       setState('streaming');
 
       if (shell!.dataset.state !== 'streaming') {
-        // Defensive — setState should have set this already.
+        // Defensive - setState should have set this already.
         shell!.dataset.state = 'streaming';
       }
 
@@ -214,11 +217,15 @@ const suggestions: Suggestion[] = [
             const retryRaw = resp.headers.get('Retry-After');
             const retrySec = retryRaw ? parseInt(retryRaw, 10) : NaN;
             if (Number.isFinite(retrySec) && retrySec > 0) {
-              const mins = Math.ceil(retrySec / 60);
-              textEl.textContent =
-                mins <= 1
-                  ? 'Too many messages. Try again in a minute.'
-                  : `Too many messages. Try again in about ${mins} minutes.`;
+              const rtf = new Intl.RelativeTimeFormat(
+                navigator.language || 'en',
+                { numeric: 'auto' },
+              );
+              const phrase =
+                retrySec >= 60
+                  ? rtf.format(Math.ceil(retrySec / 60), 'minute')
+                  : rtf.format(retrySec, 'second');
+              textEl.textContent = `Too many messages. Try again ${phrase}.`;
             } else {
               textEl.textContent = 'Too many messages. Try again later.';
             }
@@ -259,7 +266,7 @@ const suggestions: Suggestion[] = [
         bubble.classList.remove('is-streaming');
 
         // Normal completion: drain pending buffer onto the visible text.
-        // Abort: drop the buffer — the user only commits to what they saw.
+        // Abort: drop the buffer - the user only commits to what they saw.
         if (!aborted && chunkBuffer) {
           renderedSoFar += chunkBuffer;
         }
@@ -269,7 +276,7 @@ const suggestions: Suggestion[] = [
           textEl.innerHTML = renderMd(renderedSoFar);
           history.push({ role: 'assistant', content: renderedSoFar });
         } else if (aborted) {
-          // Aborted before any visible text — drop the empty bubble.
+          // Aborted before any visible text - drop the empty bubble.
           bubble.remove();
         } else {
           // Net error, or 200-with-empty (server failed mid-stream before any token).
@@ -290,7 +297,7 @@ const suggestions: Suggestion[] = [
       send(value);
     });
 
-    // Textarea inserts a newline on Enter by default — submit instead so
+    // Textarea inserts a newline on Enter by default - submit instead so
     // the composer behaves like a single-line input. Shift+Enter keeps newline.
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -304,12 +311,17 @@ const suggestions: Suggestion[] = [
     // exceeds a single line, mark the form so the send button reflows
     // beneath the textarea (see .chat-form.is-multiline in CSS).
     const minH = parseFloat(getComputedStyle(input!).minHeight) || 21;
+    const syncEmpty = () => {
+      form!.dataset.empty = input!.value.length === 0 ? 'true' : 'false';
+    };
     const autosize = () => {
       input!.style.height = 'auto';
       input!.style.height = `${input!.scrollHeight}px`;
       form!.classList.toggle('is-multiline', input!.scrollHeight > minH + 1);
+      syncEmpty();
     };
     input.addEventListener('input', autosize);
+    syncEmpty();
 
     stopBtn.addEventListener('click', () => {
       controller?.abort();
@@ -325,7 +337,7 @@ const suggestions: Suggestion[] = [
       });
     });
 
-    // Abort in-flight stream on navigation away — Astro view transitions
+    // Abort in-flight stream on navigation away - Astro view transitions
     // and full unloads alike.
     const abortIfRunning = () => controller?.abort();
     window.addEventListener('beforeunload', abortIfRunning);
@@ -382,7 +394,7 @@ const suggestions: Suggestion[] = [
         return;
       }
       // Distance between the bottom of the layout viewport and the
-      // bottom of the visual viewport — i.e. keyboard height when open.
+      // bottom of the visual viewport - i.e. keyboard height when open.
       const inset = Math.max(
         0,
         window.innerHeight - vv.height - vv.offsetTop,
@@ -586,7 +598,7 @@ const suggestions: Suggestion[] = [
     font-style: italic;
   }
 
-  /* In-flight cursor — soft amber block at the end of the streaming bubble. */
+  /* In-flight cursor - soft amber block at the end of the streaming bubble. */
   .msg-assistant.is-streaming .msg-text::after {
     content: '';
     display: inline-block;
@@ -688,15 +700,15 @@ const suggestions: Suggestion[] = [
   }
   #chat-input::-webkit-scrollbar-thumb:hover { background: var(--color-quiet); }
   #chat-input:disabled { color: var(--color-quiet); cursor: not-allowed; }
-  #chat-input::placeholder { color: var(--color-quiet); }
-  /* Suppress the global amber focus ring on the input — the form wrapper's
+  /* Suppress the global amber focus ring on the input - the form wrapper's
      :focus-within border + background shift is the focused cue here. */
   #chat-input:focus-visible { outline: none; }
 
   /* Custom soft-pulsing caret in the empty state.
      Native caret is hidden when empty so the two don't collide;
-     once the user types, native amber caret takes over. */
-  #chat-input:placeholder-shown { caret-color: transparent; }
+     once the user types, native amber caret takes over.
+     Empty state is tracked via data-empty on the form (set by JS). */
+  .chat-form[data-empty="true"] #chat-input { caret-color: transparent; }
   .chat-caret {
     position: absolute;
     left: 0;
@@ -709,11 +721,11 @@ const suggestions: Suggestion[] = [
     opacity: 0;
     box-shadow: 0 0 6px rgb(232 168 58 / 0.45);
   }
-  .chat-form:has(#chat-input:placeholder-shown) .chat-caret {
+  .chat-form[data-empty="true"] .chat-caret {
     opacity: 1;
     animation: chat-caret-pulse 1.4s ease-in-out infinite;
   }
-  /* Hide the empty-state caret while streaming — input is disabled and the
+  /* Hide the empty-state caret while streaming - input is disabled and the
      placeholder shows again, but the caret would suggest the user can type. */
   .chat-shell[data-state="streaming"] .chat-caret { display: none; }
 
@@ -734,13 +746,13 @@ const suggestions: Suggestion[] = [
     flex-shrink: 0;
   }
   .chat-submit:hover,
-  .chat-form:has(#chat-input:not(:placeholder-shown)) .chat-submit {
+  .chat-form[data-empty="false"] .chat-submit {
     color: var(--color-accent);
     border-color: var(--color-accent);
     background: rgb(232 168 58 / 0.05);
   }
   .chat-stop {
-    /* Subtle alarm — readable, not aggressive. */
+    /* Subtle alarm - readable, not aggressive. */
     color: var(--color-fg);
     border-color: var(--color-hairline-strong);
   }
@@ -864,7 +876,7 @@ const suggestions: Suggestion[] = [
 
     /* Focused composer on the idle screen: pull the prelude (title + chips)
        down so suggestions sit directly above the composer and the title
-       shrinks to a hint above them — like enterprise chat UIs. Keeps both
+       shrinks to a hint above them - like enterprise chat UIs. Keeps both
        visible when the on-screen keyboard collapses the viewport. */
     .chat-shell[data-state="idle"]:has(#chat-input:focus) .chat-prelude {
       justify-content: flex-end;
