@@ -13,14 +13,14 @@ Live: **[kintscher.ai](https://kintscher.ai)**
 
 ## Stack
 
-| Layer       | Choice                                          |
-| :---------- | :---------------------------------------------- |
-| Framework   | [Astro 6](https://astro.build) (prerendered)    |
-| Styles      | Tailwind CSS v4                                 |
-| Runtime     | Cloudflare Workers (`@astrojs/cloudflare`)      |
-| State       | Workers KV (chat rate limiting)                 |
-| AI          | Anthropic SDK · `claude-haiku-4-5`              |
-| Fonts       | JetBrains Mono, Inter                           |
+| Layer     | Choice                                       |
+| :-------- | :------------------------------------------- |
+| Framework | [Astro 6](https://astro.build) (prerendered) |
+| Styles    | Tailwind CSS v4                              |
+| Runtime   | Cloudflare Workers (`@astrojs/cloudflare`)   |
+| State     | Workers KV (chat rate limiting)              |
+| AI        | Anthropic SDK · `claude-haiku-4-5`           |
+| Fonts     | JetBrains Mono, Inter                        |
 
 ## Pages
 
@@ -30,13 +30,13 @@ Five routes, all reachable from the home page in one click: `/`, `/about`, `/cha
 
 Requires Node ≥ 22.12 and pnpm.
 
-| Command         | Action                                      |
-| :-------------- | :------------------------------------------ |
-| `pnpm install`  | Install dependencies                        |
-| `pnpm dev`      | Dev server at `localhost:4321`              |
-| `pnpm build`    | Build to `./dist/`                          |
-| `pnpm preview`  | Preview production build via Wrangler       |
-| `pnpm deploy`   | Build and deploy to Cloudflare Workers      |
+| Command        | Action                                 |
+| :------------- | :------------------------------------- |
+| `pnpm install` | Install dependencies                   |
+| `pnpm dev`     | Dev server at `localhost:4321`         |
+| `pnpm build`   | Build to `./dist/`                     |
+| `pnpm preview` | Preview production build via Wrangler  |
+| `pnpm deploy`  | Build and deploy to Cloudflare Workers |
 
 The chat endpoint needs an `ANTHROPIC_API_KEY` Wrangler secret and a `CHAT_RATE_LIMIT` KV namespace (see `wrangler.jsonc`). Without these, `/chat` returns 500 but the rest of the site works fine.
 
@@ -64,6 +64,12 @@ src/
 ├── styles/
 └── assets/
 ```
+
+## License
+
+Source code: [MIT](LICENSE).
+Written content, photographs, and the chatbot system prompt remain
+© Yannik Kintscher and are not covered by the MIT License.
 
 ## Contact
 
