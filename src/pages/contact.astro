@@ -8,7 +8,7 @@ const email = 'yannik@kintscher.ai';
 ---
 
 <Layout
-  title="Contact — Yannik Kintscher"
+  title="Contact - Yannik Kintscher"
   description="Email and social channels for Yannik Kintscher. Based in Zürich, CET, usually replies within a few hours."
   path="/contact"
 >
@@ -17,7 +17,7 @@ const email = 'yannik@kintscher.ai';
       <span class="dot" aria-hidden="true"></span>
       <span>FILE</span>
       <span class="meta-token">CONTACT</span>
-      <time class="meta-token" datetime="2026">2026</time>
+      <span class="meta-token">2026</span>
     </p>
 
     <div class="body">
@@ -132,7 +132,7 @@ const email = 'yannik@kintscher.ai';
     if (btn.dataset.bound === '1') return;
     btn.dataset.bound = '1';
 
-    // The live region is a sibling, not a descendant — keeps the
+    // The live region is a sibling, not a descendant - keeps the
     // button's accessible name stable while still announcing success.
     const status = document.querySelector<HTMLElement>('[data-copy-status]');
     let resetTimer: number | undefined;
@@ -448,7 +448,7 @@ const email = 'yannik@kintscher.ai';
     padding: 0;
     display: grid;
     /* narrower than the body-stack (38rem) so the right-margin
-       italic annotations always have ~14rem of clearance — enough for
+       italic annotations always have ~14rem of clearance - enough for
        the longest copy ("best for async questions") at 13.5px */
     max-width: 24rem;
     /* hairlines via top borders; matches editorial directory feel */
@@ -564,7 +564,7 @@ const email = 'yannik@kintscher.ai';
     border-color: var(--color-accent);
   }
 
-  /* margin annotation on the right — mirror of /about's left-margin glosses */
+  /* margin annotation on the right - mirror of /about's left-margin glosses */
   .social-note {
     position: absolute;
     top: 50%;
@@ -676,7 +676,7 @@ const email = 'yannik@kintscher.ai';
     .email-block     { order: 2; }
     .social          { order: 3; }
     /* Portrait root is rendered by PortraitFrame.astro, so its scope id
-       differs from this file — :global() lets the order/sizing rules
+       differs from this file - :global() lets the order/sizing rules
        actually attach. Without it the portrait stays at order:0 and the
        headline gets pushed below the fold. */
     :global(.contact-portrait) { order: 4; max-width: 460px; }

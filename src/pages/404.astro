@@ -4,17 +4,17 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="404 — page not found"
+  title="404 - page not found"
   description="That route doesn’t exist on kintscher.ai."
   path="/404"
 >
   <section class="notfound">
-    <p class="line" aria-label="404, page not found">
+    <h1 class="line">
       <span class="cursor" aria-hidden="true">›</span>
       <span class="code">404</span>
       <span class="dash" aria-hidden="true">—</span>
       <span class="msg">page not found.</span>
-    </p>
+    </h1>
 
     <a class="home" href="/">
       <span class="cursor" aria-hidden="true">›</span>
@@ -42,6 +42,7 @@ import Layout from '../layouts/Layout.astro';
     gap: 0.55rem;
     font-family: var(--font-mono);
     font-size: 13px;
+    font-weight: 400;
     letter-spacing: 0.02em;
     color: var(--color-muted);
   }

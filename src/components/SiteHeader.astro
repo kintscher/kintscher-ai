@@ -12,7 +12,7 @@ const isCurrent = (href: string) =>
 ---
 
 <header class="site-header">
-  <a href="/" class="brand" aria-label="kintscher.ai — home">
+  <a href="/" class="brand" aria-label="kintscher.ai - home">
     <span class="brand-text">kintscher<span class="brand-dot">.</span>ai</span><span class="caret" aria-hidden="true"></span>
   </a>
 
@@ -26,7 +26,7 @@ const isCurrent = (href: string) =>
             aria-current={isCurrent(it.href) ? 'page' : undefined}
           >
             <span>{it.label}</span>
-            <span class="key-hint" aria-hidden="true">⌐&nbsp;{it.key}</span>
+            <span class="key-hint" aria-hidden="true">{it.key}</span>
           </a>
         </li>
       ))}
@@ -164,7 +164,7 @@ const isCurrent = (href: string) =>
     .brand { align-self: center; }
     nav ul { gap: 0.25rem; align-items: stretch; }
     nav ul li { display: flex; }
-    /* 44px minimum tap height — flex centring lifts the label off the
+    /* 44px minimum tap height - flex centring lifts the label off the
        baseline so the link still reads as a header item, not a chunky
        button. Padding handles width; min-height handles height. */
     .nav-link {

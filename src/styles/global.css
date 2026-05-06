@@ -181,7 +181,7 @@ button:focus-visible .key-hint {
   from { opacity: 0; }
 }
 
-/* The amber rule sweep — added/removed by Layout.astro on transitions */
+/* The amber rule sweep - added/removed by Layout.astro on transitions */
 .page-sweep {
   position: fixed;
   inset: 0 0 auto 0;

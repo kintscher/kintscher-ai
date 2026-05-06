@@ -6,7 +6,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
 ---
 
 <Layout
-  title="About — Yannik Kintscher"
+  title="About - Yannik Kintscher"
   description="Senior fullstack engineer in Zürich. UBS Conversational Banking, internal platforms, applied AI."
   path="/about"
 >
@@ -15,9 +15,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
       <span class="dot" aria-hidden="true"></span>
       <span>FILE&nbsp;/&nbsp;about</span>
       <span class="sep" aria-hidden="true">/</span>
-      <time datetime="2026">2026</time>
-      <span class="sep" aria-hidden="true">/</span>
-      <span aria-label="Reading time: about 3 minutes">~3 min read</span>
+      <span>2026</span>
     </p>
 
     <header class="about-head">
@@ -140,7 +138,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
       <dl class="stack-list">
         <div class="stack-row">
           <dt><em>Daily</em></dt>
-          <dd>
+          <dd translate="no">
             <span>Python</span><span class="dot-sep">·</span>
             <span>TypeScript</span><span class="dot-sep">·</span>
             <span>React</span><span class="dot-sep">·</span>
@@ -149,7 +147,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
         </div>
         <div class="stack-row">
           <dt><em>Backend &amp; infra</em></dt>
-          <dd>
+          <dd translate="no">
             <span>Azure</span><span class="dot-sep">·</span>
             <span>OpenAI</span><span class="dot-sep">·</span>
             <span>Postgres</span><span class="dot-sep">·</span>
@@ -159,7 +157,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
         </div>
         <div class="stack-row">
           <dt><em>Exploring</em></dt>
-          <dd>
+          <dd translate="no">
             <span>LangGraph</span><span class="dot-sep">·</span>
             <span>Agent tooling</span><span class="dot-sep">·</span>
             <span>Cloudflare&nbsp;Workers</span>
@@ -283,7 +281,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
     align-items: stretch;
   }
 
-  /* Left rail — image at top, signature at bottom, metadata + pull-quote
+  /* Left rail - image at top, signature at bottom, metadata + pull-quote
      distribute through the middle. The rail stretches to match the bio
      text height so the column never goes dead. */
   .bio-rail {
@@ -307,7 +305,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
     animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 820ms both;
   }
 
-  /* Terminal-style status block — reads as a whoami / status line. */
+  /* Terminal-style status block - reads as a whoami / status line. */
   .rail-status {
     margin: 0;
     display: grid;
@@ -333,7 +331,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
     overflow-wrap: break-word;
   }
 
-  /* Single-line manifesto — shell-prompt cue, mono, dim. */
+  /* Single-line manifesto - shell-prompt cue, mono, dim. */
   .rail-manifesto {
     margin: 0;
     display: flex;
@@ -441,7 +439,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
   /* ───────────────────────────── annotations ───────────────────────────── */
 
   .annot {
-    /* button reset — keeps the term flowing as inline prose */
+    /* button reset - keeps the term flowing as inline prose */
     appearance: none;
     -webkit-appearance: none;
     background-color: transparent;
@@ -472,15 +470,16 @@ import portrait from '../assets/images/yannik-chair.jpg';
     transition: opacity 160ms ease, transform 160ms ease;
   }
   .annot:hover,
-  .annot:focus-visible {
+  .annot:focus-visible,
+  .annot:focus {
     color: var(--color-fg);
     background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-accent) calc(100% - 1px));
-    outline: none;
   }
   .annot:hover::after,
-  .annot:focus-visible::after { opacity: 1; transform: translateY(-1px); }
+  .annot:focus-visible::after,
+  .annot:focus::after { opacity: 1; transform: translateY(-1px); }
 
-  /* tooltip — readable card that floats below the term */
+  /* tooltip - readable card that floats below the term */
   .tip {
     position: absolute;
     top: calc(100% + 0.55rem);
@@ -529,7 +528,8 @@ import portrait from '../assets/images/yannik-chair.jpg';
   }
 
   .annot:hover .tip,
-  .annot:focus-visible .tip {
+  .annot:focus-visible .tip,
+  .annot:focus .tip {
     opacity: 1;
     transform: translateY(0);
   }
@@ -705,7 +705,7 @@ import portrait from '../assets/images/yannik-chair.jpg';
     :global(.about-portrait) { max-width: 100%; }
 
     /* Tighter rail when stacked: the rail is now editorial footer matter
-       below the body copy, not a parallel column — collapse the generous
+       below the body copy, not a parallel column - collapse the generous
        desktop rhythm and let the blocks sit close. */
     .bio-rail { gap: 1.1rem; }
     .rail-mid { gap: 1rem; }

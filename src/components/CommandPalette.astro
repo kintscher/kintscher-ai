@@ -12,9 +12,9 @@ const items: Item[] = [
   { href: '/about',    label: 'about',        hint: 'A', desc: 'the long version',                 group: 'go' },
   { href: '/chat',     label: 'chat',         hint: 'C', desc: 'ask yannik anything',              group: 'go' },
   { href: '/contact',  label: 'contact',      hint: 'X', desc: 'email and social',                 group: 'go' },
-  { href: 'mailto:hi@kintscher.ai',           label: 'email yannik',     hint: 'E', desc: 'open mail composer', group: 'do' },
+  { href: 'mailto:yannik@kintscher.ai',       label: 'email yannik',     hint: 'E', desc: 'open mail composer', group: 'do' },
   { href: 'https://github.com/kintscher',     label: 'github',           hint: 'G', desc: 'github.com/kintscher', group: 'do' },
-  { href: 'https://www.linkedin.com/in/yannikkintscher', label: 'linkedin', hint: 'L', desc: 'linkedin.com/in/yannikkintscher', group: 'do' },
+  { href: 'https://www.linkedin.com/in/yannik-kintscher', label: 'linkedin', hint: 'L', desc: 'linkedin.com/in/yannik-kintscher', group: 'do' },
 ];
 ---
 
@@ -242,7 +242,7 @@ const items: Item[] = [
 
     // Forward focus trap: Tab from the last focusable element wraps to #cmd-input.
     // Native <dialog> wraps on Shift+Tab from the first element but, in Chromium,
-    // does not always wrap forward from the last — handle it explicitly.
+    // does not always wrap forward from the last - handle it explicitly.
     dialog.addEventListener('keydown', (e) => {
       if (e.key !== 'Tab' || e.shiftKey) return;
       const focusables = dialog.querySelectorAll<HTMLElement>(
@@ -341,7 +341,8 @@ const items: Item[] = [
      input. No new chrome, just a quiet shift in the rule that already
      anchors the input row to the list. */
   .cmd-input-row:has(#cmd-input:focus-visible) {
-    border-bottom-color: var(--color-hairline-strong);
+    border-bottom-color: var(--color-accent);
+    box-shadow: 0 1px 0 var(--color-accent);
   }
   .cmd-prompt {
     color: var(--color-accent);
