@@ -36,3 +36,11 @@ pnpm-debug.log*
 /references/
 .review/
 .playwright-mcp/
+
+# internal planning / scratch
+BRIEF.md
+PRODUCT.md
+CONTENT.md
+CLAUDE.md
+screenshots-textarea/
+contact-1440-*.png

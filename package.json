@@ -1,5 +1,9 @@
 {
 	"name": "kintscher-ai",
+	"description": "Personal site of Yannik Kintscher.",
+	"author": "Yannik Kintscher",
+	"license": "MIT",
+	"private": true,
 	"type": "module",
 	"version": "0.0.1",
 	"engines": {
@@ -11,8 +15,7 @@
 		"preview": "astro build && astro preview",
 		"astro": "astro",
 		"generate-types": "wrangler types",
-		"deploy": "astro build && wrangler deploy",
-		"cf-typegen": "wrangler types"
+		"deploy": "astro build && wrangler deploy"
 	},
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.91.1",
