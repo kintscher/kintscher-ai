@@ -13,18 +13,29 @@ const suggestions: Suggestion[] = [
     <h1 class="chat-invitation">Ask anything about Yannik.</h1>
 
     <ul class="chat-chips" aria-label="Suggested questions">
-      {suggestions.map((s) => (
-        <li>
-          <button type="button" class="chat-chip" data-suggestion={s.text}>
-            <span class="chip-prompt" aria-hidden="true">›</span>
-            <span class="chip-text">{s.text}</span>
-          </button>
-        </li>
-      ))}
+      {
+        suggestions.map((s) => (
+          <li>
+            <button type="button" class="chat-chip" data-suggestion={s.text}>
+              <span class="chip-prompt" aria-hidden="true">
+                ›
+              </span>
+              <span class="chip-text">{s.text}</span>
+            </button>
+          </li>
+        ))
+      }
     </ul>
   </div>
 
-  <div class="chat-thread" id="chat-thread" role="log" aria-live="polite" aria-label="Conversation"></div>
+  <div
+    class="chat-thread"
+    id="chat-thread"
+    role="log"
+    aria-live="polite"
+    aria-label="Conversation"
+  >
+  </div>
 
   <div class="chat-form-area">
     <form
@@ -49,8 +60,7 @@ const suggestions: Suggestion[] = [
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
-          aria-label="Ask anything about Yannik"
-        ></textarea>
+          aria-label="Ask anything about Yannik"></textarea>
         <span class="chat-caret" aria-hidden="true"></span>
       </div>
       <button type="submit" class="chat-submit">
@@ -62,26 +72,24 @@ const suggestions: Suggestion[] = [
       </button>
     </form>
 
-    <p class="chat-privacy">
-      Conversations are not stored. Powered by Claude.
-    </p>
+    <p class="chat-privacy">Conversations are not stored. Powered by Claude.</p>
   </div>
 </div>
 
 <script>
-  type ChatRole = 'user' | 'assistant';
+  type ChatRole = "user" | "assistant";
   type ChatMessage = { role: ChatRole; content: string };
   type ChatWindow = Window & { __kChatBound?: boolean };
 
   const ERROR_TEXT =
-    'Something broke on my end. Try again, or email Yannik directly.';
+    "Something broke on my end. Try again, or email Yannik directly.";
 
   function escapeHtml(s: string): string {
     return s
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
   // Conservative inline-markdown render. Escapes first, then applies a
@@ -90,14 +98,14 @@ const suggestions: Suggestion[] = [
   // as raw text - no flicker.
   function renderMd(text: string): string {
     let out = escapeHtml(text);
-    out = out.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
-    out = out.replace(/`([^`\n]+?)`/g, '<code>$1</code>');
+    out = out.replace(/\*\*([^*\n]+?)\*\*/g, "<strong>$1</strong>");
+    out = out.replace(/`([^`\n]+?)`/g, "<code>$1</code>");
     out = out.replace(
       /\[([^\]\n]+?)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g,
       (_m, label: string, url: string) => {
-        const ext = url.startsWith('http')
+        const ext = url.startsWith("http")
           ? ' target="_blank" rel="noopener noreferrer"'
-          : '';
+          : "";
         return `<a href="${url}"${ext}>${label}</a>`;
       },
     );
@@ -105,31 +113,33 @@ const suggestions: Suggestion[] = [
   }
 
   function setup() {
-    const shell = document.querySelector<HTMLDivElement>('.chat-shell');
-    const form = document.getElementById('chat-form') as HTMLFormElement | null;
-    const input = document.getElementById('chat-input') as HTMLTextAreaElement | null;
-    const thread = document.getElementById('chat-thread');
-    const stopBtn = document.getElementById('chat-stop');
+    const shell = document.querySelector<HTMLDivElement>(".chat-shell");
+    const form = document.getElementById("chat-form") as HTMLFormElement | null;
+    const input = document.getElementById(
+      "chat-input",
+    ) as HTMLTextAreaElement | null;
+    const thread = document.getElementById("chat-thread");
+    const stopBtn = document.getElementById("chat-stop");
     if (!shell || !form || !input || !thread || !stopBtn) return;
 
     const history: ChatMessage[] = [];
     let controller: AbortController | null = null;
     let autoScroll = true;
 
-    function setState(s: 'idle' | 'active' | 'streaming') {
+    function setState(s: "idle" | "active" | "streaming") {
       shell!.dataset.state = s;
-      input!.disabled = s === 'streaming';
-      if (s !== 'streaming') {
+      input!.disabled = s === "streaming";
+      if (s !== "streaming") {
         // Refocus input once interaction returns to the user.
         requestAnimationFrame(() => input!.focus());
       }
     }
 
     function appendUser(text: string) {
-      const el = document.createElement('article');
-      el.className = 'msg msg-user';
+      const el = document.createElement("article");
+      el.className = "msg msg-user";
       el.innerHTML = '<p class="msg-text"></p>';
-      const t = el.querySelector<HTMLParagraphElement>('.msg-text')!;
+      const t = el.querySelector<HTMLParagraphElement>(".msg-text")!;
       t.textContent = text;
       thread!.appendChild(el);
       maybeScroll();
@@ -139,10 +149,10 @@ const suggestions: Suggestion[] = [
       bubble: HTMLElement;
       textEl: HTMLParagraphElement;
     } {
-      const el = document.createElement('article');
-      el.className = 'msg msg-assistant is-streaming';
+      const el = document.createElement("article");
+      el.className = "msg msg-assistant is-streaming";
       el.innerHTML = '<p class="msg-text"></p>';
-      const t = el.querySelector<HTMLParagraphElement>('.msg-text')!;
+      const t = el.querySelector<HTMLParagraphElement>(".msg-text")!;
       thread!.appendChild(el);
       maybeScroll();
       return { bubble: el, textEl: t };
@@ -151,42 +161,46 @@ const suggestions: Suggestion[] = [
     function maybeScroll() {
       if (!autoScroll) return;
       requestAnimationFrame(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "auto" });
       });
     }
 
     let scrollRaf = 0;
-    window.addEventListener('scroll', () => {
-      if (scrollRaf) return;
-      scrollRaf = requestAnimationFrame(() => {
-        scrollRaf = 0;
-        autoScroll =
-          window.innerHeight + window.scrollY >=
-          document.body.scrollHeight - 60;
-      });
-    }, { passive: true });
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => {
+          scrollRaf = 0;
+          autoScroll =
+            window.innerHeight + window.scrollY >=
+            document.body.scrollHeight - 60;
+        });
+      },
+      { passive: true },
+    );
 
     async function send(text: string) {
       if (controller) return; // already streaming
       const trimmed = text.trim();
       if (!trimmed) return;
 
-      input!.value = '';
+      input!.value = "";
       autosize();
-      setState('streaming');
+      setState("streaming");
 
-      if (shell!.dataset.state !== 'streaming') {
+      if (shell!.dataset.state !== "streaming") {
         // Defensive - setState should have set this already.
-        shell!.dataset.state = 'streaming';
+        shell!.dataset.state = "streaming";
       }
 
-      history.push({ role: 'user', content: trimmed });
+      history.push({ role: "user", content: trimmed });
       appendUser(trimmed);
       const { bubble, textEl } = appendAssistant();
 
       controller = new AbortController();
-      let renderedSoFar = '';   // chars currently visible
-      let chunkBuffer = '';     // received but not yet revealed
+      let renderedSoFar = ""; // chars currently visible
+      let chunkBuffer = ""; // received but not yet revealed
       let rafHandle = 0;
       let aborted = false;
       let errorHandled = false;
@@ -210,51 +224,65 @@ const suggestions: Suggestion[] = [
       // user-rooted so the API never sees a leading assistant turn.
       const MAX_API_MESSAGES = 30;
       let messagesForApi = history.slice(-MAX_API_MESSAGES);
-      while (messagesForApi.length && messagesForApi[0].role !== 'user') {
+      while (messagesForApi.length && messagesForApi[0].role !== "user") {
         messagesForApi = messagesForApi.slice(1);
       }
 
       try {
-        const resp = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const resp = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ messages: messagesForApi }),
           signal: controller.signal,
         });
 
         if (!resp.ok) {
           if (resp.status === 429) {
-            const retryRaw = resp.headers.get('Retry-After');
+            const retryRaw = resp.headers.get("Retry-After");
             const retrySec = retryRaw ? parseInt(retryRaw, 10) : NaN;
+            const EMAIL_TAIL = ", or email yannik@kintscher.ai.";
+
+            let phrase = "later";
             if (Number.isFinite(retrySec) && retrySec > 0) {
-              const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-              const phrase =
-                retrySec >= 60
-                  ? rtf.format(Math.ceil(retrySec / 60), 'minute')
-                  : rtf.format(retrySec, 'second');
-              textEl.textContent = `Too many messages. Try again ${phrase}.`;
-            } else {
-              textEl.textContent = 'Too many messages. Try again later.';
+              const fmt = (n: number, unit: "minute" | "hour") =>
+                new Intl.NumberFormat("en", {
+                  style: "unit",
+                  unit,
+                  unitDisplay: "long",
+                }).format(n);
+
+              if (retrySec < 60) {
+                phrase = "in a moment";
+              } else if (retrySec < 3600) {
+                phrase = `in ${fmt(Math.ceil(retrySec / 60), "minute")}`;
+              } else {
+                phrase = `in ${fmt(Math.ceil(retrySec / 3600), "hour")}`;
+              }
             }
+
+            textEl.textContent = `Rate limit hit. Try again ${phrase}${EMAIL_TAIL}`;
           } else if (resp.status === 400) {
             // The server's validator returns short reason strings as the body.
             // Surface them so issues like "conversation too long" don't read
             // as a generic break.
-            const reason = (await resp.text().catch(() => '')).trim();
-            if (reason === 'too many messages' || reason === 'conversation too long') {
+            const reason = (await resp.text().catch(() => "")).trim();
+            if (
+              reason === "too many messages" ||
+              reason === "conversation too long"
+            ) {
               textEl.textContent =
-                'This conversation is too long to continue. Refresh to start a new one.';
-            } else if (reason === 'message too long') {
+                "This conversation is too long to continue. Refresh to start a new one.";
+            } else if (reason === "message too long") {
               textEl.textContent =
-                'That message is too long. Try a shorter version.';
+                "That message is too long. Try a shorter version.";
             } else {
               textEl.textContent = ERROR_TEXT;
             }
           } else {
             textEl.textContent = ERROR_TEXT;
           }
-          bubble.classList.add('is-error');
-          bubble.classList.remove('is-streaming');
+          bubble.classList.add("is-error");
+          bubble.classList.remove("is-streaming");
           errorHandled = true;
           return;
         }
@@ -262,8 +290,8 @@ const suggestions: Suggestion[] = [
         const reader = resp.body?.getReader();
         if (!reader) {
           textEl.textContent = ERROR_TEXT;
-          bubble.classList.add('is-error');
-          bubble.classList.remove('is-streaming');
+          bubble.classList.add("is-error");
+          bubble.classList.remove("is-streaming");
           errorHandled = true;
           return;
         }
@@ -279,25 +307,25 @@ const suggestions: Suggestion[] = [
         }
       } catch (err) {
         const e = err as { name?: string };
-        if (e?.name === 'AbortError') {
+        if (e?.name === "AbortError") {
           aborted = true;
         }
         // Other errors fall through to the empty-text branch in finally,
         // which renders the in-voice error message.
       } finally {
         if (rafHandle) cancelAnimationFrame(rafHandle);
-        bubble.classList.remove('is-streaming');
+        bubble.classList.remove("is-streaming");
 
         // Normal completion: drain pending buffer onto the visible text.
         // Abort: drop the buffer - the user only commits to what they saw.
         if (!aborted && chunkBuffer) {
           renderedSoFar += chunkBuffer;
         }
-        chunkBuffer = '';
+        chunkBuffer = "";
 
         if (renderedSoFar) {
           textEl.innerHTML = renderMd(renderedSoFar);
-          history.push({ role: 'assistant', content: renderedSoFar });
+          history.push({ role: "assistant", content: renderedSoFar });
         } else if (errorHandled) {
           // Non-OK response already wrote a specific message into textEl.
           // Don't clobber it with the generic ERROR_TEXT below.
@@ -307,15 +335,15 @@ const suggestions: Suggestion[] = [
         } else {
           // Net error, or 200-with-empty (server failed mid-stream before any token).
           textEl.textContent = ERROR_TEXT;
-          bubble.classList.add('is-error');
+          bubble.classList.add("is-error");
         }
 
         controller = null;
-        setState('active');
+        setState("active");
       }
     }
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
       if (controller) return;
       const value = input.value.trim();
@@ -325,8 +353,8 @@ const suggestions: Suggestion[] = [
 
     // Textarea inserts a newline on Enter by default - submit instead so
     // the composer behaves like a single-line input. Shift+Enter keeps newline.
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         form.requestSubmit();
       }
@@ -338,36 +366,38 @@ const suggestions: Suggestion[] = [
     // beneath the textarea (see .chat-form.is-multiline in CSS).
     const minH = parseFloat(getComputedStyle(input!).minHeight) || 21;
     const syncEmpty = () => {
-      form!.dataset.empty = input!.value.length === 0 ? 'true' : 'false';
+      form!.dataset.empty = input!.value.length === 0 ? "true" : "false";
     };
     const autosize = () => {
-      input!.style.height = 'auto';
+      input!.style.height = "auto";
       input!.style.height = `${input!.scrollHeight}px`;
-      form!.classList.toggle('is-multiline', input!.scrollHeight > minH + 1);
+      form!.classList.toggle("is-multiline", input!.scrollHeight > minH + 1);
       syncEmpty();
     };
-    input.addEventListener('input', autosize);
+    input.addEventListener("input", autosize);
     syncEmpty();
 
-    stopBtn.addEventListener('click', () => {
+    stopBtn.addEventListener("click", () => {
       controller?.abort();
     });
 
-    document.querySelectorAll<HTMLButtonElement>('.chat-chip').forEach((chip) => {
-      if (chip.dataset.chipBound) return;
-      chip.dataset.chipBound = '1';
-      chip.addEventListener('click', () => {
-        if (controller) return;
-        const text = chip.dataset.suggestion ?? '';
-        send(text);
+    document
+      .querySelectorAll<HTMLButtonElement>(".chat-chip")
+      .forEach((chip) => {
+        if (chip.dataset.chipBound) return;
+        chip.dataset.chipBound = "1";
+        chip.addEventListener("click", () => {
+          if (controller) return;
+          const text = chip.dataset.suggestion ?? "";
+          send(text);
+        });
       });
-    });
 
     // Abort in-flight stream on navigation away - Astro view transitions
     // and full unloads alike.
     const abortIfRunning = () => controller?.abort();
-    window.addEventListener('beforeunload', abortIfRunning);
-    document.addEventListener('astro:before-preparation', abortIfRunning);
+    window.addEventListener("beforeunload", abortIfRunning);
+    document.addEventListener("astro:before-preparation", abortIfRunning);
 
     const w = window as ChatWindow;
     if (!w.__kChatBound) {
@@ -377,56 +407,53 @@ const suggestions: Suggestion[] = [
     // Auto-send a question passed via ?q= (from the home/command-palette prompt).
     // Strip the param from the URL so reloads don't re-fire the same question.
     const params = new URLSearchParams(location.search);
-    const incoming = params.get('q');
+    const incoming = params.get("q");
     if (incoming && incoming.trim() && !controller) {
-      params.delete('q');
+      params.delete("q");
       const qs = params.toString();
       history.length = 0;
       window.history.replaceState(
         {},
-        '',
-        location.pathname + (qs ? `?${qs}` : '') + location.hash,
+        "",
+        location.pathname + (qs ? `?${qs}` : "") + location.hash,
       );
       send(incoming);
     }
   }
 
   setup();
-  document.addEventListener('astro:page-load', setup);
+  document.addEventListener("astro:page-load", setup);
 
   // Mobile-only: keep the composer pinned directly above the on-screen
   // keyboard, and reserve space at the bottom of .chat-shell so the
   // fixed composer never overlaps the thread or chips.
   function setupComposerLayout() {
-    const shell = document.querySelector<HTMLDivElement>('.chat-shell');
-    const formArea = document.querySelector<HTMLDivElement>('.chat-form-area');
+    const shell = document.querySelector<HTMLDivElement>(".chat-shell");
+    const formArea = document.querySelector<HTMLDivElement>(".chat-form-area");
     if (!shell || !formArea) return;
 
-    const isMobile = () => window.matchMedia('(max-width: 720px)').matches;
+    const isMobile = () => window.matchMedia("(max-width: 720px)").matches;
 
     const syncFormHeight = () => {
       if (!isMobile()) {
-        shell.style.removeProperty('--chat-form-h');
+        shell.style.removeProperty("--chat-form-h");
         return;
       }
       const h = formArea.getBoundingClientRect().height;
-      shell.style.setProperty('--chat-form-h', `${Math.ceil(h)}px`);
+      shell.style.setProperty("--chat-form-h", `${Math.ceil(h)}px`);
     };
 
     const syncKeyboardInset = () => {
       const vv = window.visualViewport;
       if (!vv || !isMobile()) {
-        document.documentElement.style.setProperty('--keyboard-inset', '0px');
+        document.documentElement.style.setProperty("--keyboard-inset", "0px");
         return;
       }
       // Distance between the bottom of the layout viewport and the
       // bottom of the visual viewport - i.e. keyboard height when open.
-      const inset = Math.max(
-        0,
-        window.innerHeight - vv.height - vv.offsetTop,
-      );
+      const inset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
       document.documentElement.style.setProperty(
-        '--keyboard-inset',
+        "--keyboard-inset",
         `${Math.round(inset)}px`,
       );
     };
@@ -437,19 +464,19 @@ const suggestions: Suggestion[] = [
     const ro = new ResizeObserver(syncFormHeight);
     ro.observe(formArea);
 
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       syncFormHeight();
       syncKeyboardInset();
     });
 
     if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', syncKeyboardInset);
-      window.visualViewport.addEventListener('scroll', syncKeyboardInset);
+      window.visualViewport.addEventListener("resize", syncKeyboardInset);
+      window.visualViewport.addEventListener("scroll", syncKeyboardInset);
     }
   }
 
   setupComposerLayout();
-  document.addEventListener('astro:page-load', setupComposerLayout);
+  document.addEventListener("astro:page-load", setupComposerLayout);
 </script>
 
 <style is:global>
@@ -502,9 +529,15 @@ const suggestions: Suggestion[] = [
     opacity: 0;
     animation: chat-rise 520ms cubic-bezier(0.2, 0.7, 0, 1) both;
   }
-  .chat-chips li:nth-child(1) { animation-delay: 220ms; }
-  .chat-chips li:nth-child(2) { animation-delay: 300ms; }
-  .chat-chips li:nth-child(3) { animation-delay: 380ms; }
+  .chat-chips li:nth-child(1) {
+    animation-delay: 220ms;
+  }
+  .chat-chips li:nth-child(2) {
+    animation-delay: 300ms;
+  }
+  .chat-chips li:nth-child(3) {
+    animation-delay: 380ms;
+  }
 
   .chat-chip {
     display: inline-flex;
@@ -520,7 +553,10 @@ const suggestions: Suggestion[] = [
     color: var(--color-muted);
     cursor: pointer;
     text-align: left;
-    transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+    transition:
+      border-color 160ms ease,
+      color 160ms ease,
+      background 160ms ease;
   }
   .chat-chip:hover {
     border-color: var(--color-hairline-strong);
@@ -531,7 +567,9 @@ const suggestions: Suggestion[] = [
     font-weight: 500;
     transform: translateY(-0.5px);
   }
-  .chat-chip .chip-text { flex: 1; }
+  .chat-chip .chip-text {
+    flex: 1;
+  }
 
   /* ----- Conversation thread ----- */
 
@@ -575,7 +613,7 @@ const suggestions: Suggestion[] = [
     color: var(--color-accent);
   }
   .msg-user::before {
-    content: '›';
+    content: "›";
     display: inline-block;
     width: 2ch;
     color: var(--color-accent);
@@ -617,7 +655,9 @@ const suggestions: Suggestion[] = [
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
   }
-  .msg-assistant a:hover { text-decoration-thickness: 2px; }
+  .msg-assistant a:hover {
+    text-decoration-thickness: 2px;
+  }
 
   .msg-assistant.is-error .msg-text {
     color: var(--color-quiet);
@@ -626,7 +666,7 @@ const suggestions: Suggestion[] = [
 
   /* In-flight cursor - soft amber block at the end of the streaming bubble. */
   .msg-assistant.is-streaming .msg-text::after {
-    content: '';
+    content: "";
     display: inline-block;
     width: 0.45em;
     height: 1em;
@@ -658,7 +698,9 @@ const suggestions: Suggestion[] = [
     padding: 0.7rem 0.85rem 0.7rem 0.95rem;
     font-family: var(--font-mono);
     font-size: 14px;
-    transition: border-color 180ms ease, background 180ms ease;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease;
   }
   /* Once the textarea spans more than one line, drop the send/stop button
      onto its own row so the textarea (and its scrollbar) takes the full
@@ -670,8 +712,14 @@ const suggestions: Suggestion[] = [
     row-gap: 0.5rem;
     align-items: start;
   }
-  .chat-form.is-multiline .chat-prompt { grid-column: 1; grid-row: 1; }
-  .chat-form.is-multiline .chat-input-wrap { grid-column: 2; grid-row: 1; }
+  .chat-form.is-multiline .chat-prompt {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .chat-form.is-multiline .chat-input-wrap {
+    grid-column: 2;
+    grid-row: 1;
+  }
   .chat-form.is-multiline .chat-submit,
   .chat-form.is-multiline .chat-stop {
     grid-column: 2;
@@ -718,23 +766,36 @@ const suggestions: Suggestion[] = [
     scrollbar-width: thin;
     scrollbar-color: var(--color-hairline-strong) transparent;
   }
-  #chat-input::-webkit-scrollbar { width: 6px; }
-  #chat-input::-webkit-scrollbar-track { background: transparent; }
+  #chat-input::-webkit-scrollbar {
+    width: 6px;
+  }
+  #chat-input::-webkit-scrollbar-track {
+    background: transparent;
+  }
   #chat-input::-webkit-scrollbar-thumb {
     background: var(--color-hairline-strong);
     border-radius: 999px;
   }
-  #chat-input::-webkit-scrollbar-thumb:hover { background: var(--color-quiet); }
-  #chat-input:disabled { color: var(--color-quiet); cursor: not-allowed; }
+  #chat-input::-webkit-scrollbar-thumb:hover {
+    background: var(--color-quiet);
+  }
+  #chat-input:disabled {
+    color: var(--color-quiet);
+    cursor: not-allowed;
+  }
   /* Suppress the global amber focus ring on the input - the form wrapper's
      :focus-within border + background shift is the focused cue here. */
-  #chat-input:focus-visible { outline: none; }
+  #chat-input:focus-visible {
+    outline: none;
+  }
 
   /* Custom soft-pulsing caret in the empty state.
      Native caret is hidden when empty so the two don't collide;
      once the user types, native amber caret takes over.
      Empty state is tracked via data-empty on the form (set by JS). */
-  .chat-form[data-empty="true"] #chat-input { caret-color: transparent; }
+  .chat-form[data-empty="true"] #chat-input {
+    caret-color: transparent;
+  }
   .chat-caret {
     position: absolute;
     left: 0;
@@ -753,7 +814,9 @@ const suggestions: Suggestion[] = [
   }
   /* Hide the empty-state caret while streaming - input is disabled and the
      placeholder shows again, but the caret would suggest the user can type. */
-  .chat-shell[data-state="streaming"] .chat-caret { display: none; }
+  .chat-shell[data-state="streaming"] .chat-caret {
+    display: none;
+  }
 
   .chat-submit,
   .chat-stop {
@@ -768,7 +831,10 @@ const suggestions: Suggestion[] = [
     font-size: 12px;
     color: var(--color-quiet);
     cursor: pointer;
-    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+    transition:
+      color 150ms ease,
+      border-color 150ms ease,
+      background 150ms ease;
     flex-shrink: 0;
   }
   .chat-submit:hover,
@@ -794,9 +860,15 @@ const suggestions: Suggestion[] = [
   }
 
   /* Submit ↔ stop swap is driven by the shell's data-state. */
-  .chat-stop { display: none; }
-  .chat-shell[data-state="streaming"] .chat-submit { display: none; }
-  .chat-shell[data-state="streaming"] .chat-stop { display: inline-flex; }
+  .chat-stop {
+    display: none;
+  }
+  .chat-shell[data-state="streaming"] .chat-submit {
+    display: none;
+  }
+  .chat-shell[data-state="streaming"] .chat-stop {
+    display: inline-flex;
+  }
 
   /* ----- Privacy footnote ----- */
 
@@ -813,8 +885,10 @@ const suggestions: Suggestion[] = [
 
   .sr-only {
     position: absolute;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
     overflow: hidden;
     clip: rect(0 0 0 0);
     white-space: nowrap;
@@ -824,18 +898,34 @@ const suggestions: Suggestion[] = [
   /* ----- Animations ----- */
 
   @keyframes chat-rise {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @keyframes chat-caret-pulse {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.25; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
   }
 
   @keyframes chat-cursor-pulse {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.3; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -846,12 +936,22 @@ const suggestions: Suggestion[] = [
       opacity: 1;
       transform: none;
     }
-    .chat-caret { animation: none; }
-    .msg-assistant.is-streaming .msg-text::after { animation: none; }
-    .chat-chip { transition: none; }
-    .chat-form { transition: none; }
+    .chat-caret {
+      animation: none;
+    }
+    .msg-assistant.is-streaming .msg-text::after {
+      animation: none;
+    }
+    .chat-chip {
+      transition: none;
+    }
+    .chat-form {
+      transition: none;
+    }
     .chat-submit,
-    .chat-stop { transition: none; }
+    .chat-stop {
+      transition: none;
+    }
   }
 
   /* ----- Responsive ----- */
@@ -868,7 +968,9 @@ const suggestions: Suggestion[] = [
     .chat-shell[data-state="idle"] {
       padding-bottom: 0.75rem;
     }
-    .chat-chips { width: 100%; }
+    .chat-chips {
+      width: 100%;
+    }
     .chat-chip {
       width: 100%;
       font-size: 12.5px;
@@ -892,13 +994,23 @@ const suggestions: Suggestion[] = [
       gap: 0.45rem;
     }
 
-    .chat-form { padding: 0.65rem 0.7rem 0.65rem 0.85rem; }
+    .chat-form {
+      padding: 0.65rem 0.7rem 0.65rem 0.85rem;
+    }
     /* 16px prevents iOS Safari from auto-zooming on focus, which is
        what made the input appear to scroll off the right edge. */
-    #chat-input { font-size: 16px; }
-    .submit-label { display: none; }
-    .chat-privacy { font-size: 10.5px; }
-    .msg-assistant { font-size: 15px; }
+    #chat-input {
+      font-size: 16px;
+    }
+    .submit-label {
+      display: none;
+    }
+    .chat-privacy {
+      font-size: 10.5px;
+    }
+    .msg-assistant {
+      font-size: 15px;
+    }
 
     /* Focused composer on the idle screen: pull the prelude (title + chips)
        down so suggestions sit directly above the composer and the title
