@@ -1,8 +1,8 @@
 ---
 export const prerender = true;
-import Layout from '../layouts/Layout.astro';
-import PortraitFrame from '../components/PortraitFrame.astro';
-import portrait from '../assets/images/yannik-chair.jpg';
+import Layout from "../layouts/Layout.astro";
+import PortraitFrame from "../components/PortraitFrame.astro";
+import portrait from "../assets/images/yannik-chair.jpg";
 ---
 
 <Layout
@@ -21,10 +21,14 @@ import portrait from '../assets/images/yannik-chair.jpg';
     <header class="about-head">
       <h1 class="about-title">
         <span class="line"><span class="line-inner">The long</span></span>
-        <span class="line"><span class="line-inner"><em>version.</em></span></span>
+        <span class="line"
+          ><span class="line-inner"><em>version.</em></span></span
+        >
       </h1>
       <p class="about-dek">
-        <span class="line-inner">A short tour of the work, the route here, and what I’m chasing now.</span>
+        <span class="line-inner"
+          >A short tour of the work, the route here, and what I’m chasing now.</span
+        >
       </p>
     </header>
 
@@ -62,7 +66,9 @@ import portrait from '../assets/images/yannik-chair.jpg';
 
           <p class="rail-manifesto">
             <span class="rail-manifesto-mark" aria-hidden="true">&gt;</span>
-            <span class="rail-manifesto-text">building tools that make the day less tedious.</span>
+            <span class="rail-manifesto-text"
+              >building tools that make the day less tedious.</span
+            >
           </p>
         </div>
 
@@ -79,10 +85,20 @@ import portrait from '../assets/images/yannik-chair.jpg';
       <div class="bio-text">
         <p class="bio-para">
           Came up the Swiss way: a 4-year
-          <button type="button" class="annot" aria-describedby="gloss-efz">Informatiker EFZ<span class="tip" role="tooltip" id="gloss-efz">Swiss federal IT diploma. 4 years, dual-track.</span></button>
+          <button type="button" class="annot" aria-describedby="gloss-efz"
+            >Informatiker EFZ<span class="tip" role="tooltip" id="gloss-efz"
+              >Swiss federal IT diploma. 4 years, dual-track.</span
+            ></button
+          >
           apprenticeship at UBS. Year one was
-          <button type="button" class="annot" aria-describedby="gloss-basic">Basic Training in Altstetten<span class="tip" role="tooltip" id="gloss-basic">UBS apprentice training centre. Pre-team year.</span></button>,
-          covering IT fundamentals, Scrum, and group projects. The next three
+          <button type="button" class="annot" aria-describedby="gloss-basic"
+            >Basic Training in Altstetten<span
+              class="tip"
+              role="tooltip"
+              id="gloss-basic"
+              >UBS apprentice training centre. Pre-team year.</span
+            ></button
+          >, covering IT fundamentals, Scrum, and group projects. The next three
           years I spent in Wealth Management on trading applications, building
           Java REST services and internal trading interfaces. That stretch
           taught me how high-stakes systems actually get built and shipped.
@@ -91,36 +107,60 @@ import portrait from '../assets/images/yannik-chair.jpg';
         <p class="bio-para">
           Since 2022 I’ve been on the Conversational Banking team, working on
           the
-          <button type="button" class="annot" aria-describedby="gloss-va">Virtual Assistant<span class="tip" role="tooltip" id="gloss-va">UBS E-Banking and Mobile Banking chatbot. Live for clients.</span></button>,
-          UBS’s E-Banking and Mobile Banking chatbot. I started on the Java
-          backend, owning services that powered the bot in production, and
-          drove the Java side end-to-end into its first production release in
-          2023. I was on the team before generative AI hit; when it did, I
-          helped drive LLM integrations and
-          <button type="button" class="annot" aria-describedby="gloss-aoi">Azure OpenAI<span class="tip" role="tooltip" id="gloss-aoi">Enterprise OpenAI on Azure. Compliant, governed.</span></button>
-          adoption, shipping one of UBS’s first external GenAI use cases. In
-          2024 I moved into fullstack by building the
-          <button type="button" class="annot" aria-describedby="gloss-portal">Chatbot Portal<span class="tip" role="tooltip" id="gloss-portal">Internal platform. React and Python. Built it.</span></button>,
-          a React and Python platform the team uses to monitor, analyze, and
+          <button type="button" class="annot" aria-describedby="gloss-va"
+            >Virtual Assistant<span class="tip" role="tooltip" id="gloss-va"
+              >UBS E-Banking and Mobile Banking chatbot. Live for clients.</span
+            ></button
+          >, UBS’s E-Banking and Mobile Banking chatbot. I started on the Java
+          backend, owning services that powered the bot in production, and drove
+          the Java side end-to-end into its first production release in 2023. I
+          was on the team before generative AI hit; when it did, I helped drive
+          LLM integrations and
+          <button type="button" class="annot" aria-describedby="gloss-aoi"
+            >Azure OpenAI<span class="tip" role="tooltip" id="gloss-aoi"
+              >Enterprise OpenAI on Azure. Compliant, governed.</span
+            ></button
+          >
+          adoption, shipping one of UBS’s first external GenAI use cases. In 2024
+          I moved into fullstack by building the
+          <button type="button" class="annot" aria-describedby="gloss-portal"
+            >Chatbot Portal<span class="tip" role="tooltip" id="gloss-portal"
+              >Internal platform. React and Python. Built it.</span
+            ></button
+          >, a React and Python platform the team uses to monitor, analyze, and
           test the bot end-to-end, and shipped the first test automation suite
-          in the Conversational Banking crew along the way. An internal
-          rotation into
-          <button type="button" class="annot" aria-describedby="gloss-speech">Speech Analytics<span class="tip" role="tooltip" id="gloss-speech">Sister team. NLP on call data. Short rotation.</span></button>
-          that year gave me a first taste of NLP and shipped a new REST
-          service into production. That same year I also won the
-          <button type="button" class="annot" aria-describedby="gloss-hack">Microsoft × UBS THINK AHEAD GenAI Hackathon<span class="tip" role="tooltip" id="gloss-hack">Microsoft × UBS hackathon. We won.</span></button>
+          in the Conversational Banking crew along the way. An internal rotation
+          into
+          <button type="button" class="annot" aria-describedby="gloss-speech"
+            >Speech Analytics<span class="tip" role="tooltip" id="gloss-speech"
+              >Sister team. NLP on call data. Short rotation.</span
+            ></button
+          >
+          that year gave me a first taste of NLP and shipped a new REST service into
+          production. That same year I also won the
+          <button type="button" class="annot" aria-describedby="gloss-hack"
+            >Microsoft × UBS THINK AHEAD GenAI Hackathon<span
+              class="tip"
+              role="tooltip"
+              id="gloss-hack">Microsoft × UBS hackathon. We won.</span
+            ></button
+          >
           with a cross-team squad, and was promoted to
-          <button type="button" class="annot" aria-describedby="gloss-auth">Authorized Officer<span class="tip" role="tooltip" id="gloss-auth">UBS title rank. Bumped up in spring 2025.</span></button>
+          <button type="button" class="annot" aria-describedby="gloss-auth"
+            >Authorized Officer<span class="tip" role="tooltip" id="gloss-auth"
+              >UBS title rank. Bumped up in spring 2025.</span
+            ></button
+          >
           the following spring.
         </p>
 
         <p class="bio-para">
-          Right now I’m most interested in agents and applied AI, tooling
-          that makes developer workflows faster and day-to-day work less
-          tedious. The Chatbot Portal is one example, and I want to do more
-          of that. Currently shipping evaluation and data-labelling tooling
-          for the Virtual Assistant, tinkering on side projects in the
-          evenings, and going deep on agent architectures.
+          Right now I’m most interested in agents and applied AI, tooling that
+          makes developer workflows faster and day-to-day work less tedious. The
+          Chatbot Portal is one example, and I want to do more of that.
+          Currently shipping evaluation and data-labelling tooling for the
+          Virtual Assistant, tinkering on side projects in the evenings, and
+          going deep on agent architectures.
         </p>
 
         <p class="signoff"><em>— Y.</em></p>
@@ -184,7 +224,8 @@ import portrait from '../assets/images/yannik-chair.jpg';
     position: relative;
     max-width: 1200px;
     margin-inline: auto;
-    padding: clamp(2.5rem, 6vh, 5rem) clamp(1.25rem, 3vw, 2.5rem) clamp(3rem, 7vh, 6rem);
+    padding: clamp(2.5rem, 6vh, 5rem) clamp(1.25rem, 3vw, 2.5rem)
+      clamp(3rem, 7vh, 6rem);
     display: grid;
     grid-template-columns: 1fr;
     row-gap: clamp(2rem, 4.5vh, 3.5rem);
@@ -192,13 +233,21 @@ import portrait from '../assets/images/yannik-chair.jpg';
 
   /* very soft warm wash to lift the page out of pure black */
   .about::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(60% 50% at 18% 22%, rgb(232 168 58 / 0.05) 0%, transparent 70%),
-      radial-gradient(40% 30% at 82% 88%, rgb(91 168 155 / 0.035) 0%, transparent 70%);
+      radial-gradient(
+        60% 50% at 18% 22%,
+        rgb(232 168 58 / 0.05) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        40% 30% at 82% 88%,
+        rgb(91 168 155 / 0.035) 0%,
+        transparent 70%
+      );
     z-index: -1;
   }
 
@@ -226,7 +275,10 @@ import portrait from '../assets/images/yannik-chair.jpg';
     box-shadow: 0 0 8px rgb(91 168 155 / 0.6);
     animation: pulse-signal 2.4s ease-in-out infinite;
   }
-  .meta .sep { color: var(--color-quiet); opacity: 0.5; }
+  .meta .sep {
+    color: var(--color-quiet);
+    opacity: 0.5;
+  }
 
   /* ───────────────────────────── headline ───────────────────────────── */
 
@@ -247,15 +299,25 @@ import portrait from '../assets/images/yannik-chair.jpg';
     display: flex;
     flex-direction: column;
   }
-  .about-title .line { display: block; overflow: hidden; }
+  .about-title .line {
+    display: block;
+    overflow: hidden;
+  }
   .about-title .line-inner {
     display: inline-block;
     transform: translateY(105%);
     animation: rise 720ms cubic-bezier(0.2, 0.7, 0, 1) both;
   }
-  .about-title em { font-style: italic; color: var(--color-fg); }
-  .about-title .line:nth-child(1) .line-inner { animation-delay: 180ms; }
-  .about-title .line:nth-child(2) .line-inner { animation-delay: 280ms; }
+  .about-title em {
+    font-style: italic;
+    color: var(--color-fg);
+  }
+  .about-title .line:nth-child(1) .line-inner {
+    animation-delay: 180ms;
+  }
+  .about-title .line:nth-child(2) .line-inner {
+    animation-delay: 280ms;
+  }
 
   .about-dek {
     margin: 0;
@@ -323,9 +385,17 @@ import portrait from '../assets/images/yannik-chair.jpg';
     min-width: 0;
   }
   .rail-status-row dt,
-  .rail-status-row dd { margin: 0; }
-  .rail-status-row dt { color: var(--color-quiet); opacity: 0.7; }
-  .rail-status-sep { color: var(--color-quiet); opacity: 0.55; }
+  .rail-status-row dd {
+    margin: 0;
+  }
+  .rail-status-row dt {
+    color: var(--color-quiet);
+    opacity: 0.7;
+  }
+  .rail-status-sep {
+    color: var(--color-quiet);
+    opacity: 0.55;
+  }
   .rail-status-row dd {
     color: var(--color-muted);
     overflow-wrap: break-word;
@@ -349,7 +419,9 @@ import portrait from '../assets/images/yannik-chair.jpg';
     color: var(--color-accent);
     opacity: 0.85;
   }
-  .rail-manifesto-text { color: var(--color-muted); }
+  .rail-manifesto-text {
+    color: var(--color-muted);
+  }
 
   .rail-foot {
     display: grid;
@@ -375,9 +447,16 @@ import portrait from '../assets/images/yannik-chair.jpg';
     text-transform: uppercase;
     color: var(--color-quiet);
   }
-  .rail-sig-name { color: var(--color-muted); }
-  .rail-sig-sep { color: var(--color-quiet); opacity: 0.5; }
-  .rail-sig-loc { color: var(--color-quiet); }
+  .rail-sig-name {
+    color: var(--color-muted);
+  }
+  .rail-sig-sep {
+    color: var(--color-quiet);
+    opacity: 0.5;
+  }
+  .rail-sig-loc {
+    color: var(--color-quiet);
+  }
 
   /* ───────────────────────────── bio text ───────────────────────────── */
 
@@ -405,11 +484,19 @@ import portrait from '../assets/images/yannik-chair.jpg';
      where the gloss can render without colliding with the portrait. */
   @media (min-width: 1100px) {
     .bio-para,
-    .signoff { margin-left: 5.5rem; }
+    .signoff {
+      margin-left: 5.5rem;
+    }
   }
-  .bio-para:nth-of-type(1) { animation-delay: 520ms; }
-  .bio-para:nth-of-type(2) { animation-delay: 640ms; }
-  .bio-para:nth-of-type(3) { animation-delay: 760ms; }
+  .bio-para:nth-of-type(1) {
+    animation-delay: 520ms;
+  }
+  .bio-para:nth-of-type(2) {
+    animation-delay: 640ms;
+  }
+  .bio-para:nth-of-type(3) {
+    animation-delay: 760ms;
+  }
 
   /* drop-cap on the first paragraph for editorial warmth */
   .bio-para:first-of-type::first-letter {
@@ -434,7 +521,9 @@ import portrait from '../assets/images/yannik-chair.jpg';
     opacity: 0;
     animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) 980ms both;
   }
-  .signoff em { font-style: italic; }
+  .signoff em {
+    font-style: italic;
+  }
 
   /* ───────────────────────────── annotations ───────────────────────────── */
 
@@ -453,31 +542,47 @@ import portrait from '../assets/images/yannik-chair.jpg';
     display: inline;
 
     position: relative;
-    background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-hairline-strong) calc(100% - 1px));
+    background-image: linear-gradient(
+      transparent 0%,
+      transparent calc(100% - 1px),
+      var(--color-hairline-strong) calc(100% - 1px)
+    );
     background-size: 100% 100%;
     background-repeat: no-repeat;
     cursor: help;
-    transition: color 160ms ease, background-image 160ms ease;
+    transition:
+      color 160ms ease,
+      background-image 160ms ease;
   }
   .annot::after {
-    content: '°';
+    content: "°";
     position: relative;
     top: -0.25em;
     margin-left: 0.1em;
     font-size: 0.7em;
     color: var(--color-accent);
     opacity: 0.45;
-    transition: opacity 160ms ease, transform 160ms ease;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
   }
   .annot:hover,
   .annot:focus-visible,
   .annot:focus {
     color: var(--color-fg);
-    background-image: linear-gradient(transparent 0%, transparent calc(100% - 1px), var(--color-accent) calc(100% - 1px));
+    background-image: linear-gradient(
+      transparent 0%,
+      transparent calc(100% - 1px),
+      var(--color-accent) calc(100% - 1px)
+    );
+    z-index: 20;
   }
   .annot:hover::after,
   .annot:focus-visible::after,
-  .annot:focus::after { opacity: 1; transform: translateY(-1px); }
+  .annot:focus::after {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
 
   /* tooltip - readable card that floats below the term */
   .tip {
@@ -511,11 +616,13 @@ import portrait from '../assets/images/yannik-chair.jpg';
     opacity: 0;
     transform: translateY(-2px);
     pointer-events: none;
-    transition: opacity 160ms ease, transform 200ms cubic-bezier(0.2, 0.7, 0, 1);
+    transition:
+      opacity 160ms ease,
+      transform 200ms cubic-bezier(0.2, 0.7, 0, 1);
   }
   /* small caret pointing up to the term */
   .tip::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -5px;
     left: 0.85rem;
@@ -534,9 +641,21 @@ import portrait from '../assets/images/yannik-chair.jpg';
     transform: translateY(0);
   }
 
-  /* keep tooltip from clipping past the right edge of long terms near viewport edge */
+  /* keep tooltip from clipping past the right edge of long terms near viewport edge.
+     --tip-shift is set by JS when a term sits near the right edge so the
+     tooltip slides left to stay within the viewport. */
   @media (max-width: 720px) {
-    .tip { left: 0; right: auto; max-width: calc(100vw - 2rem); }
+    .tip {
+      left: 0;
+      right: auto;
+      max-width: calc(100vw - 2rem);
+      transform: translate(var(--tip-shift, 0px), -2px);
+    }
+    .annot:hover .tip,
+    .annot:focus-visible .tip,
+    .annot:focus .tip {
+      transform: translate(var(--tip-shift, 0px), 0);
+    }
   }
 
   /* ───────────────────────────── stack ───────────────────────────── */
@@ -568,16 +687,26 @@ import portrait from '../assets/images/yannik-chair.jpg';
     box-shadow: 0 0 8px rgb(91 168 155 / 0.6);
     animation: pulse-signal 2.4s ease-in-out infinite;
   }
-  .stack-head .sep { color: var(--color-quiet); opacity: 0.5; }
+  .stack-head .sep {
+    color: var(--color-quiet);
+    opacity: 0.5;
+  }
   .stack-kicker {
     margin: 0;
     font: inherit;
     color: var(--color-fg);
     letter-spacing: 0.04em;
   }
-  .stack-meta { color: var(--color-quiet); }
+  .stack-meta {
+    color: var(--color-quiet);
+  }
 
-  .stack-list { margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+  .stack-list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
   .stack-row {
     display: grid;
     grid-template-columns: minmax(11rem, 14rem) 1fr;
@@ -586,7 +715,9 @@ import portrait from '../assets/images/yannik-chair.jpg';
     padding: 0.7rem 0;
     border-bottom: 1px solid var(--color-hairline);
   }
-  .stack-row:last-child { border-bottom: none; }
+  .stack-row:last-child {
+    border-bottom: none;
+  }
 
   .stack-row dt {
     margin: 0;
@@ -597,7 +728,9 @@ import portrait from '../assets/images/yannik-chair.jpg';
     color: var(--color-fg);
     letter-spacing: -0.005em;
   }
-  .stack-row dt em { font-style: italic; }
+  .stack-row dt em {
+    font-style: italic;
+  }
 
   .stack-row dd {
     margin: 0;
@@ -619,7 +752,9 @@ import portrait from '../assets/images/yannik-chair.jpg';
     color: var(--color-fg);
     transition: color 160ms ease;
   }
-  .stack-row:hover dd > span:not(.dot-sep) { color: var(--color-fg); }
+  .stack-row:hover dd > span:not(.dot-sep) {
+    color: var(--color-fg);
+  }
 
   /* ───────────────────────────── next-link ───────────────────────────── */
 
@@ -638,36 +773,81 @@ import portrait from '../assets/images/yannik-chair.jpg';
     font-size: 13px;
     color: var(--color-muted);
     text-decoration: none;
-    transition: color 160ms ease, gap 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      color 160ms ease,
+      gap 220ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .next-kicker { color: var(--color-quiet); letter-spacing: 0.04em; }
-  .next-label  { color: var(--color-fg); }
-  .next-arrow  { color: var(--color-accent); transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1); }
-  .next-link:hover { gap: 1rem; }
-  .next-link:hover .next-arrow { transform: translateX(3px); }
-  .next-link:hover .next-label { color: var(--color-fg); }
+  .next-kicker {
+    color: var(--color-quiet);
+    letter-spacing: 0.04em;
+  }
+  .next-label {
+    color: var(--color-fg);
+  }
+  .next-arrow {
+    color: var(--color-accent);
+    transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .next-link:hover {
+    gap: 1rem;
+  }
+  .next-link:hover .next-arrow {
+    transform: translateX(3px);
+  }
+  .next-link:hover .next-label {
+    color: var(--color-fg);
+  }
 
   /* ───────────────────────────── animations ───────────────────────────── */
 
-  @keyframes rise { to { transform: translateY(0); } }
+  @keyframes rise {
+    to {
+      transform: translateY(0);
+    }
+  }
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   @keyframes pulse-signal {
-    0%, 100% { box-shadow: 0 0 6px rgb(91 168 155 / 0.45); opacity: 1; }
-    50%      { box-shadow: 0 0 12px rgb(91 168 155 / 0.85); opacity: 0.75; }
+    0%,
+    100% {
+      box-shadow: 0 0 6px rgb(91 168 155 / 0.45);
+      opacity: 1;
+    }
+    50% {
+      box-shadow: 0 0 12px rgb(91 168 155 / 0.85);
+      opacity: 0.75;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .meta, .about-title .line-inner, .about-dek .line-inner,
-    .bio-para, .signoff, .about-portrait, .rail-mid, .rail-foot, .stack, .about-foot {
+    .meta,
+    .about-title .line-inner,
+    .about-dek .line-inner,
+    .bio-para,
+    .signoff,
+    .about-portrait,
+    .rail-mid,
+    .rail-foot,
+    .stack,
+    .about-foot {
       animation: none;
       opacity: 1;
       transform: none;
     }
-    .meta .dot { animation: none; }
-    .tip { transition: opacity 1ms; }
+    .meta .dot {
+      animation: none;
+    }
+    .tip {
+      transition: opacity 1ms;
+    }
   }
 
   /* ───────────────────────────── responsive ───────────────────────────── */
@@ -692,48 +872,116 @@ import portrait from '../assets/images/yannik-chair.jpg';
       gap: 1.25rem;
       opacity: 0.75;
     }
-    .about-portrait { max-width: 460px; }
+    .about-portrait {
+      max-width: 460px;
+    }
   }
 
   /* mobile: stack everything, glosses fold below the paragraph */
   @media (max-width: 720px) {
-    .about { padding-top: 2rem; }
+    .about {
+      padding-top: 2rem;
+    }
     .bio {
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
-    :global(.about-portrait) { max-width: 100%; }
+    :global(.about-portrait) {
+      max-width: 100%;
+    }
 
     /* Tighter rail when stacked: the rail is now editorial footer matter
        below the body copy, not a parallel column - collapse the generous
        desktop rhythm and let the blocks sit close. */
-    .bio-rail { gap: 1.1rem; }
-    .rail-mid { gap: 1rem; }
-    .rail-foot { gap: 0.55rem; }
+    .bio-rail {
+      gap: 1.1rem;
+    }
+    .rail-mid {
+      gap: 1rem;
+    }
+    .rail-foot {
+      gap: 0.55rem;
+    }
 
     /* Align all status values to one column. "status" is 6ch; pad to
        give the colon a hair of breathing room so the dd's start line up. */
-    .rail-status-row { grid-template-columns: 6ch auto minmax(0, 1fr); }
+    .rail-status-row {
+      grid-template-columns: 6ch auto minmax(0, 1fr);
+    }
 
-    .bio-text { max-width: 100%; }
+    .bio-text {
+      max-width: 100%;
+    }
     /* Lighter body on mobile: the desktop measure relies on a 17px serif-
        adjacent feel; on a 393px column that lands too dense. Drop a notch
        in size and tighten leading to keep paragraphs from feeling like a
        wall. */
-    .bio-para { font-size: 1rem; line-height: 1.6; color: rgb(240 235 226 / 0.78); }
-    .bio-para:first-of-type::first-letter { font-size: 2.8em; }
+    .bio-para {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgb(240 235 226 / 0.78);
+    }
+    .bio-para:first-of-type::first-letter {
+      font-size: 2.8em;
+    }
 
     .stack-row {
       grid-template-columns: 1fr;
       gap: 0.4rem;
       padding: 0.85rem 0;
     }
-    .stack-row dt { font-size: 1.25rem; }
+    .stack-row dt {
+      font-size: 1.25rem;
+    }
 
-    .about-head { max-width: 100%; }
+    .about-head {
+      max-width: 100%;
+    }
   }
 
   @media (hover: none) {
-    .annot::after { opacity: 1; }
+    .annot::after {
+      opacity: 1;
+    }
   }
 </style>
+
+<script>
+  // Mobile tooltip clamping: when an annotated term is hovered/focused,
+  // measure where its tooltip would land and shift it left via a CSS var
+  // if it would overflow the right edge of the viewport.
+  function setupTipClamping() {
+    const annots = document.querySelectorAll<HTMLButtonElement>(".annot");
+    if (!annots.length) return;
+
+    const clamp = (annot: HTMLButtonElement) => {
+      const tip = annot.querySelector<HTMLElement>(".tip");
+      if (!tip) return;
+      annot.style.removeProperty("--tip-shift");
+      if (!window.matchMedia("(max-width: 720px)").matches) return;
+      const annotRect = annot.getBoundingClientRect();
+      const tipWidth = tip.getBoundingClientRect().width;
+      const viewportPadding = 12;
+      const tipRight = annotRect.left + tipWidth;
+      const maxRight = window.innerWidth - viewportPadding;
+      if (tipRight > maxRight) {
+        const shift = Math.ceil(tipRight - maxRight);
+        annot.style.setProperty("--tip-shift", `-${shift}px`);
+      }
+    };
+
+    annots.forEach((annot) => {
+      const onActivate = () => clamp(annot);
+      annot.addEventListener("pointerenter", onActivate);
+      annot.addEventListener("focus", onActivate);
+      annot.addEventListener("touchstart", onActivate, { passive: true });
+    });
+
+    window.addEventListener("resize", () => {
+      annots.forEach((a) => a.style.removeProperty("--tip-shift"));
+    });
+  }
+
+  setupTipClamping();
+  document.addEventListener("astro:page-load", setupTipClamping);
+</script>
