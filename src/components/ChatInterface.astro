@@ -386,6 +386,15 @@ const suggestions: Suggestion[] = [
       .forEach((chip) => {
         if (chip.dataset.chipBound) return;
         chip.dataset.chipBound = "1";
+        // Prevent the tap from blurring the input first - on mobile, the
+        // input losing focus collapses the on-screen keyboard and shifts
+        // the layout, which can cause the click to miss the chip target.
+        chip.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+        });
+        chip.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+        });
         chip.addEventListener("click", () => {
           if (controller) return;
           const text = chip.dataset.suggestion ?? "";
