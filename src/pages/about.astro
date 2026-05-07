@@ -480,6 +480,12 @@ import portrait from "../assets/images/yannik-chair.jpg";
     animation: fade-up 720ms cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
+  .bio-para:has(.annot:hover),
+  .bio-para:has(.annot:focus-visible),
+  .bio-para:has(.annot:focus) {
+    z-index: 20;
+  }
+
   /* On wide viewports, shift the bio column right to reserve a left margin
      where the gloss can render without colliding with the portrait. */
   @media (min-width: 1100px) {
